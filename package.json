@@ -1,0 +1,25 @@
+{
+  "name": "p5_practice",
+  "version": "1.0.0",
+  "description": "practice with p5 and simulating nature",
+  "main": "sketch.js",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "p5js",
+    "typescript"
+  ],
+  "author": "Sam VanTassel",
+  "license": "ISC",
+  "dependencies": {
+    "p5": "^1.5.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.2",
+    "@types/p5": "^1.4.3",
+    "parcel": "^2.8.2"
+  }
+}
