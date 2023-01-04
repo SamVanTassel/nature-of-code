@@ -1,8 +1,7 @@
 {
-  "name": "p5_practice",
-  "version": "1.0.0",
+  "name": "nature_of_code",
+  "version": "0.0.1",
   "description": "practice with p5 and simulating nature",
-  "main": "sketch.js",
   "scripts": {
     "start": "parcel index.html --open",
     "build": "parcel build index.html",
