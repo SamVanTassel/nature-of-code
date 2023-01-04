@@ -1,4 +1,5 @@
 import P5 from "p5";
+import "../styles.scss";
 
 const sketch = (p5: P5) => {
   const movers: Mover[] = [];
@@ -78,4 +79,4 @@ const sketch = (p5: P5) => {
   }
 }
 
-new P5(sketch);
+new P5(sketch, document.getElementById("app"));

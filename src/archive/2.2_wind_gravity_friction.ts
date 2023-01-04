@@ -1,11 +1,7 @@
 import P5 from "p5";
+import "../styles.scss";
 
 const sketch = (p5: P5) => {
-  const height = p5.height;
-  const width = p5.width;
-  const random = p5.random;
-  const createVector = p5.createVector;
-
   const movers: Mover[] = [];
   let gravity: P5.Vector;
   let wind: P5.Vector;
@@ -14,11 +10,12 @@ const sketch = (p5: P5) => {
   const frictionMag = c * normal_;
 
   p5.setup = () => {
+    p5.createCanvas(640, 360);
     for (let i = 0; i < 10; i++) {
       movers.push(new Mover());
     }
-    gravity = createVector(0, .2);
-    wind = createVector(.01, 0);
+    gravity = p5.createVector(0, .2);
+    wind = p5.createVector(.01, 0);
   }
 
   p5.draw = () => {
@@ -28,7 +25,7 @@ const sketch = (p5: P5) => {
       mover.applyForce(specificGravity);
 
       const friction = mover.velocity.copy().normalize().mult(-1);
-      if (mover.location.y >= (height - mover.radius)) {
+      if (mover.location.y >= (p5.height - mover.radius)) {
         friction.mult(.05);
       } else {
         friction.mult(.01);
@@ -42,7 +39,7 @@ const sketch = (p5: P5) => {
     })
   }
 
-  function mouseClicked() {
+  p5.mouseClicked = () => {
     movers.push(new Mover(p5.mouseX, p5.mouseY));
   }
 
@@ -56,11 +53,11 @@ const sketch = (p5: P5) => {
 
 
     constructor(x?: number, y?: number) {
-      this.location =  x & y ? createVector(x, y) : createVector(random(width), random(height));
-      this.velocity = createVector(0, 0);
-      this.acceleration = createVector(.001, .001);
-      this.color = p5.color(random(0, 255), random(0, 255), random(0, 255), random(0, 255))
-      this.mass = random(.75, 1.25);
+      this.location =  x & y ? p5.createVector(x, y) : p5.createVector(p5.random(p5.width), p5.random(p5.height));
+      this.velocity = p5.createVector(0, 0);
+      this.acceleration = p5.createVector(.001, .001);
+      this.color = p5.color(p5.random(0, 255), p5.random(0, 255), p5.random(0, 255), p5.random(0, 255))
+      this.mass = p5.random(.75, 1.25);
       this.radius = this.mass * 16;
     }
 
@@ -82,17 +79,17 @@ const sketch = (p5: P5) => {
     }
 
     checkEdges() {
-      if (this.location.x + this.radius/2 > width) {
+      if (this.location.x + this.radius/2 > p5.width) {
         this.velocity.x = - this.velocity.x;
-        this.location.x = width - this.radius/2;
+        this.location.x = p5.width - this.radius/2;
       }
   
-      if (this.location.y + this.radius/2 > height) {
+      if (this.location.y + this.radius/2 > p5.height) {
         this.velocity.y = - this.velocity.y;
-        this.location.y = height - this.radius/2
+        this.location.y = p5.height - this.radius/2
       }
     }
   }
 }
 
-new P5(sketch);
+new P5(sketch, document.getElementById("app"));

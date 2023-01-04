@@ -1,11 +1,7 @@
 import P5 from "p5";
+import "../styles.scss";
 
 const sketch = (p5: P5) => {
-  const height = p5.height;
-  const width = p5.width;
-  const random = p5.random;
-  const createVector = p5.createVector;
-
   const movers: Mover[] = [];
   let gravity: P5.Vector;
   let wind: P5.Vector;
@@ -16,15 +12,16 @@ const sketch = (p5: P5) => {
 
   p5.setup = () => {
     p5.createCanvas(640, 360);
-    liquid = new Liquid(0, height/2, width, height/2, .1);
+    liquid = new Liquid(0, p5.height/2, p5.width, p5.height/2, .1);
 
     for (let i = 0; i < 10; i++) {
-      movers.push(new Mover());
+      movers.push(new Mover({}));
     }
-    gravity = createVector(0, .2);
-    wind = createVector(.01, 0);
+    gravity = p5.createVector(0, .2);
+    wind = p5.createVector(.01, 0);
   }
-  function draw() {
+
+  p5.draw = () => {
     p5.background(200);
     liquid.display();
     movers.forEach(mover => {
@@ -32,7 +29,7 @@ const sketch = (p5: P5) => {
       mover.applyForce(specificGravity);
 
       const friction = mover.velocity.copy().normalize().mult(-1);
-      if (mover.location.y >= (height - mover.radius)) {
+      if (mover.location.y >= (p5.height - mover.radius)) {
         friction.mult(.05);
       } else {
         friction.mult(.01);
@@ -51,29 +48,28 @@ const sketch = (p5: P5) => {
     })
   }
 
-  function mouseClicked() {
-    movers.push(new Mover(p5.mouseX, p5.mouseY));
+  p5.mouseClicked = () => {
+    movers.push(new Mover({ x: p5.mouseX, y: p5.mouseY }));
   }
 
   class Mover {
-    location;
-    velocity;
-    acceleration;
+    location: P5.Vector;
+    velocity: P5.Vector;
+    acceleration: P5.Vector;
     color: P5.Color;
     mass: number;
     radius: number;
-
-
-    constructor(x?: number, y?: number) {
-      this.location =  x & y ? createVector(x, y) : createVector(random(width), height/4);
-      this.velocity = createVector(0, 0);
-      this.acceleration = createVector(.001, .001);
-      this.color = p5.color(random(0, 255), random(0, 255), random(0, 255), random(0, 255))
-      this.mass = random(.75, 1.25);
-      this.radius = this.mass * 16;
+  
+    constructor({ x, y, c, m, r }: { x?: number, y?: number, c?: P5.Color, m?: number, r?: number }) {
+      this.location =  x & y ? p5.createVector(x, y) : p5.createVector(p5.random(p5.width), p5.height/4);
+      this.velocity = p5.createVector(0, 0);
+      this.acceleration = p5.createVector(.001, .001);
+      this.color = c ? c : p5.color(p5.random(0, 255), p5.random(0, 255), p5.random(0, 255), p5.random(0, 255))
+      this.mass = m ? m : p5.random(.75, 1.25);
+      this.radius = r ? r : this.mass * 16;
     }
 
-    applyForce(force) {
+    applyForce(force: P5.Vector) {
       const f = P5.Vector.div(force, this.mass);
       this.acceleration.add(f);
     }
@@ -91,18 +87,18 @@ const sketch = (p5: P5) => {
     }
 
     checkEdges() {
-      if (this.location.x + this.radius/2 > width) {
+      if (this.location.x + this.radius/2 > p5.width) {
         this.velocity.x = - this.velocity.x;
-        this.location.x = width - this.radius/2;
+        this.location.x = p5.width - this.radius/2;
       }
   
-      if (this.location.y + this.radius/2 > height) {
+      if (this.location.y + this.radius/2 > p5.height) {
         this.velocity.y = - this.velocity.y;
-        this.location.y = height - this.radius/2
+        this.location.y = p5.height - this.radius/2
       }
     }
 
-    isInside(body) {
+    isInside(body: Liquid) {
       if (this.location.x > body.x
         && this.location.x < body.x + body.w
         && this.location.y > body.y
@@ -111,7 +107,7 @@ const sketch = (p5: P5) => {
         } else return false;
     }
 
-    drag (liquid) {
+    drag (liquid: Liquid) {
       const speed = this.velocity.mag();
       const dragMagnitude = liquid.c * speed * speed;
 
@@ -144,4 +140,4 @@ const sketch = (p5: P5) => {
   }
 }
 
-new P5(sketch);
+new P5(sketch, document.getElementById("app"));
