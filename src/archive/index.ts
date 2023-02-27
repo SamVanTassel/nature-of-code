@@ -7,3 +7,4 @@ export * from './2.8_many_attractors';
 export * from './3.2_angular_rotation';
 export * from './3.2_cannonball';
 export * from './3.5_arctan_followers';
+export * from './spaceship';

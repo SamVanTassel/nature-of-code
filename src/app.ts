@@ -23,6 +23,7 @@ const sketches: [string, (p5: P5) => void][] = [
   ['3.2 - Angular Rotation', angularRotationSketch],
   ['3.2b - Cannonball', cannonballSketch],
   ['3.5 - Arctan Followers', arctanFollowersSketch],
+  ['WIP - spaceship', spaceshipSketch],
 ];
 if (window.localStorage.getItem('defaultIndex') === null) {
   window.localStorage.setItem('defaultIndex', '7');
