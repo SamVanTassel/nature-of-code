@@ -12,10 +12,10 @@ export abstract class Mover {
   mass: number;
   radius: number;
 
-  constructor({ p5, x, y, c, m, r }: { p5: P5, x?: number, y?: number, c?: P5.Color, m?: number, r?: number }) {
+  constructor({ p5, x, y, c, m, r, v }: { p5: P5, x?: number, y?: number, c?: P5.Color, m?: number, r?: number, v?: P5.Vector }) {
     this.p5 = p5;
     this.location =  x & y ? p5.createVector(x, y) : p5.createVector(p5.random(p5.width), p5.random(p5.height));
-    this.velocity = p5.createVector(p5.random(-2,2), p5.random(-2,2));
+    this.velocity = v ? v : p5.createVector(p5.random(-2,2), p5.random(-2,2));
     this.acceleration = p5.createVector(.001, .001);
     this.color = c ? c : p5.color(p5.random(100, 255), p5.random(100, 255), p5.random(100, 255), p5.random(100, 255))
     this.mass = m ? m : p5.random(.75, 1.25);

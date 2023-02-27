@@ -1,8 +1,10 @@
 import P5 from "p5";
-import "./styles.scss";
-import { Draggable, Mover } from '../util';
+import "../styles.scss";
+import { Draggable, Mover, getSize } from '../util';
 
-const sketch = (p5: P5) => {
+export const angularRotationSketch = (p5: P5) => {
+  const WIDTH = 600;
+  const HEIGHT = 340;
   const movers: Mover[] = [];
   let a: Attractor;
   const G = .5;
@@ -11,7 +13,10 @@ const sketch = (p5: P5) => {
   const normal_ = 1;
 
   p5.setup = () => {
-    p5.createCanvas(600, 600);
+    p5.createCanvas(
+      getSize(WIDTH, HEIGHT).w,
+      getSize(WIDTH, HEIGHT).h
+    );
 
     for (let i = 0; i < 10; i++) {
       movers.push(new FlyingSquare({}));
@@ -42,6 +47,10 @@ const sketch = (p5: P5) => {
   p5.mouseReleased = () => {
     a.released();
   }
+
+  p5.windowResized = () => {
+    p5.resizeCanvas(getSize(WIDTH, HEIGHT).w, getSize(WIDTH, HEIGHT).h);
+  };
 
   class FlyingSquare extends Mover {
     constructor({ x, y, c, m, r }: {x?: number, y?: number, c?: P5.Color, m?: number, r?: number }) {
@@ -94,5 +103,3 @@ const sketch = (p5: P5) => {
     }
   }
 }
-
-new P5(sketch, document.getElementById("app"));

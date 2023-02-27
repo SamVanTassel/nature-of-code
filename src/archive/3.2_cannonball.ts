@@ -1,12 +1,17 @@
 import P5 from "p5";
-import "./styles.scss";
-import { Draggable, Mover } from '../util';
+import "../styles.scss";
+import { Mover, getSize } from '../util';
 
-const sketch = (p5: P5) => {
+export const cannonballSketch = (p5: P5) => {
+  const WIDTH = 800;
+  const HEIGHT = 400;
   let cannonballs: Cannonball[] = [];
 
   p5.setup = () => {
-    p5.createCanvas(800, 400);
+    p5.createCanvas(640, 360);    p5.createCanvas(
+      getSize(WIDTH, HEIGHT).w,
+      getSize(WIDTH, HEIGHT).h
+    );
   };
 
   p5.draw = () => {
@@ -31,6 +36,10 @@ const sketch = (p5: P5) => {
     p5.rotate(p5.PI/4);
     p5.rect(0, 0, 60, 60);
     p5.pop();
+  };
+
+  p5.windowResized = () => {
+    p5.resizeCanvas(getSize(WIDTH, HEIGHT).w, getSize(WIDTH, HEIGHT).h);
   };
 
   class Cannonball extends Mover {
@@ -60,5 +69,3 @@ const sketch = (p5: P5) => {
     }
   }
 }
-
-new P5(sketch, document.getElementById("app"));

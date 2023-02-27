@@ -1,7 +1,10 @@
 import P5 from "p5";
 import "../styles.scss";
+import { getSize } from "../util";
 
-const sketch = (p5: P5) => {
+export const dragSketch = (p5: P5) => {
+  const WIDTH = 600;
+  const HEIGHT = 340;
   const movers: Mover[] = [];
   let gravity: P5.Vector;
   let wind: P5.Vector;
@@ -11,7 +14,10 @@ const sketch = (p5: P5) => {
   let liquid: Liquid;
 
   p5.setup = () => {
-    p5.createCanvas(640, 360);
+    p5.createCanvas(640, 360);    p5.createCanvas(
+      getSize(WIDTH, HEIGHT).w,
+      getSize(WIDTH, HEIGHT).h
+    );
     liquid = new Liquid(0, p5.height/2, p5.width, p5.height/2, .1);
 
     for (let i = 0; i < 10; i++) {
@@ -51,6 +57,10 @@ const sketch = (p5: P5) => {
   p5.mouseClicked = () => {
     movers.push(new Mover({ x: p5.mouseX, y: p5.mouseY }));
   }
+
+  p5.windowResized = () => {
+    p5.resizeCanvas(getSize(WIDTH, HEIGHT).w, getSize(WIDTH, HEIGHT).h);
+  };
 
   class Mover {
     location: P5.Vector;
@@ -139,5 +149,3 @@ const sketch = (p5: P5) => {
     }
   }
 }
-
-new P5(sketch, document.getElementById("app"));

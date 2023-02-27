@@ -1,16 +1,23 @@
 import P5 from "p5";
-import "./styles.scss";
+import "../styles.scss";
+import { getSize } from "../util";
 
-const sketch = (p5: P5) => {
+export const singleDraggableAttractorSketch = (p5: P5) => {
+  const WIDTH = 1000;
+  const HEIGHT = WIDTH;
   const movers: Mover[] = [];
   let a: Attractor;
   const G = .5;
   const minGravDistance = 2;
   const maxGravDistance = 25;
   const normal_ = 1;
+  console.log(getSize(HEIGHT));
 
   p5.setup = () => {
-    p5.createCanvas(1000, 1000);
+    p5.createCanvas(640, 360);    p5.createCanvas(
+      getSize(WIDTH, HEIGHT).w,
+      getSize(WIDTH, HEIGHT).h
+    );
 
     for (let i = 0; i < 10; i++) {
       movers.push(new Mover({}));
@@ -41,6 +48,10 @@ const sketch = (p5: P5) => {
 
   p5.mouseReleased = () => {
     a.released();
+  }
+
+  p5.windowResized = () => {
+    p5.resizeCanvas(getSize(HEIGHT).w, getSize(HEIGHT).h);
   }
   
   class Mover {
@@ -159,5 +170,3 @@ const sketch = (p5: P5) => {
     }
   }
 }
-
-new P5(sketch, document.getElementById("app"));
