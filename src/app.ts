@@ -11,7 +11,8 @@ import {
   cannonballSketch,
   arctanFollowersSketch,
   spaceshipSketch,
-} from './archive';
+} from './exercises';
+import { environmentSketch } from "./environment";
 
 const sketches: [string, (p5: P5) => void][] = [
   ['1 - Mouse Followers', mouseFollowersSketch],
@@ -24,7 +25,9 @@ const sketches: [string, (p5: P5) => void][] = [
   ['3.2b - Cannonball', cannonballSketch],
   ['3.5 - Arctan Followers', arctanFollowersSketch],
   ['WIP - spaceship', spaceshipSketch],
+  ['WIP - environment project', environmentSketch],
 ];
+
 if (window.localStorage.getItem('defaultIndex') === null) {
   window.localStorage.setItem('defaultIndex', '7');
 }

@@ -3,8 +3,8 @@ import "../styles.scss";
 import { Mover, getSize } from '../util';
 
 export const cannonballSketch = (p5: P5) => {
-  const WIDTH = 800;
-  const HEIGHT = 400;
+  const WIDTH = 8000;
+  const HEIGHT = 4000;
   let cannonballs: Cannonball[] = [];
 
   p5.setup = () => {
@@ -19,7 +19,8 @@ export const cannonballSketch = (p5: P5) => {
 
     if ((p5.frameCount  - 1) % 10 === 0) {
       cannonballs.push(new Cannonball({ x: p5.width, y: p5.height}));
-      cannonballs[cannonballs.length - 1].applyForce(new P5.Vector(-5, -5));
+      const force = p5.random(-15, -5);
+      cannonballs[cannonballs.length - 1].applyForce(new P5.Vector(force, force));
     }
     
     if (cannonballs.length > 20) cannonballs = cannonballs.slice(1);
