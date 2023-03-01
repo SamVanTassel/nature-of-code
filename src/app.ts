@@ -1,9 +1,11 @@
 import P5 from "p5";
 import "./styles.scss";
 import {
+  oneDimendionalCollisionSketch,
   mouseFollowersSketch,
   windGravitySketch,
   windGravityFrictionSketch,
+  windGravityFrictionCollisionSketch,
   dragSketch,
   singleDraggableAttractorSketch,
   manyAttractorsSketch,
@@ -11,13 +13,17 @@ import {
   cannonballSketch,
   arctanFollowersSketch,
   spaceshipSketch,
+  triangleCollisionSketch,
 } from './exercises';
 import { environmentSketch } from "./environment";
 
 const sketches: [string, (p5: P5) => void][] = [
+  ['0.1 - 1D Collision', oneDimendionalCollisionSketch],
   ['1 - Mouse Followers', mouseFollowersSketch],
+  ['1a - Triangle Collision', triangleCollisionSketch],
   ['2.1 - Wind & Gravity', windGravitySketch],
   ['2.2 - Wind, Gravity & Friction', windGravityFrictionSketch],
+  ['2.2b - Wind, Gravity, Friction, Collision', windGravityFrictionCollisionSketch],
   ['2.3 - Drag', dragSketch],
   ['2.6 - Single Draggable Attractor', singleDraggableAttractorSketch],
   ['2.8 - Many Attractors', manyAttractorsSketch],

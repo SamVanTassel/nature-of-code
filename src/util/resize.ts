@@ -8,7 +8,6 @@ const MIN = 200;
 export const getSize = (w: number, h?: number): Size => {
   if (!h) h = w;
   const whRatio = w/h;
-  console.log(whRatio);
 
   const maxWidth = Math.min(innerWidth * .9, w);
   const maxHeight = Math.min(innerHeight * .75, h);
