@@ -19,7 +19,8 @@ export const cannonballSketch = (p5: P5) => {
 
     if ((p5.frameCount  - 1) % 10 === 0) {
       cannonballs.push(new Cannonball({ x: p5.width, y: p5.height}));
-      const force = p5.random(-15, -5);
+      const force = p5.random(-getSize(WIDTH, HEIGHT).w / 125
+      , -getSize(WIDTH, HEIGHT).w /200);
       cannonballs[cannonballs.length - 1].applyForce(new P5.Vector(force, force));
     }
     

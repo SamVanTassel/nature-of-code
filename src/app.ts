@@ -14,6 +14,7 @@ import {
   arctanFollowersSketch,
   spaceshipSketch,
   triangleCollisionSketch,
+  oneDellularAutomationSketch,
 } from './exercises';
 import { environmentSketch } from "./environment";
 
@@ -30,6 +31,7 @@ const sketches: [string, (p5: P5) => void][] = [
   ['3.2 - Angular Rotation', angularRotationSketch],
   ['3.2b - Cannonball', cannonballSketch],
   ['3.5 - Arctan Followers', arctanFollowersSketch],
+  ['7.4 - 1d Cellular Automation', oneDellularAutomationSketch],
   ['WIP - spaceship', spaceshipSketch],
   ['WIP - environment project', environmentSketch],
 ];

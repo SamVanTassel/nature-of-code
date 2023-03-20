@@ -15,32 +15,32 @@ export const getSize = (w: number, h?: number): Size => {
   if (whRatio === 1) {
     const min = Math.min(innerHeight, innerWidth);
     return {
-      w: Math.max(MIN, Math.min(min * 0.75, w)),
-      h: Math.max(MIN, Math.min(min * 0.75, w)),
+      w: Math.max(Math.min(MIN, w), Math.min(min * 0.75, w)),
+      h: Math.max(Math.min(MIN, h), Math.min(min * 0.75, w)),
     };
   } else if (whRatio < 1) {
     if (innerWidth * .9 > w) {
       console.log('ok');
       return {
-        w: Math.max(MIN, maxHeight * whRatio),
-        h: Math.max(MIN, maxHeight),
+        w: Math.max(Math.min(MIN, w), maxHeight * whRatio),
+        h: Math.max(Math.min(MIN, h), maxHeight),
       };
     } else {
       return {
-        w: Math.max(MIN, maxWidth),
-        h: Math.max(MIN, maxWidth / whRatio),
+        w: Math.max(Math.min(MIN, w), maxWidth),
+        h: Math.max(Math.min(MIN, h), maxWidth / whRatio),
       };
     }
   } else {
     if (innerHeight * .75 > h) {
       return {
-        w: Math.max(MIN, maxWidth),
-        h: Math.max(MIN, maxWidth / whRatio),
+        w: Math.max(Math.min(MIN, w), maxWidth),
+        h: Math.max(Math.min(MIN, h), maxWidth / whRatio),
       };
     } else {
       return {
-        w: Math.max(MIN, maxHeight * whRatio),
-        h: Math.max(MIN, maxHeight),
+        w: Math.max(Math.min(MIN, w), maxHeight * whRatio),
+        h: Math.max(Math.min(MIN, h), maxHeight),
       };
     }
   }

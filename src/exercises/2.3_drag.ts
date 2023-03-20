@@ -71,11 +71,11 @@ export const dragSketch = (p5: P5) => {
     radius: number;
   
     constructor({ x, y, c, m, r }: { x?: number, y?: number, c?: P5.Color, m?: number, r?: number }) {
-      this.location =  x & y ? p5.createVector(x, y) : p5.createVector(p5.random(p5.width), p5.height/4);
+      this.location =  x & y ? p5.createVector(x, y) : p5.createVector(p5.random(p5.width), p5.height/8);
       this.velocity = p5.createVector(0, 0);
       this.acceleration = p5.createVector(.001, .001);
       this.color = c ? c : p5.color(p5.random(0, 255), p5.random(0, 255), p5.random(0, 255), p5.random(0, 255))
-      this.mass = m ? m : p5.random(.75, 1.25);
+      this.mass = m ? m : p5.random(.5, 2);
       this.radius = r ? r : this.mass * 16;
     }
 

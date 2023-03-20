@@ -11,3 +11,4 @@ export * from './3.2_cannonball';
 export * from './3.5_arctan_followers';
 export * from './spaceship';
 export * from './1a_triangle_collision';
+export * from './7.4_1d_cellular_automation';
