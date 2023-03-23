@@ -12,3 +12,4 @@ export * from './3.5_arctan_followers';
 export * from './spaceship';
 export * from './1a_triangle_collision';
 export * from './7.4_1d_cellular_automation';
+export * from './7.7_game_of_life';

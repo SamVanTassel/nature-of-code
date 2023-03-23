@@ -15,6 +15,7 @@ import {
   spaceshipSketch,
   triangleCollisionSketch,
   oneDellularAutomationSketch,
+  gameOfLifeSketch,
 } from './exercises';
 import { environmentSketch } from "./environment";
 
@@ -32,6 +33,7 @@ const sketches: [string, (p5: P5) => void][] = [
   ['3.2b - Cannonball', cannonballSketch],
   ['3.5 - Arctan Followers', arctanFollowersSketch],
   ['7.4 - 1d Cellular Automation', oneDellularAutomationSketch],
+  ['7.7 - Game of Life', gameOfLifeSketch],
   ['WIP - spaceship', spaceshipSketch],
   ['WIP - environment project', environmentSketch],
 ];
