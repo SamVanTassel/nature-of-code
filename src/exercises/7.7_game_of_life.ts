@@ -13,7 +13,10 @@ export const gameOfLifeSketch = (p5: P5) => {
     1: p5.color(colors.c2),
   }
 
-  const CELL_WIDTH = 10;
+  // between 5 and 20
+  const CELL_WIDTH = 10
+  // number between 4 and 10
+  const FILL_AMOUNT = 9
 
   let grid: Cell[][] = [];
   let nextGrid: Cell[][] = [];
@@ -31,7 +34,8 @@ export const gameOfLifeSketch = (p5: P5) => {
       const row = [];
       const nextRow = [];
       for(let i = 0; i < numCells; i++) {
-        const zeroOrOne = p5.random(0, 10) > 9 ? 1 : 0
+        const zeroOrOne = 0
+        // p5.random(0, 10) > FILL_AMOUNT ? 1 : 0
         const cell = new Cell(p5, zeroOrOne);
         row.push(cell);
         nextRow.push(cell.copy());
@@ -39,7 +43,15 @@ export const gameOfLifeSketch = (p5: P5) => {
       grid.push(row);
       nextGrid.push(nextRow);
     };
-    // drawGlider(grid, 0, 0);
+    // drawGlider(grid, 
+    //   p5.floor(p5.random(0, numCells - 3)), 
+    //   p5.floor(p5.random(0, numCells - 3)),
+    // );
+    drawRPentonimo(grid, 
+      p5.floor(p5.random(0, numCells - 3)), 
+      p5.floor(p5.random(0, numCells - 3)),
+    );
+    // p5.frameRate(.5);
   };
 
   p5.draw = () => {
@@ -118,5 +130,19 @@ export const gameOfLifeSketch = (p5: P5) => {
     grid[y + 2][x    ].update(1);
     grid[y + 2][x + 1].update(1);
     grid[y + 2][x + 2].update(1);
+  };
+
+  const drawRPentonimo = (grid: Cell[][], x: number, y: number) => {
+    // o X X
+    // X X o
+    // o X o
+    if (grid.length <= x + 3) return;
+    if (grid[0].length <= y + 3) return;
+    
+    grid[y    ][x + 1].update(1);
+    grid[y    ][x + 2].update(1);
+    grid[y + 1][x    ].update(1);
+    grid[y + 1][x + 1].update(1);
+    grid[y + 2][x + 1].update(1);
   };
 };

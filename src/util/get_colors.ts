@@ -1,9 +1,11 @@
 // @ts-ignore
-import colors from 'nice-color-palettes';
+import c from 'nice-color-palettes';
 import { checkContrast } from './';
 
+const colors = c as string[][];
+
 export const getContrastingColors = () => {
-  const colorScheme = colors[Math.floor(Math.random() * colors.length)] as string[];
+  const colorScheme = [... colors[Math.floor(Math.random() * colors.length)]] as string[];
 
   const color1Index = Math.floor(Math.random() * colorScheme.length);
 
@@ -15,7 +17,7 @@ export const getContrastingColors = () => {
     color2Index = Math.floor(Math.random() * colorScheme.length);
     [color2] = colorScheme.splice(color2Index, 1);
 
-    if (!color1 && color2) {
+    if (!color1 && !color2) {
       return {
         c1: 'FFFFFF',
         c2: '000000',

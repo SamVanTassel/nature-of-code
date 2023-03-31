@@ -70,7 +70,7 @@ export const angularRotationSketch = (p5: P5) => {
     radius: number;
 
     constructor(x?: number, y?: number, r?: number) {
-      super(p5, x ? x : p5.width/2, y ? y : p5.height/2)
+      super(p5, x && y ? p5.createVector(x, y) : undefined)
       this.radius = r ? r : 40;
       this.mass = this.radius/2;
     }

@@ -8,11 +8,11 @@ export abstract class Draggable {
   offsetX: number;
   offsetY: number;
 
-  constructor(p5: P5, x: number, y: number) {
+  constructor(p5: P5, location?: P5.Vector) {
     this.p5 = p5;
     this.dragging = false; // Is the object being dragged?
     this.rollover = false; // Is the mouse over the ellipse?
-    this.location = new P5.Vector(p5.width/2, p5.height/2);
+    this.location = location ? location : new P5.Vector(p5.width/2, p5.height/2);
   }
 
   // Is mouse over object
