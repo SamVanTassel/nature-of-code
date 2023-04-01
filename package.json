@@ -4,8 +4,8 @@
   "description": "practice with p5 and simulating nature",
   "scripts": {
     "start": "parcel index.html --open",
-    "build": "parcel build index.html --public-url './'",
-    "predeploy": "rm -rf dist && parcel build index.html --public-url './'",
+    "build": "parcel build index.html --public-url ./",
+    "predeploy": "rm -rf dist && npm run build",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [
@@ -16,11 +16,12 @@
   "license": "ISC",
   "dependencies": {
     "nice-color-palettes": "^3.0.0",
-    "p5": "^1.5.0"
+    "p5": "^1.5.0",
+    "parcel": "^2.8.3"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.2",
     "@types/p5": "^1.4.3",
-    "parcel": "^2.8.2"
+    "gh-pages": "^5.0.0"
   }
 }
