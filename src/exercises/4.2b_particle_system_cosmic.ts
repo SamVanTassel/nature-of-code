@@ -7,14 +7,15 @@ const imgPath = new URL('../../images/circle_10px.png', import.meta.url).toStrin
 
 type ParticleMode = 'ellipse'|'image'
 
-export const ParticleSystemSketch = (p5: P5) => {
-  const WIDTH = 600;
-  const HEIGHT = 340;
+export const ParticleSystemCosmicSketch = (p5: P5) => {
+  const WIDTH = 800;
+  const HEIGHT = 800;
   let img: P5.Image;
+  let bgBlue: number;
+  let perlinOffset = p5.random(0, 400);
 
   const PARTICLE_MODE: ParticleMode = 'ellipse';
 
-  const gravity = p5.createVector(0, 1);
   let numRepellers: number;
   let numAttractors: number;
   
@@ -33,8 +34,8 @@ export const ParticleSystemSketch = (p5: P5) => {
     );
     img.resize(20, 0);
 
-    numRepellers = Math.floor(p5.random(2, 4));
-    numAttractors = Math.floor(p5.random(1, 3));
+    numRepellers = Math.floor(p5.random(3, 10));
+    numAttractors = Math.floor(p5.random(1, 5));
     for (let i = 0; i < numRepellers; i++) {
       repellers.push(new Repeller(
         p5.createVector(
@@ -56,10 +57,11 @@ export const ParticleSystemSketch = (p5: P5) => {
   };
 
   p5.draw = () => {
-    p5.background(255);
+    perlinOffset += .005;
+    bgBlue = p5.map(p5.noise(perlinOffset), 0, 1, 15, 45);
+    p5.background(0, 10, bgBlue);
     systems.forEach(ps => {
       ps.addParticle();
-      ps.applyForce(gravity);
       repellers.forEach(r => {
         ps.applyRepeller(r);
       });
@@ -98,20 +100,31 @@ export const ParticleSystemSketch = (p5: P5) => {
     );
   };
 
+  const glow = (glowColor: P5.Color, blurriness: number) => {
+    p5.drawingContext.shadowBlur = blurriness;
+    p5.drawingContext.shadowColor = glowColor;
+  }
+
   class Particle {
     location: P5.Vector;
     velocity: P5.Vector;
     acceleration: P5.Vector;
     mass: number;
     lifespan: number;
-    mode: ParticleMode
+    r: number;
+    g: number;
+    b: number;
+    mode: ParticleMode;
   
     constructor(l: P5.Vector, mode: ParticleMode) {
       this.location = l.copy();
       this.velocity = p5.createVector(p5.random(-2, 2), p5.random(-2, 2))
       this.acceleration = p5.createVector(.005, -.005);
-      this.mass = 5;
+      this.mass = 4;
       this.lifespan = 255;
+      this.r = p5.random(200, 255);
+      this.g = p5.random(200, 255);
+      this.b = p5.random(200, 255);
       this.mode = mode;
     }
   
@@ -126,7 +139,6 @@ export const ParticleSystemSketch = (p5: P5) => {
     }
   
     update() {
-      this.checkEdges();
       this.velocity.add(this.acceleration);
       this.location.add(this.velocity);
       this.acceleration.mult(0);
@@ -143,13 +155,14 @@ export const ParticleSystemSketch = (p5: P5) => {
     /** draw shape centered at 0, 0 */
     draw() {
       if (this.mode === 'ellipse') {
-        p5.stroke(0, this.lifespan)
-        p5.fill(175, this.lifespan)
+        p5.noStroke();
+        p5.fill(this.r, this.g, this.b, this.lifespan);
+        glow(p5.color(this.r, this.g, this.b), 30);
         p5.ellipse(0, 0, this.mass * 2);
       } else if (this.mode === 'image') {
         p5.noStroke();
         p5.imageMode('center');
-        p5.tint(175, this.lifespan);
+        p5.tint(this.r, this.g, this.b, this.lifespan);
         p5.image(img, 0, 0);
       }
     }
@@ -157,25 +170,6 @@ export const ParticleSystemSketch = (p5: P5) => {
     isDead() {
       if (this.lifespan <= 0) return true;
       return false;
-    }
-
-    checkEdges() {
-      if (this.location.x >= p5.width - this.mass) {
-        this.location.x = p5.width - this.mass;
-        this.velocity.x = -this.velocity.x;
-      }
-      if (this.location.x <= this.mass) {
-        this.location.x = this.mass;
-        this.velocity.x = -this.velocity.x;
-      }
-      if (this.location.y >= p5.height - this.mass) {
-        this.location.y = p5.height - this.mass;
-        this.velocity.y = -this.velocity.y;
-      }
-      if (this.location.y <= this.mass) {
-        this.location.y = this.mass;
-        this.velocity.y = -this.velocity.y;
-      }
     }
   }
   
@@ -230,18 +224,28 @@ export const ParticleSystemSketch = (p5: P5) => {
   class Repeller extends Draggable {
     m: number;
     strength: number;
+    c: P5.Color;
+    cRoll: P5.Color;
 
     constructor(l: P5.Vector, m: number) {
       super(p5, l);
       this.m = m;
       this.strength = 5;
+      const red = 80 + m * 2;
+      const g = p5.random(40, 80);
+      const b = p5.random(40, 80);
+      this.c = p5.color(red, g, b);
+      this.cRoll = p5.color(red + 50, g, b);
     }
 
     display() {
       this.update();
-      p5.stroke(100);
-      p5.fill(this.rollover ? 175 : 100);
+      p5.noStroke();
+      glow(p5.color('black'), this.m);
+      p5.fill(this.rollover ? this.cRoll : this.c);
       p5.ellipse(this.location.x, this.location.y, this.m);
+      p5.fill('black');
+      p5.ellipse(this.location.x, this.location.y, this.m - 4)
     }
 
     over() {
@@ -264,11 +268,18 @@ export const ParticleSystemSketch = (p5: P5) => {
   class Attractor extends Draggable {
     m: number;
     strength: number;
+    c: P5.Color;
+    cRoll: P5.Color;
 
     constructor(l: P5.Vector, m: number) {
       super(p5, l);
       this.m = m;
       this.strength = 5;
+      const green = 150 + m * 2;
+      const r = p5.random(140, 180);
+      const b = p5.random(140, 180);
+      this.c = p5.color(r, green, b);
+      this.cRoll = p5.color(r, green + 50, b);
     }
 
     over() {
@@ -279,9 +290,12 @@ export const ParticleSystemSketch = (p5: P5) => {
 
     display() {
       this.update();
-      p5.stroke(0);
-      p5.fill(this.rollover ? 200 : 255);
+      p5.noStroke();
+      p5.fill(this.rollover ? this.cRoll : this.c);
+      glow(this.c, this.m);
       p5.ellipse(this.location.x, this.location.y, this.m);
+      p5.ellipse(this.location.x, this.location.y, this.m);
+      glow(this.c, 0)
     }
 
     attract(p: Particle) {

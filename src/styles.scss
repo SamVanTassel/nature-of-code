@@ -9,18 +9,14 @@ $select-arrow: $select-border;
 *::before,
 *::after {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-  padding: 0;
-  margin: 0;
   background-color: $bg-color;
-  color: white;
+  color: $txt-color;
   font-family: "Montserrat", sans-serif;
-}
-
-div {
-  display: inline;
 }
 
 a, a:visited {
@@ -28,11 +24,13 @@ a, a:visited {
 }
 
 .container {
+  width: 100vw;
+  height: 100vh;
   display: grid;
   grid-template-rows: 
     5rem
     3rem
-    90%
+    auto
     2rem;
   justify-content: center;
   grid-template-columns: auto;
@@ -50,11 +48,11 @@ a, a:visited {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  grid-area: "header"
+  grid-area: header
 }
 
 .options {
-  grid-area: "options";
+  grid-area: options;
   width: 100%;
   display: grid;
   grid-template-areas: 
@@ -62,8 +60,12 @@ a, a:visited {
   align-items: center;
 }
 
-.main {
-  grid-area: "main";
+#app {
+  grid-area: main;
+}
+
+.credits {
+  grid-area: footer;
 }
 
 select {
