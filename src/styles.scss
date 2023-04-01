@@ -1,5 +1,6 @@
 $bg-color: #283747;
 $txt-color: white;
+$link-color: #facf70;
 $select-border: #777;
 $select-focus: #93e9be;
 $select-arrow: $select-border;
@@ -22,16 +23,25 @@ div {
   display: inline;
 }
 
+a, a:visited {
+  color: $link-color;
+}
+
 .container {
   display: grid;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: 
+    5rem
+    3rem
+    90%
+    2rem;
   justify-content: center;
   grid-template-columns: auto;
   justify-items: center;
-  grid-template:
-    "header" 5rem
-    "options" 3rem
-    "main" 90%
+  grid-template-areas:
+    "header"
+    "options"
+    "main"
+    "footer"
 }
 
 .unselectable {
@@ -50,6 +60,10 @@ div {
   grid-template-areas: 
     "select reset";
   align-items: center;
+}
+
+.main {
+  grid-area: "main";
 }
 
 select {

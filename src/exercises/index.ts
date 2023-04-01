@@ -11,6 +11,7 @@ export * from './3.2_angular_rotation';
 export * from './3.2_cannonball';
 export * from './3.5_arctan_followers';
 export * from './4.2_particle_system';
+export * from './4.8_smoke';
 export * from './6.1_seeking_a_target';
 export * from './7.4_1d_cellular_automation';
 export * from './7.7_game_of_life';
