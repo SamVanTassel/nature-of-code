@@ -4,8 +4,8 @@
   "description": "practice with p5 and simulating nature",
   "scripts": {
     "start": "parcel index.html --open",
-    "build": "parcel build index.html",
-    "predeploy": "rm -rf dist && parcel build index.html --public-url https://github.com/SamVanTassel/nature-of-code",
+    "build": "parcel build index.html --public-url ./",
+    "predeploy": "rm -rf dist && parcel build index.html --public-url ./",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [
