@@ -3,30 +3,45 @@ import P5 from "p5";
 import "../styles.scss";
 import { Draggable, getSize } from "../util";
 
+const imgPath = new URL('../../images/circle_10px.png', import.meta.url).toString();
+
+type ParticleMode = 'ellipse'|'image'
+
 export const ParticleSystemSketch = (p5: P5) => {
   const WIDTH = 600;
   const HEIGHT = 340;
+  let img: P5.Image;
 
-  const gravity = p5.createVector(0, 2);
-  const numRepellers = 5;
-  const numAttractors = 2;
+  const PARTICLE_MODE: ParticleMode = 'ellipse';
+
+  const gravity = p5.createVector(0, 1);
+  let numRepellers: number;
+  let numAttractors: number;
   
   let systems: ParticleSystem[] = [];
   let repellers: Repeller[] = [];
   let attractors: Attractor[] = [];
+
+  p5.preload = () => {
+    img = p5.loadImage(imgPath);
+  }
 
   p5.setup = () => {
     p5.createCanvas(
       getSize(WIDTH, HEIGHT).w,
       getSize(WIDTH, HEIGHT).h
     );
+    img.resize(20, 0);
+
+    numRepellers = Math.floor(p5.random(3, 8));
+    numAttractors = Math.floor(p5.random(1, 5));
     for (let i = 0; i < numRepellers; i++) {
       repellers.push(new Repeller(
         p5.createVector(
           p5.random(0, p5.width), 
           p5.random(0, p5.height)
         ),
-        p5.random(15, 25),
+        p5.random(10, 35),
       ));
     }
     for (let i = 0; i < numAttractors; i++) {
@@ -35,7 +50,7 @@ export const ParticleSystemSketch = (p5: P5) => {
           p5.random(0, p5.width), 
           p5.random(0, p5.height)
         ),
-        p5.random(15, 25),
+        p5.random(20, 40),
       ));
     }
   };
@@ -61,7 +76,7 @@ export const ParticleSystemSketch = (p5: P5) => {
   p5.mouseClicked = () => {
     const overA = attractors.some(a => a.rollover);
     const overB = repellers.some(r => r.rollover);
-    if (!overA && !overB) {
+    if (!overA && !overB && (p5.mouseX !== 0 && p5.mouseY !== 0)) {
       systems.push(new ParticleSystem(p5.createVector(p5.mouseX, p5.mouseY)));
     }
   }
@@ -89,13 +104,15 @@ export const ParticleSystemSketch = (p5: P5) => {
     acceleration: P5.Vector;
     mass: number;
     lifespan: number;
+    mode: ParticleMode
   
-    constructor(l: P5.Vector) {
+    constructor(l: P5.Vector, mode: ParticleMode) {
       this.location = l.copy();
       this.velocity = p5.createVector(p5.random(-2, 2), p5.random(-2, 2))
       this.acceleration = p5.createVector(.005, -.005);
       this.mass = 5;
       this.lifespan = 255;
+      this.mode = mode;
     }
   
     applyForce(force: P5.Vector) {
@@ -119,15 +136,22 @@ export const ParticleSystemSketch = (p5: P5) => {
     display() {
       p5.push();
       p5.translate(this.location.x, this.location.y);
-      p5.stroke(0, this.lifespan)
-      p5.fill(175, this.lifespan)
       this.draw();
       p5.pop();
     }
   
     /** draw shape centered at 0, 0 */
     draw() {
-      p5.ellipse(0, 0, this.mass * 2);
+      if (this.mode === 'ellipse') {
+        p5.stroke(0, this.lifespan)
+        p5.fill(175, this.lifespan)
+        p5.ellipse(0, 0, this.mass * 2);
+      } else if (this.mode === 'image') {
+        p5.noStroke();
+        p5.imageMode('center');
+        p5.tint(175, this.lifespan);
+        p5.image(img, 0, 0);
+      }
     }
 
     isDead() {
@@ -167,7 +191,7 @@ export const ParticleSystemSketch = (p5: P5) => {
     }
 
     addParticle() {
-      if (this.supply-- > 0) this.particles.push(new Particle(this.origin));
+      if (this.supply-- > 0) this.particles.push(new Particle(this.origin, PARTICLE_MODE));
     }
 
     applyForce(f: P5.Vector) {
@@ -210,7 +234,7 @@ export const ParticleSystemSketch = (p5: P5) => {
     constructor(l: P5.Vector, m: number) {
       super(p5, l);
       this.m = m;
-      this.strength = 10;
+      this.strength = 5;
     }
 
     display() {
@@ -221,7 +245,7 @@ export const ParticleSystemSketch = (p5: P5) => {
     }
 
     over() {
-      if (P5.Vector.dist(p5.createVector(p5.mouseX, p5.mouseY), this.location) < this.m) {
+      if (P5.Vector.dist(p5.createVector(p5.mouseX, p5.mouseY), this.location) < this.m/2) {
         this.rollover = true;
       } else this.rollover = false;
     }
@@ -244,11 +268,11 @@ export const ParticleSystemSketch = (p5: P5) => {
     constructor(l: P5.Vector, m: number) {
       super(p5, l);
       this.m = m;
-      this.strength = 10;
+      this.strength = 5;
     }
 
     over() {
-      if (P5.Vector.dist(p5.createVector(p5.mouseX, p5.mouseY), this.location) < this.m) {
+      if (P5.Vector.dist(p5.createVector(p5.mouseX, p5.mouseY), this.location) < this.m/2) {
         this.rollover = true;
       } else this.rollover = false;
     }
