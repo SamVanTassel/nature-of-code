@@ -622,11 +622,19 @@ const sketches = [
     ],
     [
         "4.8 - Smoke",
-        (0, _exercises.SmokeSketch)
+        (0, _exercises.smokeSketch)
     ],
     [
         "6.1 - Seeking a Target",
         (0, _exercises.seekingATargetSketch)
+    ],
+    [
+        "6.4 - Wanderers",
+        (0, _exercises.wanderersSketch)
+    ],
+    [
+        "6.6 - Flow Fields",
+        (0, _exercises.flowFieldsSketch)
     ],
     [
         "7.4 - 1d Cellular Automation",
@@ -28280,6 +28288,10 @@ var _48Smoke = require("./4.8_smoke");
 parcelHelpers.exportAll(_48Smoke, exports);
 var _61SeekingATarget = require("./6.1_seeking_a_target");
 parcelHelpers.exportAll(_61SeekingATarget, exports);
+var _65Wanderers = require("./6.5_wanderers");
+parcelHelpers.exportAll(_65Wanderers, exports);
+var _66FlowFields = require("./6.6_flow_fields");
+parcelHelpers.exportAll(_66FlowFields, exports);
 var _741DCellularAutomation = require("./7.4_1d_cellular_automation");
 parcelHelpers.exportAll(_741DCellularAutomation, exports);
 var _77GameOfLife = require("./7.7_game_of_life");
@@ -28287,7 +28299,7 @@ parcelHelpers.exportAll(_77GameOfLife, exports);
 var _spaceship = require("./spaceship");
 parcelHelpers.exportAll(_spaceship, exports);
 
-},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./spaceship":"f75bc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"e1WNo":[function(require,module,exports) {
+},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./spaceship":"f75bc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"e1WNo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "triangleCollisionSketch", ()=>triangleCollisionSketch);
@@ -29873,7 +29885,9 @@ const ParticleSystemCosmicSketch = (p5)=>{
     };
     p5.draw = ()=>{
         perlinOffset += .005;
-        bgBlue = p5.map(p5.noise(perlinOffset), 0, 1, 15, 45);
+        const bgBlueMin = p5.map(systems.length, 0, 5, 15, 45);
+        const bgBlueMax = p5.map(systems.length, 0, 5, 45, 75);
+        bgBlue = p5.map(p5.noise(perlinOffset), 0, 1, bgBlueMin, bgBlueMax);
         p5.background(0, 10, bgBlue);
         systems.forEach((ps)=>{
             ps.addParticle();
@@ -30069,13 +30083,13 @@ const ParticleSystemCosmicSketch = (p5)=>{
 },{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","a0534b800defb0b3":"bdajH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"1s4df":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "SmokeSketch", ()=>SmokeSketch);
+parcelHelpers.export(exports, "smokeSketch", ()=>smokeSketch);
 var _p5 = require("p5");
 var _p5Default = parcelHelpers.interopDefault(_p5);
 var _stylesScss = require("../styles.scss");
 var _util = require("../util");
 const imgPath = new URL(require("c9f7851839d941e0")).toString();
-const SmokeSketch = (p5)=>{
+const smokeSketch = (p5)=>{
     const WIDTH = 800;
     const HEIGHT = 540;
     const RANDOM_SEED = Math.random() * 100;
@@ -30264,21 +30278,49 @@ var _p5Default = parcelHelpers.interopDefault(_p5);
 var _stylesScss = require("../styles.scss");
 var _util = require("../util");
 const seekingATargetSketch = (p5)=>{
-    const WIDTH = 600;
-    const HEIGHT = 340;
-    let v;
+    const WIDTH = 1000;
+    const HEIGHT = 1000;
+    const vList = [];
+    // greater than 1
+    const numVehicles = 3;
     p5.setup = ()=>{
         p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-        v = new Vehicle(20, 20);
+        for(let i = 0; i < numVehicles; i++)vList.push(new Vehicle(p5.random(0, p5.width), p5.random(0, p5.height)));
     };
     p5.draw = ()=>{
         p5.background(0, 0, 50);
-        v.seek(new (0, _p5Default.default).Vector(p5.mouseX, p5.mouseY));
-        v.update();
-        v.display();
+        vList.forEach((v1)=>{
+            let nearest = {
+                dist: Infinity,
+                t: undefined
+            };
+            if (!p5.mouseIsPressed) vList.forEach((v2)=>{
+                if (v1 === v2) return;
+                const v2NextLocation = (0, _p5Default.default).Vector.add(v2.location, v2.velocity);
+                const dist = (0, _p5Default.default).Vector.dist(v1.location, v2NextLocation);
+                if (nearest.dist > dist) {
+                    nearest.dist = dist;
+                    nearest.t = v2NextLocation;
+                }
+            });
+            const mouseLocation = p5.createVector(p5.mouseX, p5.mouseY);
+            const dToM = (0, _p5Default.default).Vector.dist(v1.location, mouseLocation);
+            if (nearest.dist > dToM) {
+                nearest.dist = dToM;
+                nearest.t = mouseLocation;
+            }
+            v1.seek(nearest.t);
+        });
+        vList.forEach((v)=>{
+            v.update();
+            v.display();
+        });
     };
     p5.windowResized = ()=>{
         p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    p5.mouseReleased = ()=>{
+        vList.forEach((v)=>v.velocity = p5.createVector(p5.random(-10, 10), p5.random(-10, 10)));
     };
     class Vehicle extends (0, _util.Mover) {
         constructor(x, y){
@@ -30290,14 +30332,19 @@ const seekingATargetSketch = (p5)=>{
                 r: 10,
                 m: 10
             });
-            this.maxSpeed = 5;
-            this.maxForce = 2;
+            this.maxSpeed = 8;
+            this.maxForce = 3;
+            this.stopRadius = 40;
+            this.perlinSeed = p5.random();
         }
         seek(target) {
             const desiredVelocity = (0, _p5Default.default).Vector.sub(target, this.location);
             const distance = desiredVelocity.mag();
             desiredVelocity.normalize();
-            desiredVelocity.mult(Math.min(this.maxSpeed, distance));
+            if (distance < this.stopRadius) {
+                const m = p5.map(distance, 0, this.stopRadius, 0, this.maxSpeed);
+                desiredVelocity.mult(m);
+            } else desiredVelocity.mult(this.maxSpeed);
             const steeringForce = (0, _p5Default.default).Vector.sub(desiredVelocity, this.velocity);
             steeringForce.limit(this.maxForce);
             this.applyForce(steeringForce);
@@ -30314,7 +30361,270 @@ const seekingATargetSketch = (p5)=>{
     }
 };
 
-},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"iaaHN":[function(require,module,exports) {
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"ezWKu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "wanderersSketch", ()=>wanderersSketch);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+var _stylesScss = require("../styles.scss");
+var _util = require("../util");
+const wanderersSketch = (p5)=>{
+    const WIDTH = 600;
+    const HEIGHT = 600;
+    const vList = [];
+    const numVehicles = 15;
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        for(let i = 0; i < numVehicles; i++)vList.push(new Vehicle(p5.random(0, p5.width), p5.random(0, p5.height)));
+    };
+    p5.draw = ()=>{
+        p5.background(200);
+        vList.forEach((v)=>{
+            v.wander();
+            v.update();
+            v.display();
+        });
+    };
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    p5.mouseClicked = ()=>{
+        vList.push(new Vehicle(p5.mouseX, p5.mouseY));
+    };
+    class Vehicle extends (0, _util.Mover) {
+        constructor(x, y){
+            super({
+                p5,
+                x,
+                y,
+                v: p5.createVector(),
+                r: 5,
+                m: 5
+            });
+            const val = p5.random(10);
+            this.maxSpeed = p5.map(val, 0, 10, 5, 2);
+            this.maxForce = p5.map(val, 0, 10, 4, 2);
+            this.radius = p5.map(val, 0, 10, 3, 8);
+            this.color = p5.color(p5.map(val, 0, 10, 55, 175));
+            this.stopRadius = p5.map(val, 0, 10, 100, 50);
+            this.perlinSeed = p5.random();
+            this.angle = this.velocity.heading();
+            this.wanderDistance = p5.map(val, 0, 10, 3, 50);
+            this.wanderRadius = this.wanderDistance * .3;
+        }
+        wander() {
+            this.checkWalls();
+            const theta = p5.noise(this.perlinSeed) * 4 * p5.TWO_PI;
+            this.perlinSeed += .01;
+            const x = this.wanderRadius * p5.cos(theta);
+            const y = this.wanderRadius * p5.sin(theta);
+            const centerPoint = (0, _p5Default.default).Vector.add(this.location, this.velocity.copy().normalize().mult(this.wanderDistance));
+            const desiredLocation = (0, _p5Default.default).Vector.add(centerPoint, p5.createVector(x, y));
+            // view wander circle
+            // p5.fill(0, 0)
+            // p5.ellipse(centerPoint.x, centerPoint.y, this.wanderRadius * 2)
+            // p5.line(this.location.x, this.location.y, centerPoint.x, centerPoint.y);
+            // p5.line(centerPoint.x, centerPoint.y, desiredLocation.x, desiredLocation.y)
+            const desiredVelocity = (0, _p5Default.default).Vector.sub(desiredLocation, this.location);
+            desiredVelocity.normalize();
+            desiredVelocity.mult(this.maxSpeed);
+            const steeringForce = (0, _p5Default.default).Vector.sub(desiredVelocity, this.velocity);
+            steeringForce.limit(this.maxForce);
+            this.applyForce(steeringForce);
+        }
+        checkWalls() {
+            let prox = false;
+            let desiredV;
+            if (this.location.x < 25) {
+                desiredV = p5.createVector(this.maxSpeed, this.velocity.y);
+                prox = true;
+            }
+            if (this.location.x > p5.width - 25) {
+                desiredV = p5.createVector(-this.maxSpeed, this.velocity.y);
+                prox = true;
+            }
+            if (this.location.y < 25) {
+                desiredV = p5.createVector(this.velocity.x, this.maxSpeed);
+                prox = true;
+            }
+            if (this.location.y > p5.height - 25) {
+                desiredV = p5.createVector(this.velocity.x, -this.maxSpeed);
+                prox = true;
+            }
+            if (prox && desiredV) {
+                const steer = (0, _p5Default.default).Vector.sub(desiredV, this.velocity);
+                steer.limit(this.maxForce);
+                this.applyForce(steer);
+                this.perlinSeed += .5;
+            }
+            return prox;
+        }
+        draw() {
+            this.angle = this.velocity.heading() + p5.PI / 2;
+            const log = Math.floor(this.velocity.heading() * 100) / 100;
+            if (Math.abs(log) < .5) console.log(log);
+            p5.fill(this.color);
+            p5.beginShape();
+            p5.vertex(0, -this.radius * 2);
+            p5.vertex(-this.radius, this.radius * 2);
+            p5.vertex(this.radius, this.radius * 2);
+            p5.endShape("close");
+        }
+    }
+};
+
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"lHbXq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "flowFieldsSketch", ()=>flowFieldsSketch);
+var _stylesScss = require("../styles.scss");
+var _util = require("../util");
+const flowFieldsSketch = (p5)=>{
+    const WIDTH = 1000;
+    const HEIGHT = 800;
+    let ff;
+    let ps;
+    const yoffBase = p5.random(0, 1);
+    const xoffBase = p5.random(0, 1);
+    let zoff = 0;
+    // fun constants to change
+    const offInc = .01; // less than 1
+    const zOffInc = .003; // less than 1
+    const maxSpeedMin = 2; // greater than 0
+    const maxSpeedMax = 6; // greater than above
+    const mass = 1; // 1 is 'no effect'
+    const numParticles = 300;
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        ff = new FlowField();
+        ps = new ParticleSystem(ff);
+        ps.createSystem(numParticles);
+        p5.background(255, 230, 210);
+    };
+    p5.draw = ()=>{
+        // p5.background(255);
+        // p5.strokeWeight(6);
+        // ff.drawField(); //
+        ff.setField();
+        ps.update();
+        ps.display();
+        zoff += zOffInc;
+    };
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    class FlowField {
+        constructor(){
+            this.res = 10;
+            this.cols = Math.floor(p5.width / this.res);
+            this.rows = Math.floor(p5.height / this.res);
+            this.field = new Array(this.rows * this.cols);
+        }
+        setField() {
+            let yoff = yoffBase;
+            for(let y = 0; y < this.rows; y++){
+                let xoff = xoffBase;
+                for(let x = 0; x < this.cols; x++){
+                    const i = x + y * this.cols;
+                    const theta = p5.noise(xoff, yoff, zoff) * 4 * p5.TWO_PI;
+                    const v = p5.createVector(p5.cos(theta), p5.sin(theta));
+                    v.normalize();
+                    v.mult(4);
+                    this.field[i] = v;
+                    xoff += offInc;
+                }
+                yoff += offInc;
+            }
+        }
+        drawField() {
+            this.field.forEach((cell, i)=>{
+                const x = i % this.cols;
+                const y = Math.floor(i / this.cols);
+                p5.push();
+                p5.translate(this.res * x, this.res * y);
+                p5.rotate(cell.heading());
+                p5.line(0, 0, 0, this.res);
+                p5.line(0, this.res, -this.res / 5, this.res * 4 / 5);
+                p5.line(0, this.res, this.res / 5, this.res * 4 / 5);
+                p5.pop();
+            });
+        }
+    }
+    class Particle {
+        constructor({ p , v , a  }){
+            this.p = p;
+            this.v = v;
+            this.a = a;
+            this.maxspeed = p5.random(maxSpeedMin, maxSpeedMax);
+            this.prevPos = this.p.copy();
+            this.m = mass;
+        }
+        update() {
+            this.v.add(this.a);
+            this.v.limit(this.maxspeed);
+            this.p.add(this.v);
+            this.a.mult(0);
+        }
+        follow(ff) {
+            const x = Math.min(Math.floor(this.p.x / ff.res), ff.cols - 1);
+            const y = Math.min(Math.floor(this.p.y / ff.res), ff.rows - 1);
+            const i = x + y * ff.cols;
+            const ffv = ff.field[i];
+            this.applyForce(ffv);
+        }
+        applyForce(force) {
+            const f = force.div(this.m);
+            this.a.add(f);
+        }
+        checkWalls() {
+            if (this.p.x < 0) this.p.x = p5.width;
+            if (this.p.x > p5.width) this.p.x = 0;
+            if (this.p.y < 0) this.p.y = p5.height;
+            if (this.p.y > p5.height) this.p.y = 0;
+            this.prevPos = this.p.copy();
+        }
+        setPrevPos() {
+            this.prevPos = this.p.copy();
+        }
+        display() {
+            p5.line(this.p.x, this.p.y, this.prevPos.x, this.prevPos.y);
+            this.setPrevPos();
+        }
+    }
+    class ParticleSystem {
+        constructor(ff){
+            this.ff = ff;
+        }
+        createSystem(n) {
+            const particles = [];
+            for(let i = 0; i < n; i++){
+                const p = p5.createVector(p5.random(p5.width), p5.random(p5.height));
+                const v = p5.createVector();
+                const a = p5.createVector();
+                particles.push(new Particle({
+                    p,
+                    v,
+                    a
+                }));
+            }
+            this.particles = particles;
+        }
+        display() {
+            p5.stroke(40, 0, 0, 25);
+            this.particles.forEach((p)=>p.display());
+        }
+        update() {
+            this.particles.forEach((p)=>{
+                p.checkWalls();
+                p.follow(this.ff);
+                p.update();
+            });
+        }
+    }
+};
+
+},{"../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"iaaHN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "oneDellularAutomationSketch", ()=>oneDellularAutomationSketch);
