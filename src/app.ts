@@ -19,7 +19,9 @@ import {
   seekingATargetSketch,
   ParticleSystemSketch,
   ParticleSystemCosmicSketch,
-  SmokeSketch,
+  smokeSketch,
+  wanderersSketch,
+  flowFieldsSketch,
 } from './exercises';
 import { environmentSketch } from "./environment";
 
@@ -38,8 +40,10 @@ const sketches: [string, (p5: P5) => void][] = [
   ['3.5 - Arctan Followers', arctanFollowersSketch],
   ['4.2 - Particle System', ParticleSystemSketch],
   ['4.2b - Particle System [COSMIC]', ParticleSystemCosmicSketch],
-  ['4.8 - Smoke', SmokeSketch],
+  ['4.8 - Smoke', smokeSketch],
   ['6.1 - Seeking a Target', seekingATargetSketch],
+  ['6.4 - Wanderers', wanderersSketch],
+  ['6.6 - Flow Fields', flowFieldsSketch],
   ['7.4 - 1d Cellular Automation', oneDellularAutomationSketch],
   ['7.7 - Game of Life', gameOfLifeSketch],
   ['WIP - spaceship', spaceshipSketch],

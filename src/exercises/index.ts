@@ -14,6 +14,8 @@ export * from './4.2_particle_system';
 export * from './4.2b_particle_system_cosmic';
 export * from './4.8_smoke';
 export * from './6.1_seeking_a_target';
+export * from './6.5_wanderers';
+export * from './6.6_flow_fields';
 export * from './7.4_1d_cellular_automation';
 export * from './7.7_game_of_life';
 export * from './spaceship';

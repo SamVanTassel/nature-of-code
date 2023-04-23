@@ -7,7 +7,7 @@ const imgPath = new URL('../../images/circle_10px.png', import.meta.url).toStrin
 
 type ParticleMode = 'ellipse'|'image'
 
-export const SmokeSketch = (p5: P5) => {
+export const smokeSketch = (p5: P5) => {
   const WIDTH = 800;
   const HEIGHT = 540;
   const RANDOM_SEED = Math.random() * 100;

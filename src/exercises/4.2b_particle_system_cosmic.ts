@@ -58,7 +58,9 @@ export const ParticleSystemCosmicSketch = (p5: P5) => {
 
   p5.draw = () => {
     perlinOffset += .005;
-    bgBlue = p5.map(p5.noise(perlinOffset), 0, 1, 15, 45);
+    const bgBlueMin = p5.map(systems.length, 0, 5, 15, 45);
+    const bgBlueMax = p5.map(systems.length, 0, 5, 45, 75);
+    bgBlue = p5.map(p5.noise(perlinOffset), 0, 1, bgBlueMin, bgBlueMax);
     p5.background(0, 10, bgBlue);
     systems.forEach(ps => {
       ps.addParticle();
