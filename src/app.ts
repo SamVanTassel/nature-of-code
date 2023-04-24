@@ -22,6 +22,9 @@ import {
   smokeSketch,
   wanderersSketch,
   flowFieldsSketch,
+  boidsSketch,
+  linearPathFollowingSketch,
+  circularPathFollowingSketch,
 } from './exercises';
 import { environmentSketch } from "./environment";
 
@@ -44,6 +47,9 @@ const sketches: [string, (p5: P5) => void][] = [
   ['6.1 - Seeking a Target', seekingATargetSketch],
   ['6.4 - Wanderers', wanderersSketch],
   ['6.6 - Flow Fields', flowFieldsSketch],
+  ['6.8 - Linear Path Following', linearPathFollowingSketch],
+  ['6.8b - Circular Path Following', circularPathFollowingSketch],
+  ['6.13 - Boids', boidsSketch],
   ['7.4 - 1d Cellular Automation', oneDellularAutomationSketch],
   ['7.7 - Game of Life', gameOfLifeSketch],
   ['WIP - spaceship', spaceshipSketch],
