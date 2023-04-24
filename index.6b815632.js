@@ -637,6 +637,18 @@ const sketches = [
         (0, _exercises.flowFieldsSketch)
     ],
     [
+        "6.8 - Linear Path Following",
+        (0, _exercises.linearPathFollowingSketch)
+    ],
+    [
+        "6.8b - Circular Path Following",
+        (0, _exercises.circularPathFollowingSketch)
+    ],
+    [
+        "6.13 - Boids",
+        (0, _exercises.boidsSketch)
+    ],
+    [
         "7.4 - 1d Cellular Automation",
         (0, _exercises.oneDellularAutomationSketch)
     ],
@@ -28292,6 +28304,12 @@ var _65Wanderers = require("./6.5_wanderers");
 parcelHelpers.exportAll(_65Wanderers, exports);
 var _66FlowFields = require("./6.6_flow_fields");
 parcelHelpers.exportAll(_66FlowFields, exports);
+var _68LinearPathFollowing = require("./6.8_linear_path_following");
+parcelHelpers.exportAll(_68LinearPathFollowing, exports);
+var _68BCircularPathFollowing = require("./6.8b_circular_path_following");
+parcelHelpers.exportAll(_68BCircularPathFollowing, exports);
+var _613Boids = require("./6.13_boids");
+parcelHelpers.exportAll(_613Boids, exports);
 var _741DCellularAutomation = require("./7.4_1d_cellular_automation");
 parcelHelpers.exportAll(_741DCellularAutomation, exports);
 var _77GameOfLife = require("./7.7_game_of_life");
@@ -28299,7 +28317,7 @@ parcelHelpers.exportAll(_77GameOfLife, exports);
 var _spaceship = require("./spaceship");
 parcelHelpers.exportAll(_spaceship, exports);
 
-},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./spaceship":"f75bc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"e1WNo":[function(require,module,exports) {
+},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./6.13_boids":"96Ij1","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./spaceship":"f75bc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./6.8_linear_path_following":"4YCzK","./6.8b_circular_path_following":"hmyI3"}],"e1WNo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "triangleCollisionSketch", ()=>triangleCollisionSketch);
@@ -30624,6 +30642,31 @@ const flowFieldsSketch = (p5)=>{
     }
 };
 
+},{"../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"96Ij1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "boidsSketch", ()=>boidsSketch);
+var _stylesScss = require("../styles.scss");
+var _util = require("../util");
+const boidsSketch = (p5)=>{
+    const WIDTH = 600;
+    const HEIGHT = 340;
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    p5.draw = ()=>{
+        p5.background(100);
+        p5.fill(255);
+        p5.text("nothing yet...", 20, 20);
+    };
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    class Boid {
+        constructor(){}
+    }
+};
+
 },{"../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"iaaHN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -30951,7 +30994,337 @@ const spaceshipSketch = (p5)=>{
     }
 };
 
-},{"p5":"7Uk5U","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ix24y":[function(require,module,exports) {
+},{"p5":"7Uk5U","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4YCzK":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "linearPathFollowingSketch", ()=>linearPathFollowingSketch);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+var _stylesScss = require("../styles.scss");
+var _util = require("../util");
+const linearPathFollowingSketch = (p5)=>{
+    const WIDTH = 1000;
+    const HEIGHT = 600;
+    let path;
+    let vs = [];
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        path = new Path();
+        vs.push(new Vehicle());
+        p5.background(255);
+        path.display();
+    };
+    p5.draw = ()=>{
+        p5.noStroke();
+        vs.forEach((v)=>{
+            v.follow();
+            v.update();
+            v.display();
+        });
+        if (p5.frameCount % 50 === 0) {
+            vs.push(new Vehicle());
+            if (vs.length > 10) vs = vs.slice(1);
+        }
+    };
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    class Vehicle {
+        lifeSpan = 0;
+        constructor(){
+            this.p = p5.createVector(0, p5.random(0, p5.height));
+            this.v = p5.createVector(p5.random(10, 20), p5.random(-10, 10));
+            this.a = p5.createVector(.05, .05);
+            this.maxSpeed = 8;
+            this.maxForce = .4;
+            this.angle = this.v.heading();
+            this.radius = 10;
+            this.color = p5.color(p5.random(50, 150), p5.random(50, 150), p5.random(50, 150));
+        }
+        follow() {
+            // predict future location
+            const predict = this.v.copy();
+            predict.normalize();
+            predict.mult(25);
+            const predictLoc = (0, _p5Default.default).Vector.add(this.p, predict);
+            // find normal point along path
+            let closestDist = Infinity;
+            let closestNormalPoint;
+            let closestStart;
+            let closestEnd;
+            // iterate over all segments in path
+            for(let i = 0; i < path.points.length - 1; i++){
+                const start = path.points[i];
+                const end = path.points[i + 1];
+                let normalPoint = this.getNormalPoint(predictLoc, start, end);
+                if (normalPoint.x < start.x || normalPoint.x > end.x) normalPoint = end.copy();
+                if ((0, _p5Default.default).Vector.dist(predictLoc, normalPoint) < closestDist) {
+                    closestNormalPoint = normalPoint;
+                    closestDist = (0, _p5Default.default).Vector.dist(predictLoc, normalPoint);
+                    closestStart = start;
+                    closestEnd = end;
+                }
+            }
+            // move further along the path and set a target
+            const dir = (0, _p5Default.default).Vector.sub(closestEnd, closestStart);
+            dir.normalize();
+            dir.mult(10);
+            const target = (0, _p5Default.default).Vector.add(closestNormalPoint, dir);
+            // if off the path, seek the target point to get back on track
+            const distance = closestDist;
+            if (distance > path.radius) this.seek(target);
+        }
+        getNormalPoint(p, a, b) {
+            const ap = (0, _p5Default.default).Vector.sub(p, a);
+            const ab = (0, _p5Default.default).Vector.sub(b, a);
+            ab.normalize();
+            ab.mult(ap.dot(ab));
+            return (0, _p5Default.default).Vector.add(a, ab);
+        }
+        seek(t) {
+            const desired = (0, _p5Default.default).Vector.sub(t, this.p);
+            desired.normalize();
+            desired.mult(this.maxSpeed);
+            const steeringForce = (0, _p5Default.default).Vector.sub(desired, this.v);
+            this.applyForce(steeringForce);
+        }
+        applyForce(f) {
+            f.limit(this.maxForce);
+            this.a.add(f);
+        }
+        update() {
+            this.v.add(this.a);
+            this.v.limit(this.maxSpeed);
+            if (this.v.x < 0) this.v.x = -this.v.x;
+            this.p.add(this.v);
+            this.a.mult(0);
+            this.lifeSpan += 2;
+            this.color.setAlpha(this.lifeSpan);
+        }
+        display() {
+            p5.push();
+            p5.translate(this.p.x, this.p.y);
+            p5.rotate(this.angle);
+            this.draw();
+            p5.pop();
+        }
+        draw() {
+            this.angle = this.v.heading() + p5.PI / 2;
+            p5.fill(this.color);
+            p5.ellipse(0, 0, 4);
+        // p5.beginShape();
+        // p5.vertex(0, -this.radius*2);
+        // p5.vertex(-this.radius, this.radius*2);
+        // p5.vertex(this.radius, this.radius*2);
+        // p5.endShape('close');
+        }
+    }
+    class Path {
+        points = [];
+        constructor(){
+            this.radius = 20;
+            const numPoints = 5;
+            const xps = [
+                0
+            ];
+            for(let i = 0; i < numPoints - 2; i++)xps.push(p5.random(xps[xps.length - 1], p5.width * (i + 1) / (numPoints - 2)));
+            xps.push(p5.width);
+            const yps = [];
+            let off = p5.random();
+            for(let i = 0; i < numPoints; i++){
+                yps.push(p5.noise(off * 100) * p5.height);
+                off += .1;
+            }
+            for(let i = 0; i < xps.length; i++)this.points.push(p5.createVector(xps[i], yps[i]));
+        // circle track
+        // this.points.push(
+        //   // p5.createVector(p5.width/5, p5.height/5),
+        //   // p5.createVector(p5.width/2, p5.height/8),
+        //   // p5.createVector(p5.width/5 *4, p5.height/5),
+        //   // p5.createVector(p5.width/8 *7, p5.height/2),
+        //   // p5.createVector(p5.width/5 * 4, p5.height/5 * 4),
+        //   // p5.createVector(p5.width/2, p5.height/8 *7),
+        //   // p5.createVector(p5.width/5, p5.height/5 * 4),
+        //   // p5.createVector(p5.width/8, p5.height/2),
+        // )
+        }
+        display() {
+            // p5.stroke(50, 50);
+            // p5.strokeWeight(this.radius * 2);
+            // this.drawLine();
+            p5.stroke(0, 20);
+            p5.strokeWeight(1);
+            this.drawLine();
+        }
+        drawLine() {
+            p5.beginShape();
+            p5.noFill();
+            for (const p of this.points)p5.vertex(p.x, p.y);
+            p5.endShape();
+        }
+    }
+};
+
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"hmyI3":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "circularPathFollowingSketch", ()=>circularPathFollowingSketch);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+var _stylesScss = require("../styles.scss");
+var _util = require("../util");
+const circularPathFollowingSketch = (p5)=>{
+    const WIDTH = 1000;
+    const HEIGHT = 1000;
+    let path;
+    let vs = [];
+    let displayPath = false;
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        path = new Path();
+        vs.push(new Vehicle());
+    };
+    p5.draw = ()=>{
+        p5.background(255);
+        if (displayPath) path.display();
+        vs.forEach((v)=>{
+            v.follow();
+            v.update();
+            v.display();
+        });
+        if (p5.frameCount % 50 === 0) {
+            vs.push(new Vehicle());
+            if (vs.length > 50) vs = vs.slice(1);
+        }
+        if (p5.frameCount < 300) p5.text("press spacebar to see the path", p5.width / 8 * 5, p5.height / 20 * 19);
+    };
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    p5.keyPressed = ()=>{
+        if (p5.keyCode === 32) {
+            displayPath = !displayPath;
+            return false;
+        }
+    };
+    p5.mouseClicked = ()=>{
+        vs.push(new Vehicle(p5.createVector(p5.mouseX, p5.mouseY)));
+    };
+    class Vehicle {
+        constructor(p){
+            this.p = p ? p : p5.createVector(0, p5.random(0, p5.height));
+            this.v = p5.createVector(p5.random(10, 20), p5.random(-10, 10));
+            this.a = p5.createVector(.05, .05);
+            this.maxSpeed = p5.random(6, 10);
+            this.maxForce = p5.random(.2, .8);
+            this.angle = this.v.heading();
+            this.radius = 6;
+            this.color = p5.color(p5.random(50, 150), p5.random(50, 150), p5.random(50, 150));
+        }
+        follow() {
+            // predict future location
+            const predict = this.v.copy();
+            predict.normalize();
+            predict.mult(25);
+            const predictLoc = (0, _p5Default.default).Vector.add(this.p, predict);
+            // find normal point along path
+            let closestDist = Infinity;
+            let closestNormalPoint;
+            let closestStart;
+            let closestEnd;
+            // iterate over all segments in path
+            for(let i = 0; i < path.points.length; i++){
+                let start = path.points[i];
+                let end = path.points[(i + 1) % path.points.length];
+                let normalPoint = this.getNormalPoint(predictLoc, start, end);
+                if (normalPoint.x < Math.min(start.x, end.x) || normalPoint.x > Math.max(start.x, end.x) || normalPoint.y < Math.min(start.y, end.y) || normalPoint.y > Math.max(start.y, end.y)) {
+                    normalPoint = end.copy();
+                    // If we're at the end we really want the next line segment for looking ahead
+                    start = path.points[(i + 1) % path.points.length];
+                    end = path.points[(i + 2) % path.points.length]; // Path wraps around
+                }
+                if ((0, _p5Default.default).Vector.dist(predictLoc, normalPoint) < closestDist) {
+                    closestNormalPoint = normalPoint;
+                    closestDist = (0, _p5Default.default).Vector.dist(predictLoc, normalPoint);
+                    closestStart = start;
+                    closestEnd = end;
+                }
+            }
+            // move further along the path and set a target
+            const dir = (0, _p5Default.default).Vector.sub(closestEnd, closestStart);
+            dir.normalize();
+            dir.mult(10);
+            const target = (0, _p5Default.default).Vector.add(closestNormalPoint, dir);
+            // if off the path, seek the target point to get back on track
+            const distance = closestDist;
+            if (distance > path.radius) this.seek(target);
+        }
+        getNormalPoint(p, a, b) {
+            const ap = (0, _p5Default.default).Vector.sub(p, a);
+            const ab = (0, _p5Default.default).Vector.sub(b, a);
+            ab.normalize();
+            ab.mult(ap.dot(ab));
+            return (0, _p5Default.default).Vector.add(a, ab);
+        }
+        seek(t) {
+            const desired = (0, _p5Default.default).Vector.sub(t, this.p);
+            desired.normalize();
+            desired.mult(this.maxSpeed);
+            const steeringForce = (0, _p5Default.default).Vector.sub(desired, this.v);
+            this.applyForce(steeringForce);
+        }
+        applyForce(f) {
+            f.limit(this.maxForce);
+            this.a.add(f);
+        }
+        update() {
+            this.v.add(this.a);
+            this.v.limit(this.maxSpeed);
+            this.p.add(this.v);
+            this.a.mult(0);
+        }
+        display() {
+            p5.push();
+            p5.translate(this.p.x, this.p.y);
+            p5.rotate(this.angle);
+            this.draw();
+            p5.pop();
+        }
+        draw() {
+            this.angle = this.v.heading() + p5.PI / 2;
+            p5.fill(this.color);
+            p5.beginShape();
+            p5.vertex(0, -this.radius * 2);
+            p5.vertex(-this.radius, this.radius * 2);
+            p5.vertex(this.radius, this.radius * 2);
+            p5.endShape("close");
+        }
+    }
+    class Path {
+        points = [];
+        constructor(){
+            this.radius = 20;
+            // circle track
+            this.points.push(p5.createVector(p5.width / 5, p5.height / 5), p5.createVector(p5.width / 2, p5.height / 8), p5.createVector(p5.width / 5 * 4, p5.height / 5), p5.createVector(p5.width / 8 * 7, p5.height / 2), p5.createVector(p5.width / 5 * 4, p5.height / 5 * 4), p5.createVector(p5.width / 2, p5.height / 8 * 7), p5.createVector(p5.width / 5, p5.height / 5 * 4), p5.createVector(p5.width / 8, p5.height / 2));
+        }
+        display() {
+            p5.stroke(50, 20);
+            p5.strokeWeight(this.radius * 2);
+            this.drawLine();
+            p5.stroke(0, 100);
+            p5.strokeWeight(1);
+            this.drawLine();
+        }
+        drawLine() {
+            p5.beginShape();
+            p5.noFill();
+            for (const p of this.points)p5.vertex(p.x, p.y);
+            p5.endShape("close");
+        }
+    }
+};
+
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"ix24y":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "environmentSketch", ()=>environmentSketch);
