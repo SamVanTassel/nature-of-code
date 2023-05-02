@@ -7,6 +7,7 @@ export const circularPathFollowingSketch = (p5: P5) => {
   const HEIGHT = 1000;
   let path: Path;
   let vs: Vehicle[] = [];
+  const maxVehicles = 100;
   let displayPath = false;
 
   p5.setup = () => {
@@ -16,19 +17,20 @@ export const circularPathFollowingSketch = (p5: P5) => {
     );
     path = new Path();
     vs.push(new Vehicle());
+    p5.noStroke();
   };
 
   p5.draw = () => {
     p5.background(255);
     if (displayPath) path.display();
     vs.forEach(v => {
-      v.follow();
+      v.applyBehaviors(vs);
       v.update();
       v.display();
     });
     if (p5.frameCount % 50 === 0) {
       vs.push(new Vehicle());
-      if (vs.length > 50) vs = vs.slice(1);
+      if (vs.length > maxVehicles) vs = vs.slice(1);
     }
     if (p5.frameCount < 300) {
       p5.text('press spacebar to see the path', p5.width/8*5, p5.height/20 * 19);
@@ -62,6 +64,7 @@ export const circularPathFollowingSketch = (p5: P5) => {
     angle: number;
     radius: number;
     color: P5.Color;
+    desiredSeparation: number;
   
     constructor(p?: P5.Vector) {
       this.p =  p ? p : p5.createVector(0, p5.random(0, p5.height));
@@ -71,7 +74,18 @@ export const circularPathFollowingSketch = (p5: P5) => {
       this.maxForce = p5.random(.2, .8);
       this.angle = this.v.heading();
       this.radius = 6;
-      this.color = p5.color(p5.random(50, 150), p5.random(50, 150), p5.random(50, 150))
+      this.color = p5.color(p5.random(50, 150), p5.random(50, 150), p5.random(50, 150));
+      this.desiredSeparation = this.radius * 4;
+    }
+
+    applyBehaviors(vehicles: Vehicle[]) {
+      const follow = this.follow();
+      const separate = this.separate(vehicles);
+
+      follow.mult(.5);
+      separate.mult(3);
+      this.applyForce(follow);
+      this.applyForce(separate);
     }
 
     follow() {
@@ -118,8 +132,8 @@ export const circularPathFollowingSketch = (p5: P5) => {
       // if off the path, seek the target point to get back on track
       const distance = closestDist;
       if (distance > path.radius) {
-        this.seek(target);
-      }
+        return this.seek(target);
+      } else return p5.createVector();
     }
 
     getNormalPoint(p: P5.Vector, a: P5.Vector, b: P5.Vector) {
@@ -138,7 +152,30 @@ export const circularPathFollowingSketch = (p5: P5) => {
       desired.mult(this.maxSpeed);
  
       const steeringForce = P5.Vector.sub(desired, this.v);
-      this.applyForce(steeringForce);
+      return steeringForce;
+    }
+
+    separate(boids: Vehicle[]) {
+      const sum = p5.createVector();
+      let count = 0;
+      boids.forEach(b => {
+        if (this === b) return;
+        const d = P5.Vector.dist(this.p, b.p);
+        if (d < this.desiredSeparation) {
+          const away = P5.Vector.sub(this.p, b.p);
+          away.normalize();
+          away.div(d);
+          sum.add(away);
+          count++;
+        }
+      });
+
+      if (count > 0) {
+        sum.div(count);
+        sum.setMag(this.maxSpeed);
+        const steer = P5.Vector.sub(sum, this.v);
+        return steer;
+      } else return p5.createVector();
     }
 
     applyForce(f: P5.Vector) {
@@ -198,6 +235,7 @@ export const circularPathFollowingSketch = (p5: P5) => {
       p5.stroke(0, 100);
       p5.strokeWeight(1);
       this.drawLine();
+      p5.noStroke();
     }
 
     drawLine() {
