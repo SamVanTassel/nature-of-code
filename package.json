@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.2",
-    "@types/p5": "^1.6.0",
+    "@types/p5": "^1.6.2",
     "gh-pages": "^5.0.0"
   }
 }
