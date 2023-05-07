@@ -45,6 +45,8 @@ export const spaceshipSketch = (p5: P5) => {
     constructor() {
       super({ p5, v: new P5.Vector(0, 0)});
       this.angle = p5.random(2 * p5.PI);
+      this.velocity.setHeading(this.angle);
+      this.acceleration.setHeading(this.angle);
     }
 
     override update(): void {

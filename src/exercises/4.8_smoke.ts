@@ -73,7 +73,8 @@ export const smokeSketch = (p5: P5) => {
     const seed = p5.noise(p5.frameCount/100 + RANDOM_SEED);
     wind.x = p5.map(seed, 0, 1, -WIND_MAX, WIND_MAX);
     // display wind direction
-    const windX = p5.map(wind.x, -WIND_MAX, WIND_MAX, 0, p5.width);
+    let windX = p5.map(wind.x, -WIND_MAX, WIND_MAX, p5.mouseX - p5.width/2, p5.mouseX + p5.width/2);
+    windX = p5.constrain(windX, 5, p5.width - 5);
     p5.stroke('red');
     p5.line(windX, 0, windX, 30);
   }

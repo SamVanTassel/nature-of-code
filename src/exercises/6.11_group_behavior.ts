@@ -20,6 +20,7 @@ export const groupBehaviorSketch = (p5: P5) => {
       boids.push(new Boid({}));
     }
     p5.noStroke();
+    p5.noCursor();
   };
 
   p5.draw = () => {

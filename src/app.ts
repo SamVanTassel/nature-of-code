@@ -26,6 +26,7 @@ import {
   circularPathFollowingSketch,
   groupBehaviorSketch,
   flockingSketch,
+  rayCastingSketch,
 } from './exercises';
 import { environmentSketch } from "./environment";
 
@@ -56,6 +57,7 @@ const sketches: [string, (p5: P5) => void][] = [
   ['7.7 - Game of Life', gameOfLifeSketch],
   ['WIP - spaceship', spaceshipSketch],
   ['WIP - environment project', environmentSketch],
+  ['xc - Ray Casting', rayCastingSketch],
 ];
 
 if (window.localStorage.getItem('defaultIndex') === null) {

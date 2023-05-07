@@ -23,3 +23,4 @@ export * from './6.13_flocking';
 export * from './7.4_1d_cellular_automation';
 export * from './7.7_game_of_life';
 export * from './spaceship';
+export * from './x_ray_casting';
