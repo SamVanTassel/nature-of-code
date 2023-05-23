@@ -94,7 +94,10 @@ openSidenav.onclick = () => {
 
 const options = document.getElementsByClassName('options')[0] as HTMLElement;
 
-const title = window.location.pathname.slice(1);
+const isLocalHost = window.location.hostname === 'localhost';
+let title = window.location.pathname;
+title = title.replace(isLocalHost ? /^\// : /^\/nature-of-code/, '');
+
 window.onload = () => {
   if (title) {
     openSidenav.innerText = `> ${title.replace(/_/g, ' ')}`
@@ -103,7 +106,7 @@ window.onload = () => {
   }
 }
 let selectedIndex = sketches.findIndex(pair => createLinkText(pair[0]) === title);
-const sketch = sketches[selectedIndex][1];
+const sketch = selectedIndex > -1 ? sketches[selectedIndex][1] : () => null;
 let p = new P5(sketch, document.getElementById("app"));
 
 const resetButton = document.getElementById('reset');
