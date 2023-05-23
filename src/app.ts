@@ -67,21 +67,6 @@ const sketches: [string, (p5: P5) => void][] = [
 
 const sidePanel = document.getElementById("side-panel");
 const sketchList = document.getElementById("side-panel-list");
-
-const createLinkText = (s: string) => {
-  const [, title] = s.match(/- (.*)/);
-  return title.toLowerCase().replace(/ /g, "_");
-};
-
-for (const pair of sketches) {
-  const title = document.createElement("li");
-  const a = document.createElement("a");
-  a.innerText = pair[0];
-  a.href = `#${createLinkText(pair[0])}`;
-  title.appendChild(a);
-  sketchList.appendChild(title);
-}
-
 const container = document.getElementsByClassName(
   "container"
 )[0] as HTMLElement;
@@ -110,6 +95,21 @@ document.addEventListener("click", (event) => {
     closeSidePanel();
   }
 });
+
+const createLinkText = (s: string) => {
+  const [, title] = s.match(/- (.*)/);
+  return title.toLowerCase().replace(/ /g, "_");
+};
+
+for (const pair of sketches) {
+  const title = document.createElement("li");
+  const a = document.createElement("a");
+  a.innerText = pair[0];
+  a.href = `#${createLinkText(pair[0])}`;
+  a.onclick = closeSidePanel;
+  title.appendChild(a);
+  sketchList.appendChild(title);
+}
 
 const options = document.getElementsByClassName("options")[0] as HTMLElement;
 let p: P5;
