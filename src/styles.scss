@@ -1,9 +1,7 @@
-$bg-color: #283747;
-$txt-color: white;
+$bg-color: #111;
+$txt-color: #CCC;
 $link-color: #facf70;
 $select-border: #777;
-$select-focus: #93e9be;
-$select-arrow: $select-border;
 
 *,
 *::before,
@@ -22,25 +20,103 @@ body {
 
 a, a:visited {
   color: $link-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.header {
+  background-color: $link-color;
+  color: $bg-color;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  padding-right: 1rem;
+  #openSidenav {
+    font-size: 1.6rem;
+    background-color: inherit;
+    border-radius: 0px;
+    border-width: 0;
+    cursor: pointer;
+    display: inline-block;
+    font-family: inherit;
+    font-size: inherit;
+    padding: .5rem;
+    margin: 0 0 0 .5rem;
+    text-align: center;
+    height: 100%;
+    &:hover {
+      background-color: $bg-color;
+      color: $link-color
+    }
+  }
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: $bg-color;
+  overflow-x: hidden;
+  padding-top: 3rem;
+  transition: 0.15s;
+  a {
+    padding: .4rem .4rem .4rem 2rem;
+    text-decoration: none;
+    font-size: 1.25rem;
+    color: $txt-color;
+    display: block;
+    transition: 0.1s;
+    &:hover {
+      color: $link-color;
+    }
+  }
+  .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    &:hover {
+      color: $link-color;
+    }
+  }
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
 }
 
 .container {
-  width: 100vw;
+  position: absolute;
   height: 100vh;
   display: grid;
   grid-template-rows: 
-    5rem
-    3rem
+    2.5rem
     auto
+    2rem
     2rem;
-  justify-content: center;
   grid-template-columns: auto;
   justify-items: center;
   grid-template-areas:
     "header"
-    "options"
     "main"
-    "footer"
+    "options"
+    "footer";
+  transition: .5s;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
 }
 
 .unselectable {
@@ -54,67 +130,29 @@ a, a:visited {
 
 .options {
   grid-area: options;
-  width: 100%;
-  display: grid;
-  grid-template-areas: 
-    "select reset";
-  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
-#app {
+#main {
   grid-area: main;
+  padding-top: 2rem;
 }
 
 .credits {
-  grid-area: footer;
-  text-align: center;
-}
-
-select {
-  // Reset select element styles
-  background-color: transparent;
-  border: none;
-  padding: 0 1em 0 0;
-  margin: 0;
-  width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: inherit;
-  line-height: inherit;
-  outline: none;
-  display: inline;
-}
-
-.select {
-  width: 100%;
-  min-width: 15ch;
-  max-width: 30ch;
-  border: 1px solid $select-border;
-  border-radius: 0.25em;
-  padding: 0.25em 0.5em;
-  margin: .5rem 0;
-  font-size: 1rem;
-  cursor: pointer;
-  line-height: 1.1;
-  background-color: #fff;
-  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-  align-items: center;
-  position: relative;
-}
-
-select:focus + .focus {
+  width: 98%;
   position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  border: 2px solid $select-focus;
-  border-radius: inherit;
+  grid-area: footer;
+  text-align: justify;
+  display: flex;
+  justify-content: space-between;
+  bottom: 1rem;
 }
 
 .button-2 {
-  background-color: #fff;
-  border-radius: 8px;
+  background-color: $link-color;
+  border-radius: 1px;
   border-width: 0;
   cursor: pointer;
   display: inline-block;
@@ -131,4 +169,12 @@ select:focus + .focus {
   -webkit-user-select: none;
   touch-action: manipulation;
   justify-self: end;
+  &:active {
+    color: $link-color;
+    background-color: $bg-color;
+  }
+}
+
+::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
 }

@@ -27,6 +27,7 @@ import {
   groupBehaviorSketch,
   flockingSketch,
   rayCastingSketch,
+  rayCastingPlusSketch,
 } from './exercises';
 import { environmentSketch } from "./environment";
 
@@ -58,38 +59,52 @@ const sketches: [string, (p5: P5) => void][] = [
   ['WIP - spaceship', spaceshipSketch],
   ['WIP - environment project', environmentSketch],
   ['xc - Ray Casting', rayCastingSketch],
+  ['xc - Ray Casting Plus', rayCastingPlusSketch],
 ];
 
-if (window.localStorage.getItem('defaultIndex') === null) {
-  window.localStorage.setItem('defaultIndex', '7');
-}
+const sidenav = document.getElementById('sidenav');
+const sidenavList = document.getElementById('sidenavList');
 
-const defaultIndex = Number.parseInt(window.localStorage.getItem('defaultIndex'), 10);
+const createLinkText = (s: string) => {
+  const [,title] = s.match(/- (.*)/);
+  return title.toLowerCase().replace(/ /g, '_');
+};
 
-const titles = sketches.map(s => s[0]);
-
-const selectSketch = document.getElementById('select-sketch');
 for (const pair of sketches) {
-  const s = document.createElement('option');
-  s.innerText = pair[0];
-  if (pair[0] === sketches[defaultIndex][0]) {
-    s.setAttribute('selected', 'true');
+  const title = document.createElement('li');
+  const a = document.createElement('a');
+  a.innerText = pair[0];
+  a.href = createLinkText(pair[0]);
+  title.appendChild(a);
+  sidenavList.appendChild(title);
+}
+
+const container = document.getElementsByClassName('container')[0] as HTMLElement;
+
+const closeSidenav = document.getElementById('closebtn');
+closeSidenav.onclick = () => {
+  sidenav.style.width = '0';
+  container.style.marginLeft = '0';
+};
+const openSidenav = document.getElementById('openSidenav');
+openSidenav.onclick = () => {
+  sidenav.style.width = '30rem';
+  container.style.marginLeft = '30rem';
+};
+
+const options = document.getElementsByClassName('options')[0] as HTMLElement;
+
+const title = window.location.pathname.slice(1);
+window.onload = () => {
+  if (title) {
+    openSidenav.innerText = `> ${title.replace(/_/g, ' ')}`
+  } else {
+    options.style.display = 'none';
   }
-  selectSketch.appendChild(s);
 }
-
-let sketch = sketches[defaultIndex][1];
+let selectedIndex = sketches.findIndex(pair => createLinkText(pair[0]) === title);
+const sketch = sketches[selectedIndex][1];
 let p = new P5(sketch, document.getElementById("app"));
-
-selectSketch.onchange = (e) => {
-  p.remove();
-  //@ts-ignore
-  const title = e.target.value;
-  const i = titles.indexOf(title);
-  window.localStorage.setItem('defaultIndex', i.toString());
-  sketch = i > -1 ? sketches[i][1] : cannonballSketch;
-  p = new P5(sketch, document.getElementById("app"));
-}
 
 const resetButton = document.getElementById('reset');
 resetButton.onclick = () => {

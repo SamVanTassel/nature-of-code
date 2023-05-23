@@ -11,20 +11,25 @@
   <title>Nature of Code: Exercises</title>
 </head>
 <body>
+  <div class="sidenav" id="sidenav">
+    <span class="closebtn" id="closebtn">&times;</span>
+    <ul id="sidenavList" />
+  </div>
   <div class="container">
-    <h1 class="unselectable">Nature of Code</h1>
-    <div class="options">
-      <div class="select">
-        <select id="select-sketch"></select>
-        <span class="focus"></span>
-      </div>
-      <button id="reset" class="button-2">Reset</button>
+    <div class="header">
+      <button id="openSidenav">> select a sketch</button>
+      <div>Nature of Code</div>
     </div>
-    <div id="app"></div>
+    <div id="main">
+      <div id="app"></div>
+      <div class="options">
+        <button id="reset" class="button-2">Reset</button>
+      </div>
+    </div>
     <div class="credits">
-      <p>Exercises from the (awesome) book <a href="https://natureofcode.com/" target="_blank" rel="noreferrer noopener">The Nature of Code</a>
-      by Daniel Schiffman.</p>
-      <p>Source code <a href="https://github.com/SamVanTassel/nature-of-code">here</a></p>
+      <span>Exercises from the (awesome) book <a href="https://natureofcode.com/" target="_blank" rel="noreferrer noopener">The Nature of Code</a>
+      by Daniel Schiffman.</span>
+      <span>Source code <a href="https://github.com/SamVanTassel/nature-of-code" target="_blank">here</a></span>
     </div>
   </div>
   <script src="src/app.ts" type="module"></script>
