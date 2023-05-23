@@ -64,10 +64,11 @@ a, a:visited {
   position: fixed;
   z-index: 1;
   top: 0;
-  left: 0;
+  left: -2px;
   background-color: $bg-color;
   overflow-x: hidden;
   transition: $transition-time;
+  border-right: 2px solid $link-color;
   .close-bar {
     background-color: $bg-color;
     background: linear-gradient(180deg, rgba($bg-color, 1) 0%, rgba($bg-color, 1) 15%, rgba($bg-color,0) 100%);
@@ -148,13 +149,14 @@ a, a:visited {
 }
 
 .credits {
-  width: 98%;
+  width: 100%;
   position: absolute;
   grid-area: footer;
   text-align: justify;
   display: flex;
   justify-content: space-between;
-  bottom: 1rem;
+  bottom: 0;
+  padding: .7rem;
 }
 
 .button-2 {
