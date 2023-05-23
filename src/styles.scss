@@ -68,6 +68,7 @@ a, a:visited {
   background-color: $bg-color;
   overflow-x: hidden;
   transition: $transition-time;
+  transition-timing-function: ease;
   border-right: 2px solid $link-color;
   .close-bar {
     background-color: $bg-color;
@@ -121,19 +122,11 @@ a, a:visited {
     "options"
     "footer";
   transition: $transition-time;
+  transition-timing-function: ease;
   bottom: 0;
   top: 0;
   right: 0;
   left: 0;
-}
-
-.unselectable {
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  grid-area: header
 }
 
 .options {
