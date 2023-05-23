@@ -5,7 +5,7 @@
 }
 
 body {
-  color: #ccc;
+  color: #ddd;
   background-color: #111;
   font-family: Montserrat, sans-serif;
   overflow: hidden;
@@ -75,8 +75,24 @@ a:hover, a:visited:hover {
 }
 
 .side-panel .close-bar .close-button {
+  color: #ddd;
+  background-color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: center;
+  vertical-align: baseline;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  border: none;
+  justify-self: end;
+  margin: 0;
   padding-right: 1rem;
   font-size: 2.5rem;
+  list-style: none;
+  display: inline-block;
 }
 
 .side-panel .close-bar .close-button:hover {
@@ -84,7 +100,7 @@ a:hover, a:visited:hover {
 }
 
 .side-panel a {
-  color: #ccc;
+  color: #ddd;
   padding: .4rem .4rem .4rem 2rem;
   font-size: 1.25rem;
   text-decoration: none;
