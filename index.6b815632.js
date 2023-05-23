@@ -680,20 +680,27 @@ const sketches = [
 const sidePanel = document.getElementById("side-panel");
 const sketchList = document.getElementById("side-panel-list");
 const container = document.getElementsByClassName("container")[0];
+let sidePanelOpen = false;
 const closeButton = document.getElementById("close-button");
 const closeSidePanel = ()=>{
     sidePanel.style.width = "0";
+    sidePanel.style.left = "-2px";
     container.style.marginLeft = "0";
     openSidePanel.innerText = `> ${getDisplayTitle()}`;
+    sidePanelOpen = false;
 };
 closeButton.onclick = ()=>{
     closeSidePanel();
 };
 const openSidePanel = document.getElementById("open-side-panel");
 openSidePanel.onclick = ()=>{
-    sidePanel.style.width = "30rem";
-    container.style.marginLeft = "30rem";
-    openSidePanel.innerText = `< ${getDisplayTitle()}`;
+    if (!sidePanelOpen) {
+        sidePanel.style.width = "30rem";
+        sidePanel.style.left = "0";
+        container.style.marginLeft = "30rem";
+        openSidePanel.innerText = `< ${getDisplayTitle()}`;
+        sidePanelOpen = true;
+    } else closeSidePanel();
 };
 document.addEventListener("click", (event)=>{
     const clickedInSidenav = event.target instanceof Node && sidePanel.contains(event.target);

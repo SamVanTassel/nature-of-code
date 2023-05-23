@@ -58,10 +58,11 @@ a:hover, a:visited:hover {
   width: 0;
   z-index: 1;
   background-color: #111;
+  border-right: 2px solid #facf70;
   transition: all .15s;
   position: fixed;
   top: 0;
-  left: 0;
+  left: -2px;
   overflow-x: hidden;
 }
 
@@ -137,13 +138,14 @@ a:hover, a:visited:hover {
 }
 
 .credits {
-  width: 98%;
+  width: 100%;
   text-align: justify;
   grid-area: footer;
   justify-content: space-between;
+  padding: .7rem;
   display: flex;
   position: absolute;
-  bottom: 1rem;
+  bottom: 0;
 }
 
 .button-2 {
