@@ -705,13 +705,13 @@ openSidenav.onclick = ()=>{
 const options = document.getElementsByClassName("options")[0];
 const isLocalHost = window.location.hostname === "localhost";
 let title = window.location.pathname;
-title.replace(isLocalHost ? /^\// : /^\/nature-of-code/, "");
+title = title.replace(isLocalHost ? /^\// : /^\/nature-of-code/, "");
 window.onload = ()=>{
     if (title) openSidenav.innerText = `> ${title.replace(/_/g, " ")}`;
     else options.style.display = "none";
 };
 let selectedIndex = sketches.findIndex((pair)=>createLinkText(pair[0]) === title);
-const sketch = sketches[selectedIndex][1];
+const sketch = selectedIndex > -1 ? sketches[selectedIndex][1] : ()=>null;
 let p = new (0, _p5Default.default)(sketch, document.getElementById("app"));
 const resetButton = document.getElementById("reset");
 resetButton.onclick = ()=>{
@@ -719,7 +719,246 @@ resetButton.onclick = ()=>{
     p = new (0, _p5Default.default)(sketch, document.getElementById("app"));
 };
 
-},{"p5":"7Uk5U","./styles.scss":"kMfPY","./exercises":"hp8uI","./environment":"ix24y","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7Uk5U":[function(require,module,exports) {
+},{"./styles.scss":"kMfPY","./exercises":"hp8uI","./environment":"ix24y","p5":"7Uk5U","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"hp8uI":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _1ATriangleCollision = require("./1a_triangle_collision");
+parcelHelpers.exportAll(_1ATriangleCollision, exports);
+var _011DCollision = require("./0.1_1d_collision");
+parcelHelpers.exportAll(_011DCollision, exports);
+var _1MouseFollowers = require("./1_mouse_followers");
+parcelHelpers.exportAll(_1MouseFollowers, exports);
+var _21WindGravity = require("./2.1_wind_gravity");
+parcelHelpers.exportAll(_21WindGravity, exports);
+var _22WindGravityFriction = require("./2.2_wind_gravity_friction");
+parcelHelpers.exportAll(_22WindGravityFriction, exports);
+var _22BWindGravityFrictionCollision = require("./2.2b_wind_gravity_friction_collision");
+parcelHelpers.exportAll(_22BWindGravityFrictionCollision, exports);
+var _23Drag = require("./2.3_drag");
+parcelHelpers.exportAll(_23Drag, exports);
+var _26SingleDraggableAttractor = require("./2.6_single_draggable_attractor");
+parcelHelpers.exportAll(_26SingleDraggableAttractor, exports);
+var _28ManyAttractors = require("./2.8_many_attractors");
+parcelHelpers.exportAll(_28ManyAttractors, exports);
+var _32AngularRotation = require("./3.2_angular_rotation");
+parcelHelpers.exportAll(_32AngularRotation, exports);
+var _32Cannonball = require("./3.2_cannonball");
+parcelHelpers.exportAll(_32Cannonball, exports);
+var _35ArctanFollowers = require("./3.5_arctan_followers");
+parcelHelpers.exportAll(_35ArctanFollowers, exports);
+var _42ParticleSystem = require("./4.2_particle_system");
+parcelHelpers.exportAll(_42ParticleSystem, exports);
+var _42BParticleSystemCosmic = require("./4.2b_particle_system_cosmic");
+parcelHelpers.exportAll(_42BParticleSystemCosmic, exports);
+var _48Smoke = require("./4.8_smoke");
+parcelHelpers.exportAll(_48Smoke, exports);
+var _61SeekingATarget = require("./6.1_seeking_a_target");
+parcelHelpers.exportAll(_61SeekingATarget, exports);
+var _65Wanderers = require("./6.5_wanderers");
+parcelHelpers.exportAll(_65Wanderers, exports);
+var _66FlowFields = require("./6.6_flow_fields");
+parcelHelpers.exportAll(_66FlowFields, exports);
+var _68LinearPathFollowing = require("./6.8_linear_path_following");
+parcelHelpers.exportAll(_68LinearPathFollowing, exports);
+var _68BCircularPathFollowing = require("./6.8b_circular_path_following");
+parcelHelpers.exportAll(_68BCircularPathFollowing, exports);
+var _611GroupBehavior = require("./6.11_group_behavior");
+parcelHelpers.exportAll(_611GroupBehavior, exports);
+var _613Flocking = require("./6.13_flocking");
+parcelHelpers.exportAll(_613Flocking, exports);
+var _741DCellularAutomation = require("./7.4_1d_cellular_automation");
+parcelHelpers.exportAll(_741DCellularAutomation, exports);
+var _77GameOfLife = require("./7.7_game_of_life");
+parcelHelpers.exportAll(_77GameOfLife, exports);
+var _spaceship = require("./spaceship");
+parcelHelpers.exportAll(_spaceship, exports);
+var _xcRayCasting = require("./xc_ray_casting");
+parcelHelpers.exportAll(_xcRayCasting, exports);
+var _xcRayCastingPlus = require("./xc_ray_casting_plus");
+parcelHelpers.exportAll(_xcRayCastingPlus, exports);
+
+},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./6.8_linear_path_following":"4YCzK","./6.8b_circular_path_following":"hmyI3","./6.11_group_behavior":"6eN3I","./6.13_flocking":"kOVSr","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./spaceship":"f75bc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./xc_ray_casting":"bbKtJ","./xc_ray_casting_plus":"kaW6z"}],"e1WNo":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "triangleCollisionSketch", ()=>triangleCollisionSketch);
+var _stylesScss = require("../styles.scss");
+var _util = require("../util");
+const triangleCollisionSketch = (p5)=>{
+    const WIDTH = 600;
+    const HEIGHT = 340;
+    const pts = [
+        p5.random(0, WIDTH),
+        p5.random(0, HEIGHT),
+        p5.random(0, WIDTH),
+        p5.random(0, HEIGHT),
+        p5.random(0, WIDTH),
+        p5.random(0, HEIGHT)
+    ];
+    let inside = false;
+    let hit = true;
+    let color = getColor();
+    let bg = getColor("dark");
+    function getColor(type) {
+        const dark = type === "dark";
+        const low = dark ? 0 : 100;
+        const high = dark ? 100 : 255;
+        return p5.color(p5.random(low, high), p5.random(low, high), p5.random(low, high));
+    }
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        p5.noCursor();
+    };
+    p5.draw = ()=>{
+        p5.background(bg);
+        hit = trianglePoint(p5.mouseX, p5.mouseY, pts[0], pts[2], pts[4], pts[1], pts[3], pts[5]);
+        if (hit && !inside) {
+            inside = true;
+            color = getColor();
+        }
+        if (!hit && inside) inside = false;
+        p5.noStroke();
+        p5.fill(inside ? color : p5.color("wheat"));
+        p5.triangle(...pts);
+        p5.stroke(0, 150);
+        p5.strokeWeight(10);
+        p5.point(p5.mouseX, p5.mouseY);
+    };
+    function trianglePoint(px, py, x1, x2, x3, y1, y2, y3) {
+        // get the area of the drawn triangle
+        const areaOrig = p5.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
+        // get the area of 3 triangles made between the point
+        // and the corners of the triangle
+        const area1 = p5.abs((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py));
+        const area2 = p5.abs((x2 - px) * (y3 - py) - (x3 - px) * (y2 - py));
+        const area3 = p5.abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
+        // if the area of the original triangle is the same as
+        // that of the three between the points and the mouse,
+        // the mouse is within the triangle
+        // some wiggle room for floating point math error too
+        return areaOrig + .0000000001 > area1 + area2 + area3;
+    }
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+};
+
+},{"../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"j2NOL":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _colorContrastChecker = require("./color_contrast_checker");
+parcelHelpers.exportAll(_colorContrastChecker, exports);
+var _draggable = require("./Draggable");
+parcelHelpers.exportAll(_draggable, exports);
+var _getColors = require("./get_colors");
+parcelHelpers.exportAll(_getColors, exports);
+var _mover = require("./Mover");
+parcelHelpers.exportAll(_mover, exports);
+var _resize = require("./resize");
+parcelHelpers.exportAll(_resize, exports);
+
+},{"./color_contrast_checker":"ddYXH","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./resize":"6aTto","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ddYXH":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "checkContrast", ()=>checkContrast);
+const hexToRgb = (hex)=>{
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+};
+const luminance = (color)=>{
+    const { r , g , b  } = color;
+    var a = [
+        r,
+        g,
+        b
+    ].map((v)=>{
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+};
+const checkContrast = (color1, color2)=>{
+    const c1rgb = hexToRgb(color1);
+    const c2rgb = hexToRgb(color2);
+    const c1luminance = luminance(c1rgb);
+    const c2luminance = luminance(c2rgb);
+    const ratio = c1luminance > c2luminance ? (c2luminance + 0.05) / (c1luminance + 0.05) : (c1luminance + 0.05) / (c2luminance + 0.05);
+    return ratio < 1 / 3;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"jWrLI":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Draggable", ()=>Draggable);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+class Draggable {
+    constructor(p5, location){
+        this.p5 = p5;
+        this.dragging = false; // Is the object being dragged?
+        this.rollover = false; // Is the mouse over the ellipse?
+        this.location = location ? location : new (0, _p5Default.default).Vector(p5.width / 2, p5.height / 2);
+    }
+    // Adjust location if being dragged
+    update() {
+        this.over();
+        if (this.dragging) {
+            this.location.x = this.p5.mouseX + this.offsetX;
+            this.location.y = this.p5.mouseY + this.offsetY;
+        }
+    }
+    // Did I click on the object?
+    pressed() {
+        if (this.rollover) {
+            this.dragging = true;
+            this.offsetX = this.location.x - this.p5.mouseX;
+            this.offsetY = this.location.y - this.p5.mouseY;
+        }
+    }
+    // Quit dragging
+    released() {
+        this.dragging = false;
+    }
+}
+
+},{"p5":"7Uk5U","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7Uk5U":[function(require,module,exports) {
 /*! p5.js v1.6.0 February 22, 2023 */ var global = arguments[3];
 !function(e1) {
     module.exports = e1();
@@ -28292,246 +28531,7 @@ resetButton.onclick = ()=>{
     ])(251);
 });
 
-},{}],"kMfPY":[function() {},{}],"hp8uI":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _1ATriangleCollision = require("./1a_triangle_collision");
-parcelHelpers.exportAll(_1ATriangleCollision, exports);
-var _011DCollision = require("./0.1_1d_collision");
-parcelHelpers.exportAll(_011DCollision, exports);
-var _1MouseFollowers = require("./1_mouse_followers");
-parcelHelpers.exportAll(_1MouseFollowers, exports);
-var _21WindGravity = require("./2.1_wind_gravity");
-parcelHelpers.exportAll(_21WindGravity, exports);
-var _22WindGravityFriction = require("./2.2_wind_gravity_friction");
-parcelHelpers.exportAll(_22WindGravityFriction, exports);
-var _22BWindGravityFrictionCollision = require("./2.2b_wind_gravity_friction_collision");
-parcelHelpers.exportAll(_22BWindGravityFrictionCollision, exports);
-var _23Drag = require("./2.3_drag");
-parcelHelpers.exportAll(_23Drag, exports);
-var _26SingleDraggableAttractor = require("./2.6_single_draggable_attractor");
-parcelHelpers.exportAll(_26SingleDraggableAttractor, exports);
-var _28ManyAttractors = require("./2.8_many_attractors");
-parcelHelpers.exportAll(_28ManyAttractors, exports);
-var _32AngularRotation = require("./3.2_angular_rotation");
-parcelHelpers.exportAll(_32AngularRotation, exports);
-var _32Cannonball = require("./3.2_cannonball");
-parcelHelpers.exportAll(_32Cannonball, exports);
-var _35ArctanFollowers = require("./3.5_arctan_followers");
-parcelHelpers.exportAll(_35ArctanFollowers, exports);
-var _42ParticleSystem = require("./4.2_particle_system");
-parcelHelpers.exportAll(_42ParticleSystem, exports);
-var _42BParticleSystemCosmic = require("./4.2b_particle_system_cosmic");
-parcelHelpers.exportAll(_42BParticleSystemCosmic, exports);
-var _48Smoke = require("./4.8_smoke");
-parcelHelpers.exportAll(_48Smoke, exports);
-var _61SeekingATarget = require("./6.1_seeking_a_target");
-parcelHelpers.exportAll(_61SeekingATarget, exports);
-var _65Wanderers = require("./6.5_wanderers");
-parcelHelpers.exportAll(_65Wanderers, exports);
-var _66FlowFields = require("./6.6_flow_fields");
-parcelHelpers.exportAll(_66FlowFields, exports);
-var _68LinearPathFollowing = require("./6.8_linear_path_following");
-parcelHelpers.exportAll(_68LinearPathFollowing, exports);
-var _68BCircularPathFollowing = require("./6.8b_circular_path_following");
-parcelHelpers.exportAll(_68BCircularPathFollowing, exports);
-var _611GroupBehavior = require("./6.11_group_behavior");
-parcelHelpers.exportAll(_611GroupBehavior, exports);
-var _613Flocking = require("./6.13_flocking");
-parcelHelpers.exportAll(_613Flocking, exports);
-var _741DCellularAutomation = require("./7.4_1d_cellular_automation");
-parcelHelpers.exportAll(_741DCellularAutomation, exports);
-var _77GameOfLife = require("./7.7_game_of_life");
-parcelHelpers.exportAll(_77GameOfLife, exports);
-var _spaceship = require("./spaceship");
-parcelHelpers.exportAll(_spaceship, exports);
-var _xcRayCasting = require("./xc_ray_casting");
-parcelHelpers.exportAll(_xcRayCasting, exports);
-var _xcRayCastingPlus = require("./xc_ray_casting_plus");
-parcelHelpers.exportAll(_xcRayCastingPlus, exports);
-
-},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./6.8_linear_path_following":"4YCzK","./6.8b_circular_path_following":"hmyI3","./6.11_group_behavior":"6eN3I","./6.13_flocking":"kOVSr","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./spaceship":"f75bc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./xc_ray_casting":"bbKtJ","./xc_ray_casting_plus":"kaW6z"}],"e1WNo":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "triangleCollisionSketch", ()=>triangleCollisionSketch);
-var _stylesScss = require("../styles.scss");
-var _util = require("../util");
-const triangleCollisionSketch = (p5)=>{
-    const WIDTH = 600;
-    const HEIGHT = 340;
-    const pts = [
-        p5.random(0, WIDTH),
-        p5.random(0, HEIGHT),
-        p5.random(0, WIDTH),
-        p5.random(0, HEIGHT),
-        p5.random(0, WIDTH),
-        p5.random(0, HEIGHT)
-    ];
-    let inside = false;
-    let hit = true;
-    let color = getColor();
-    let bg = getColor("dark");
-    function getColor(type) {
-        const dark = type === "dark";
-        const low = dark ? 0 : 100;
-        const high = dark ? 100 : 255;
-        return p5.color(p5.random(low, high), p5.random(low, high), p5.random(low, high));
-    }
-    p5.setup = ()=>{
-        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-        p5.noCursor();
-    };
-    p5.draw = ()=>{
-        p5.background(bg);
-        hit = trianglePoint(p5.mouseX, p5.mouseY, pts[0], pts[2], pts[4], pts[1], pts[3], pts[5]);
-        if (hit && !inside) {
-            inside = true;
-            color = getColor();
-        }
-        if (!hit && inside) inside = false;
-        p5.noStroke();
-        p5.fill(inside ? color : p5.color("wheat"));
-        p5.triangle(...pts);
-        p5.stroke(0, 150);
-        p5.strokeWeight(10);
-        p5.point(p5.mouseX, p5.mouseY);
-    };
-    function trianglePoint(px, py, x1, x2, x3, y1, y2, y3) {
-        // get the area of the drawn triangle
-        const areaOrig = p5.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
-        // get the area of 3 triangles made between the point
-        // and the corners of the triangle
-        const area1 = p5.abs((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py));
-        const area2 = p5.abs((x2 - px) * (y3 - py) - (x3 - px) * (y2 - py));
-        const area3 = p5.abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
-        // if the area of the original triangle is the same as
-        // that of the three between the points and the mouse,
-        // the mouse is within the triangle
-        // some wiggle room for floating point math error too
-        return areaOrig + .0000000001 > area1 + area2 + area3;
-    }
-    p5.windowResized = ()=>{
-        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-    };
-};
-
-},{"../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"j2NOL":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _colorContrastChecker = require("./color_contrast_checker");
-parcelHelpers.exportAll(_colorContrastChecker, exports);
-var _draggable = require("./Draggable");
-parcelHelpers.exportAll(_draggable, exports);
-var _getColors = require("./get_colors");
-parcelHelpers.exportAll(_getColors, exports);
-var _mover = require("./Mover");
-parcelHelpers.exportAll(_mover, exports);
-var _resize = require("./resize");
-parcelHelpers.exportAll(_resize, exports);
-
-},{"./color_contrast_checker":"ddYXH","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./resize":"6aTto","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ddYXH":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "checkContrast", ()=>checkContrast);
-const hexToRgb = (hex)=>{
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-        return r + r + g + g + b + b;
-    });
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
-};
-const luminance = (color)=>{
-    const { r , g , b  } = color;
-    var a = [
-        r,
-        g,
-        b
-    ].map((v)=>{
-        v /= 255;
-        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-    });
-    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-};
-const checkContrast = (color1, color2)=>{
-    const c1rgb = hexToRgb(color1);
-    const c2rgb = hexToRgb(color2);
-    const c1luminance = luminance(c1rgb);
-    const c2luminance = luminance(c2rgb);
-    const ratio = c1luminance > c2luminance ? (c2luminance + 0.05) / (c1luminance + 0.05) : (c1luminance + 0.05) / (c2luminance + 0.05);
-    return ratio < 1 / 3;
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"jWrLI":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Draggable", ()=>Draggable);
-var _p5 = require("p5");
-var _p5Default = parcelHelpers.interopDefault(_p5);
-class Draggable {
-    constructor(p5, location){
-        this.p5 = p5;
-        this.dragging = false; // Is the object being dragged?
-        this.rollover = false; // Is the mouse over the ellipse?
-        this.location = location ? location : new (0, _p5Default.default).Vector(p5.width / 2, p5.height / 2);
-    }
-    // Adjust location if being dragged
-    update() {
-        this.over();
-        if (this.dragging) {
-            this.location.x = this.p5.mouseX + this.offsetX;
-            this.location.y = this.p5.mouseY + this.offsetY;
-        }
-    }
-    // Did I click on the object?
-    pressed() {
-        if (this.rollover) {
-            this.dragging = true;
-            this.offsetX = this.location.x - this.p5.mouseX;
-            this.offsetY = this.location.y - this.p5.mouseY;
-        }
-    }
-    // Quit dragging
-    released() {
-        this.dragging = false;
-    }
-}
-
-},{"p5":"7Uk5U","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6wJIa":[function(require,module,exports) {
+},{}],"6wJIa":[function(require,module,exports) {
 // @ts-ignore
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
