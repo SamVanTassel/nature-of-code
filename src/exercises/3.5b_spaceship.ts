@@ -144,9 +144,9 @@ export const spaceshipSketch = (p5: P5) => {
     constructor(x: number, y: number, angle: number) {
       this.location = p5.createVector(x, y);
       this.previousLocation = this.location.copy();
-      this.velocity = p5.createVector(5,5);
       this.angle = angle + p5.PI/2;
-      this.velocity.setHeading(this.angle);
+      this.velocity = P5.Vector.fromAngle(this.angle);
+      this.velocity.setMag(8);
       this.lifeSpan = 100;
     }
 
