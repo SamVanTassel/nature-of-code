@@ -613,6 +613,10 @@ const sketches = [
         (0, _exercises.arctanFollowersSketch)
     ],
     [
+        "3.5b - Spaceship",
+        (0, _exercises.spaceshipSketch)
+    ],
+    [
         "4.2 - Particle System",
         (0, _exercises.ParticleSystemSketch)
     ],
@@ -659,10 +663,6 @@ const sketches = [
     [
         "7.7 - Game of Life",
         (0, _exercises.gameOfLifeSketch)
-    ],
-    [
-        "WIP - spaceship",
-        (0, _exercises.spaceshipSketch)
     ],
     [
         "WIP - environment project",
@@ -28363,6 +28363,8 @@ var _32Cannonball = require("./3.2_cannonball");
 parcelHelpers.exportAll(_32Cannonball, exports);
 var _35ArctanFollowers = require("./3.5_arctan_followers");
 parcelHelpers.exportAll(_35ArctanFollowers, exports);
+var _35BSpaceship = require("./3.5b_spaceship");
+parcelHelpers.exportAll(_35BSpaceship, exports);
 var _42ParticleSystem = require("./4.2_particle_system");
 parcelHelpers.exportAll(_42ParticleSystem, exports);
 var _42BParticleSystemCosmic = require("./4.2b_particle_system_cosmic");
@@ -28387,14 +28389,12 @@ var _741DCellularAutomation = require("./7.4_1d_cellular_automation");
 parcelHelpers.exportAll(_741DCellularAutomation, exports);
 var _77GameOfLife = require("./7.7_game_of_life");
 parcelHelpers.exportAll(_77GameOfLife, exports);
-var _spaceship = require("./spaceship");
-parcelHelpers.exportAll(_spaceship, exports);
 var _xcRayCasting = require("./xc_ray_casting");
 parcelHelpers.exportAll(_xcRayCasting, exports);
 var _xcRayCastingPlus = require("./xc_ray_casting_plus");
 parcelHelpers.exportAll(_xcRayCastingPlus, exports);
 
-},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./6.8_linear_path_following":"4YCzK","./6.8b_circular_path_following":"hmyI3","./6.11_group_behavior":"6eN3I","./6.13_flocking":"kOVSr","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./spaceship":"f75bc","./xc_ray_casting":"bbKtJ","./xc_ray_casting_plus":"kaW6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"e1WNo":[function(require,module,exports) {
+},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./6.8_linear_path_following":"4YCzK","./6.8b_circular_path_following":"hmyI3","./6.11_group_behavior":"6eN3I","./6.13_flocking":"kOVSr","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./xc_ray_casting":"bbKtJ","./xc_ray_casting_plus":"kaW6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./3.5b_spaceship":"eF5HV"}],"e1WNo":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "triangleCollisionSketch", ()=>triangleCollisionSketch);
@@ -31658,75 +31658,7 @@ const gameOfLifeSketch = (p5)=>{
     };
 };
 
-},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"f75bc":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "spaceshipSketch", ()=>spaceshipSketch);
-var _p5 = require("p5");
-var _p5Default = parcelHelpers.interopDefault(_p5);
-var _util = require("../util");
-const spaceshipSketch = (p5)=>{
-    const WIDTH = 800;
-    const HEIGHT = WIDTH;
-    let s;
-    let boosterRed = 255;
-    p5.setup = ()=>{
-        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-        s = new Spaceship();
-    };
-    p5.draw = ()=>{
-        p5.background(0);
-        checkKeys();
-        s.update();
-        s.display();
-    };
-    const checkKeys = ()=>{
-        if (p5.keyIsDown(37)) s.angularMomentum -= .001;
-        if (p5.keyIsDown(39)) s.angularMomentum += .001;
-        if (p5.keyIsDown(38)) {
-            boosterRed = 0;
-            const boost = new (0, _p5Default.default).Vector(0, .1);
-            boost.setHeading(s.angle);
-            s.applyForce(boost);
-        } else boosterRed = 255;
-    };
-    p5.windowResized = ()=>{
-        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-    };
-    class Spaceship extends (0, _util.Mover) {
-        constructor(){
-            super({
-                p5,
-                v: new (0, _p5Default.default).Vector(0, 0)
-            });
-            this.angle = p5.random(2 * p5.PI);
-            this.velocity.setHeading(this.angle);
-            this.acceleration.setHeading(this.angle);
-        }
-        update() {
-            this.velocity.add(this.acceleration);
-            this.location.add(this.velocity);
-            this.angularVelocity += this.p5.constrain(this.angularMomentum, -0.1, .1);
-            this.angle += this.angularVelocity;
-            this.angularMomentum = 0;
-            this.acceleration.mult(0);
-        }
-        draw() {
-            p5.push();
-            p5.rotate(this.angle);
-            p5.push();
-            p5.translate(-10, -5);
-            p5.triangle(0, 0, 20, 0, 10, 30);
-            p5.fill(255, boosterRed, boosterRed);
-            p5.rect(2.5, 0, 5, -5);
-            p5.rect(12.5, 0, 5, -5);
-            p5.pop();
-            p5.pop();
-        }
-    }
-};
-
-},{"p5":"7Uk5U","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bbKtJ":[function(require,module,exports) {
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"bbKtJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "rayCastingSketch", ()=>rayCastingSketch);
@@ -32055,7 +31987,158 @@ const rayCastingPlusSketch = (p5)=>{
     }
 };
 
-},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"ix24y":[function(require,module,exports) {
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"eF5HV":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "spaceshipSketch", ()=>spaceshipSketch);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+var _util = require("../util");
+const spaceshipSketch = (p5)=>{
+    const WIDTH = 800;
+    const HEIGHT = WIDTH;
+    let s;
+    const boosterOff = p5.color("white");
+    const boosterOn = p5.color("red");
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        s = new Spaceship();
+    };
+    p5.draw = ()=>{
+        p5.background(0);
+        checkKeys();
+        s.laserSystem.showLasers();
+        s.update();
+        s.display();
+    };
+    const checkKeys = ()=>{
+        if (p5.keyIsDown(37)) s.angularMomentum -= .001;
+        if (p5.keyIsDown(39)) s.angularMomentum += .001;
+        if (p5.keyIsDown(38)) {
+            s.boosterColor = boosterOn;
+            const boost = p5.createVector(0, .1);
+            boost.setHeading(s.angle + p5.PI / 2);
+            s.applyForce(boost);
+        } else s.boosterColor = boosterOff;
+        if (p5.keyIsDown(32)) s.shoot();
+    };
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    class Spaceship extends (0, _util.Mover) {
+        constructor(){
+            super({
+                p5,
+                v: new (0, _p5Default.default).Vector(0, 0)
+            });
+            this.angle = p5.random(2 * p5.PI);
+            this.velocity.setHeading(this.angle);
+            this.acceleration.setHeading(this.angle);
+            this.boosterColor = boosterOff;
+            this.maxSpeed = 5;
+            this.laserSystem = new LaserSystem(this);
+        }
+        update() {
+            this.velocity.add(this.acceleration);
+            this.velocity.limit(this.maxSpeed);
+            this.location.add(this.velocity);
+            this.checkEdges();
+            this.angularMomentum = p5.constrain(this.angularMomentum, -0.1, 1);
+            this.angularVelocity += this.angularMomentum;
+            this.angularVelocity = p5.constrain(this.angularVelocity, -2, 2);
+            this.angle += this.angularVelocity;
+            this.angularMomentum = 0;
+            this.acceleration.mult(0);
+        }
+        checkEdges() {
+            if (this.location.x < 0) this.location.x = p5.width;
+            if (this.location.y < 0) this.location.y = p5.height;
+            if (this.location.x > p5.width) this.location.x = 0;
+            if (this.location.y > p5.height) this.location.y = 0;
+        }
+        draw() {
+            p5.stroke("black");
+            p5.strokeWeight(1);
+            p5.push();
+            p5.translate(-10, -5);
+            p5.triangle(0, 0, 20, 0, 10, 30);
+            p5.fill(this.boosterColor);
+            p5.rect(2.5, 0, 5, -5);
+            p5.rect(12.5, 0, 5, -5);
+            p5.pop();
+        }
+        shoot() {
+            this.laserSystem.addLaser();
+            const boost = p5.createVector(0, .015);
+            boost.setHeading(s.angle - p5.PI / 2);
+            this.applyForce(boost);
+        }
+    }
+    class LaserSystem {
+        constructor(s){
+            this.lasers = [];
+            this.source = s;
+            this.maxLasers = 100;
+        }
+        addLaser() {
+            const origin = this.source.location.copy();
+            const ship = p5.createVector(0, 20);
+            ship.setHeading(this.source.angle + p5.PI / 2);
+            origin.add(ship);
+            this.lasers.push(new Laser(origin.x, origin.y, this.source.angle));
+            if (this.lasers.length > this.maxLasers) this.lasers.splice(0, 1);
+        }
+        showLasers() {
+            p5.strokeWeight(2);
+            this.lasers.forEach((l)=>{
+                l.update();
+                l.display();
+            });
+        }
+    }
+    class Laser {
+        constructor(x, y, angle){
+            this.location = p5.createVector(x, y);
+            this.previousLocation = this.location.copy();
+            this.velocity = p5.createVector(5, 5);
+            this.angle = angle + p5.PI / 2;
+            this.velocity.setHeading(this.angle);
+            this.lifeSpan = 100;
+        }
+        update() {
+            if (this.lifeSpan <= 0) return;
+            this.previousLocation = this.location.copy();
+            this.location.add(this.velocity);
+            this.checkEdges();
+            this.lifeSpan--;
+        }
+        checkEdges() {
+            if (this.location.x < 0) {
+                this.location.x = p5.width;
+                this.previousLocation.x = p5.width;
+            }
+            if (this.location.y < 0) {
+                this.location.y = p5.height;
+                this.previousLocation.y = p5.height;
+            }
+            if (this.location.x > p5.width) {
+                this.location.x = 0;
+                this.previousLocation.x = 0;
+            }
+            if (this.location.y > p5.height) {
+                this.location.y = 0;
+                this.previousLocation.y = 0;
+            }
+        }
+        display() {
+            if (this.lifeSpan <= 0) return;
+            p5.stroke(255, 0, 0, this.lifeSpan * 2);
+            p5.line(this.previousLocation.x, this.previousLocation.y, this.location.x, this.location.y);
+        }
+    }
+};
+
+},{"p5":"7Uk5U","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ix24y":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "environmentSketch", ()=>environmentSketch);
