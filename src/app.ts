@@ -11,6 +11,10 @@ const container = document.getElementsByClassName(
   "container"
 )[0] as HTMLElement;
 const options = document.getElementsByClassName("options")[0] as HTMLElement;
+const infoButton = document.getElementById("sketch-info-button");
+const infoModal = document.getElementById("info-modal");
+const infoModalContent = document.getElementById("info-modal-content");
+const closeButtonInfoModal = document.getElementById("close-button-info-modal");
 
 let sidePanelLeftOpen = false;
 let sidePanelRightOpen = false;
@@ -81,11 +85,11 @@ const removeAllChildNodes = (parent: HTMLElement) => {
 const renderSketchList = () => {
   removeAllChildNodes(sketchList);
   if (state.about) return;
-  for (const pair of state.currentCollection.sketches) {
+  for (const holder of state.currentCollection.sketches) {
     const title = document.createElement("li");
     const a = document.createElement("a");
-    a.innerText = pair[0];
-    a.href = setRoute(pair[0]);
+    a.innerText = holder.info?.title || '';
+    a.href = setRoute(holder.info?.title || '');
     a.onclick = closeSidePanelLeft;
     title.appendChild(a);
     sketchList.appendChild(title);
@@ -95,15 +99,21 @@ const renderSketchList = () => {
 const renderOptions = () => {
   if (state.currentSketch.title) {
     options.style.display = "flex";
+    const info = state.currentSketch.info;
+    if (info.about || info.controls) {
+      infoButton.style.display = "block";
+    } else {
+      infoButton.style.display = "none";
+    }
   } else {
     options.style.display = "none";
   }
 }
 
-const collections = data.map(el => el.collection);
+const collectionTitles = data.map(el => el.title);
 
 const collectionsList = document.getElementById('side-panel-list-right');
-for (const title of collections) {
+for (const title of collectionTitles) {
   const a = document.createElement('a');
   a.innerText = title;
   if (title === 'Nature of Code') {
@@ -116,6 +126,13 @@ for (const title of collections) {
   };
   collectionsList.appendChild(a);
 }
+
+infoButton.onclick = () => {
+  infoModal.style.display = "flex";
+};
+closeButtonInfoModal.onclick = () => {
+  infoModal.style.display = "none";
+};
 
 const resetButton = document.getElementById("reset");
 resetButton.onclick = () => {
@@ -147,8 +164,32 @@ const renderAbout = () => {
   }
 }
 
+const renderInfoModal = () => {
+  removeAllChildNodes(infoModalContent);
+  const info = state.currentSketch.info;
+  if (info) {
+    if (info.controls) {
+      const controlsHeader = document.createElement('h3');
+      const controls = document.createElement('p');
+      controlsHeader.innerText = 'controls:';
+      controls.innerHTML = info.controls;
+      infoModalContent.appendChild(controlsHeader);
+      infoModalContent.appendChild(controls);
+    }
+    if (info.about) {
+      const aboutHeader = document.createElement('h3');
+      const about = document.createElement('p');
+      aboutHeader.innerText = 'about:';
+      about.innerHTML = info.about;
+      infoModalContent.appendChild(aboutHeader);
+      infoModalContent.appendChild(about);
+    }
+  }
+}
+
 const renderMainConent = () => {
   renderAbout();
+  renderInfoModal();
   loadSketch();
 }
 

@@ -1,7 +1,6 @@
 import { data, miscSketches, natureOfCodeSketches } from './data';
-import P5 from 'p5';
-import { createLinkText, decodeParam, getDisplayTitle } from './util';
-import { CollectionTitle, State } from './types';
+import { createLinkText, decodeParam, encodeParam } from './util';
+import type { CollectionTitle, SketchHolder, State } from './types';
 
 export const state: State = {
   p5: undefined,
@@ -9,6 +8,7 @@ export const state: State = {
     file: undefined,
     title: undefined,
     param: undefined,
+    info: undefined,
   },
   currentCollection: {
     title: 'Nature of Code',
@@ -19,33 +19,41 @@ export const state: State = {
 
 const resetState = () => {
   state.about = false;
-  setCurrentSketch(getDisplayTitle());
+  setCurrentSketch();
   state.currentCollection.title = 'Nature of Code';
   state.currentCollection.sketches = natureOfCodeSketches;
 }
 
-export const setCurrentSketch = (title?: string, file?: (p5: P5) => void, param?: string) => {
-  state.currentSketch.title = title;
-  state.currentSketch.file = file;
-  state.currentSketch.param = param;
+export const setCurrentSketch = (sh?: SketchHolder) => {
+  if (!sh) {
+    state.currentSketch.title = undefined;
+    state.currentSketch.file = undefined;
+    state.currentSketch.param = undefined;
+    state.currentSketch.info = undefined;
+    return;
+  }
+  state.currentSketch.file= sh.sketch;
+  state.currentSketch.title = sh.info?.title || '';
+  state.currentSketch.info = sh.info;
+  state.currentSketch.param = encodeParam(sh.info?.title || '');
 }
 
-const getFile = (s?: string) => {
+const getSketchHolder = (s?: string) => {
   if (!s) return;
   const currentSketchList = state.currentCollection.sketches;
-  const sketchPair = currentSketchList.find(
-    (pair) => {
-      return createLinkText(pair[0]) === s;
+  const sketchHolder = currentSketchList.find(
+    (sh) => {
+      return createLinkText(sh.info?.title) === s;
     }
   );
-  return sketchPair  ? sketchPair[1] : () => null;
+  return sketchHolder;
 }
 
-const getSketches = (s: string) => {
+const getCollection = (s: string) => {
   const col = data.find((entry) => {
-    return entry.collection.toLowerCase() === s;
+    return entry.title.toLowerCase() === s;
   });
-  return col?.sketches || [];
+  return col;
 }
 
 export const loadRoute = () => {
@@ -59,17 +67,18 @@ export const loadRoute = () => {
     resetState();
   } else if (hashGroups.length === 1) {
     const [sketch] = hashGroups;
-    switch (decodeParam(sketch)) {
+    const decoded = decodeParam(sketch);
+    switch (decoded) {
       case 'about':
         state.about = true;
-        setCurrentSketch(getDisplayTitle());
+        setCurrentSketch();
         state.currentCollection.title = 'About';
         state.currentCollection.sketches = undefined;
         setCurrentSketch();
         break;
       case 'misc':
         state.about = false;
-        setCurrentSketch(getDisplayTitle());
+        setCurrentSketch();
         state.currentCollection.title = 'Misc';
         state.currentCollection.sketches = miscSketches;
         break;
@@ -77,32 +86,31 @@ export const loadRoute = () => {
         state.about = false;
         state.currentCollection.title = 'Nature of Code';
         state.currentCollection.sketches = natureOfCodeSketches;
-        const param = decodeParam(sketch);
-        const file = getFile(param);
-        const title = getDisplayTitle(param);
-        setCurrentSketch(title, file, param);
+        const sketchHolder = getSketchHolder(decoded);
+        setCurrentSketch(sketchHolder);
       }
     }
   } else if (hashGroups.length === 2) {
-    const [collection, sketch] = hashGroups;
+    console.log(hashGroups);
+    const [collectionParam, sketchParam] = hashGroups;
     state.about = false;
-    state.currentCollection.title = collection as CollectionTitle;
-    state.currentCollection.sketches = getSketches(decodeParam(collection));
-    const param = decodeParam(sketch);
-    const file = getFile(param);
-    const title = getDisplayTitle(param);
-    setCurrentSketch(title, file, param);
+    const collection = getCollection(decodeParam(collectionParam))
+    state.currentCollection.title = collection.title as CollectionTitle;
+    state.currentCollection.sketches = collection.sketches;
+    const sketchTitle = decodeParam(sketchParam);
+    const sketchHolder = getSketchHolder(sketchTitle);
+    setCurrentSketch(sketchHolder);
   }
 };
 
 export const setRoute = (s: string, collection?: boolean) => {
   if (collection) {
-    return `#/${createLinkText(s)}`;
+    return encodeParam(s);
   } else {
     if (state.currentCollection.title === 'Nature of Code') {
-      return `#/${createLinkText(s)}`;
+      return encodeParam(s);
     } else {
-      return `#/${createLinkText(state.currentCollection.title)}/${createLinkText(s)}`;
+      return encodeParam(`${state.currentCollection.title}/${s}`);
     }
   }
 }

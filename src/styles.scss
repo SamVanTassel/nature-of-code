@@ -66,37 +66,6 @@ a, a:visited {
   overflow-x: hidden;
   transition: $transition-time;
   transition-timing-function: ease;
-  .close-bar {
-    background-color: $bg-color;
-    background: linear-gradient(180deg, rgba($bg-color, 1) 0%, rgba($bg-color, 1) 15%, rgba($bg-color,0) 100%);
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: flex-end;
-    .close-button {
-      color: $txt-color;
-      background-color: inherit;
-      border: none;
-      cursor: pointer;
-      display: inline-block;
-      font-family: inherit;
-      font-size: inherit;
-      list-style: none;
-      margin: 0;
-      text-align: center;
-      vertical-align: baseline;
-      white-space: nowrap;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-      justify-self: end;
-      padding-right: 1rem;
-      font-size: 2.5rem;
-      &:hover {
-        color: $link-color;
-      }
-    }
-  }
   a {
     padding: .4rem .4rem .4rem 2rem;
   }
@@ -117,6 +86,38 @@ a, a:visited {
     background: linear-gradient(0deg, rgba($bg-color, 1) 0%, rgba($bg-color,0) 100%);
     position: sticky;
     bottom: 0;
+  }
+}
+
+.close-bar {
+  background-color: $bg-color;
+  background: linear-gradient(180deg, rgba($bg-color, 1) 0%, rgba($bg-color, 1) 15%, rgba($bg-color,0) 100%);
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: flex-end;
+  .close-button {
+    color: $txt-color;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    font-family: inherit;
+    font-size: inherit;
+    list-style: none;
+    margin: 0;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    justify-self: end;
+    padding-right: 1rem;
+    font-size: 2.5rem;
+    &:hover {
+      color: $link-color;
+    }
   }
 }
 
@@ -161,10 +162,13 @@ a, a:visited {
 }
 
 .options {
-  grid-area: options;
   display: none;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+#reset {
+  margin-left: auto;
 }
 
 #main {
@@ -179,7 +183,38 @@ a, a:visited {
   width: 60%
 }
 
-.button-2 {
+#info-modal {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: 5rem;
+  left: 30%;
+  width: fit-content;
+  height: fit-content;
+  overflow-x: hidden;
+  border: $link-color solid 3px;
+  background-color: $bg-color;
+  .close-bar {
+    background: none;
+    background-color: $link-color;
+    height: 1.5rem;
+  }
+  .close-button {
+    font-size: 2rem;
+    top: -.5rem;
+    position: relative;
+    padding-right: .5rem;
+    color: $bg-color;
+  }
+}
+
+#info-modal-content {
+  color: $txt-color;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+}
+
+.button-primary {
   background-color: $link-color;
   border-radius: 1px;
   border-width: 0;
@@ -198,9 +233,36 @@ a, a:visited {
   -webkit-user-select: none;
   touch-action: manipulation;
   justify-self: end;
-  &:active {
+  &:hover {
     color: $link-color;
     background-color: $bg-color;
+    border: $link-color solid 1px;
+  }
+}
+
+.button-secondary {
+  background-color: $bg-color;
+  color: $link-color;
+  border-radius: 1px;
+  border-width: 0;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
+  list-style: none;
+  padding: .5rem;
+  margin: 0;
+  text-align: center;
+  transition: $transition-time;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  justify-self: end;
+  &:hover {
+    color: $bg-color;
+    background-color: $link-color;
   }
 }
 
