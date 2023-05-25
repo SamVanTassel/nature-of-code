@@ -561,186 +561,133 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _p5 = require("p5");
 var _p5Default = parcelHelpers.interopDefault(_p5);
 var _stylesScss = require("./styles.scss");
-var _exercises = require("./exercises");
-var _environment = require("./environment");
-const sketches = [
-    [
-        "0.1 - 1D Collision",
-        (0, _exercises.oneDimendionalCollisionSketch)
-    ],
-    [
-        "1 - Mouse Followers",
-        (0, _exercises.mouseFollowersSketch)
-    ],
-    [
-        "1a - Triangle Collision",
-        (0, _exercises.triangleCollisionSketch)
-    ],
-    [
-        "2.1 - Wind & Gravity",
-        (0, _exercises.windGravitySketch)
-    ],
-    [
-        "2.2 - Wind, Gravity & Friction",
-        (0, _exercises.windGravityFrictionSketch)
-    ],
-    [
-        "2.2b - Wind, Gravity, Friction, Collision",
-        (0, _exercises.windGravityFrictionCollisionSketch)
-    ],
-    [
-        "2.3 - Drag",
-        (0, _exercises.dragSketch)
-    ],
-    [
-        "2.6 - Single Draggable Attractor",
-        (0, _exercises.singleDraggableAttractorSketch)
-    ],
-    [
-        "2.8 - Many Attractors",
-        (0, _exercises.manyAttractorsSketch)
-    ],
-    [
-        "3.2 - Angular Rotation",
-        (0, _exercises.angularRotationSketch)
-    ],
-    [
-        "3.2b - Cannonball",
-        (0, _exercises.cannonballSketch)
-    ],
-    [
-        "3.5 - Arctan Followers",
-        (0, _exercises.arctanFollowersSketch)
-    ],
-    [
-        "3.5b - Spaceship",
-        (0, _exercises.spaceshipSketch)
-    ],
-    [
-        "4.2 - Particle System",
-        (0, _exercises.ParticleSystemSketch)
-    ],
-    [
-        "4.2b - Particle System [COSMIC]",
-        (0, _exercises.ParticleSystemCosmicSketch)
-    ],
-    [
-        "4.8 - Smoke",
-        (0, _exercises.smokeSketch)
-    ],
-    [
-        "6.1 - Seeking a Target",
-        (0, _exercises.seekingATargetSketch)
-    ],
-    [
-        "6.4 - Wanderers",
-        (0, _exercises.wanderersSketch)
-    ],
-    [
-        "6.6 - Flow Fields",
-        (0, _exercises.flowFieldsSketch)
-    ],
-    [
-        "6.8 - Linear Path Following",
-        (0, _exercises.linearPathFollowingSketch)
-    ],
-    [
-        "6.8b - Circular Path Following",
-        (0, _exercises.circularPathFollowingSketch)
-    ],
-    [
-        "6.11 - Group Behavior",
-        (0, _exercises.groupBehaviorSketch)
-    ],
-    [
-        "6.13 - Flocking",
-        (0, _exercises.flockingSketch)
-    ],
-    [
-        "7.4 - 1d Cellular Automation",
-        (0, _exercises.oneDellularAutomationSketch)
-    ],
-    [
-        "7.7 - Game of Life",
-        (0, _exercises.gameOfLifeSketch)
-    ],
-    [
-        "WIP - environment project",
-        (0, _environment.environmentSketch)
-    ],
-    [
-        "xc - Ray Casting",
-        (0, _exercises.rayCastingSketch)
-    ],
-    [
-        "xc - Ray Casting Plus",
-        (0, _exercises.rayCastingPlusSketch)
-    ]
-];
-const sidePanel = document.getElementById("side-panel");
+var _state = require("./state");
+var _data = require("./data");
+var _util = require("./util");
+const sidePanelLeft = document.getElementById("side-panel-left");
+const sidePanelRight = document.getElementById("side-panel-right");
 const sketchList = document.getElementById("side-panel-list");
 const container = document.getElementsByClassName("container")[0];
-let sidePanelOpen = false;
-const closeButton = document.getElementById("close-button");
-const closeSidePanel = ()=>{
-    sidePanel.style.width = "0";
-    sidePanel.style.left = "-2px";
+const options = document.getElementsByClassName("options")[0];
+let sidePanelLeftOpen = false;
+let sidePanelRightOpen = false;
+const closeButtonLeft = document.getElementById("close-button-left");
+const closeSidePanelLeft = ()=>{
+    sidePanelLeft.style.width = "0";
+    sidePanelLeft.style.left = "-2px";
     container.style.marginLeft = "0";
-    openSidePanel.innerText = `> ${getDisplayTitle()}`;
-    sidePanelOpen = false;
+    openSidePanelLeft.innerText = `> ${(0, _util.titleOrPlaceholder)((0, _state.state).currentSketch.title, (0, _state.state).about)}`;
+    sidePanelLeftOpen = false;
 };
-closeButton.onclick = ()=>{
-    closeSidePanel();
+closeButtonLeft.onclick = ()=>{
+    closeSidePanelLeft();
 };
-const openSidePanel = document.getElementById("open-side-panel");
-openSidePanel.onclick = ()=>{
-    if (!sidePanelOpen) {
-        sidePanel.style.width = "30rem";
-        sidePanel.style.left = "0";
+const openSidePanelLeft = document.getElementById("open-side-panel-left");
+openSidePanelLeft.onclick = ()=>{
+    if (!sidePanelLeftOpen) {
+        sidePanelLeft.style.width = "30rem";
+        sidePanelLeft.style.left = "0";
         container.style.marginLeft = "30rem";
-        openSidePanel.innerText = `< ${getDisplayTitle()}`;
-        sidePanelOpen = true;
-    } else closeSidePanel();
+        openSidePanelLeft.innerText = `< ${(0, _util.titleOrPlaceholder)((0, _state.state).currentSketch.title, (0, _state.state).about)}`;
+        sidePanelLeftOpen = true;
+    } else closeSidePanelLeft();
+};
+const closeButtonRight = document.getElementById("close-button-right");
+const closeSidePanelRight = ()=>{
+    sidePanelRight.style.width = "0";
+    sidePanelRight.style.right = "-2px";
+    container.style.marginRight = "0";
+    openSidePanelRight.innerText = `${(0, _util.titleOrPlaceholder)((0, _state.state).currentCollection.title, (0, _state.state).about)} <`;
+    sidePanelRightOpen = false;
+};
+closeButtonRight.onclick = ()=>{
+    closeSidePanelRight();
+};
+const openSidePanelRight = document.getElementById("open-side-panel-right");
+openSidePanelRight.onclick = ()=>{
+    if (!sidePanelRightOpen) {
+        sidePanelRight.style.width = "20rem";
+        sidePanelRight.style.right = "0";
+        container.style.marginRight = "20rem";
+        openSidePanelRight.innerText = `${(0, _util.titleOrPlaceholder)((0, _state.state).currentCollection.title, (0, _state.state).about)} >`;
+        sidePanelRightOpen = true;
+    } else closeSidePanelRight();
 };
 document.addEventListener("click", (event)=>{
-    const clickedInSidenav = event.target instanceof Node && sidePanel.contains(event.target);
-    const clickedSidenavButton = event.target instanceof Node && openSidePanel.contains(event.target);
-    if (!clickedInSidenav && !clickedSidenavButton) closeSidePanel();
+    const clickedInContainer = event.target instanceof Node && container.contains(event.target);
+    const clickedOpenLeftPanelButton = event.target instanceof Node && openSidePanelLeft.contains(event.target);
+    const clickedOpenRightPanelButton = event.target instanceof Node && openSidePanelRight.contains(event.target);
+    if (clickedInContainer && !clickedOpenLeftPanelButton) closeSidePanelLeft();
+    if (clickedInContainer && !clickedOpenRightPanelButton) closeSidePanelRight();
 });
-const createLinkText = (s)=>{
-    const [, title] = s.match(/- (.*)/);
-    return title.toLowerCase().replace(/ /g, "_");
+const removeAllChildNodes = (parent)=>{
+    while(parent.firstChild)parent.removeChild(parent.firstChild);
 };
-for (const pair of sketches){
-    const title = document.createElement("li");
+const renderSketchList = ()=>{
+    removeAllChildNodes(sketchList);
+    if ((0, _state.state).about) return;
+    for (const pair of (0, _state.state).currentCollection.sketches){
+        const title = document.createElement("li");
+        const a = document.createElement("a");
+        a.innerText = pair[0];
+        a.href = (0, _state.setRoute)(pair[0]);
+        a.onclick = closeSidePanelLeft;
+        title.appendChild(a);
+        sketchList.appendChild(title);
+    }
+};
+const renderOptions = ()=>{
+    if ((0, _state.state).currentSketch.title) options.style.display = "flex";
+    else options.style.display = "none";
+};
+const collections = (0, _data.data).map((el)=>el.collection);
+const collectionsList = document.getElementById("side-panel-list-right");
+for (const title of collections){
     const a = document.createElement("a");
-    a.innerText = pair[0];
-    a.href = `#${createLinkText(pair[0])}`;
-    a.onclick = closeSidePanel;
-    title.appendChild(a);
-    sketchList.appendChild(title);
+    a.innerText = title;
+    if (title === "Nature of Code") a.href = (0, _state.setRoute)("", true);
+    else a.href = (0, _state.setRoute)(title, true);
+    a.onclick = ()=>{
+        closeSidePanelRight();
+    };
+    collectionsList.appendChild(a);
 }
-const options = document.getElementsByClassName("options")[0];
-let p;
-const getTitle = ()=>{
-    let title = window.location.hash;
-    title = title.replace("#", "");
-    return title;
+const resetButton = document.getElementById("reset");
+resetButton.onclick = ()=>{
+    (0, _state.state).p5 = loadSketch();
 };
-const getDisplayTitle = ()=>{
-    let title = getTitle().replace(/_/g, " ");
-    if (!title) title = "select a sketch";
-    return title;
+const loadSketch = ()=>{
+    const title = (0, _state.state).currentSketch.title;
+    if (!title) {
+        if ((0, _state.state).p5) (0, _state.state).p5.remove();
+        return;
+    }
+    if ((0, _state.state).p5) (0, _state.state).p5.remove();
+    (0, _state.state).p5 = new (0, _p5Default.default)((0, _state.state).currentSketch.file, document.getElementById("app"));
+    return (0, _state.state).p5;
+};
+const renderAbout = ()=>{
+    const aboutContainer = document.getElementById("about-container");
+    if ((0, _state.state).about) {
+        const header = document.createElement("h2");
+        const p = document.createElement("p");
+        header.innerHTML = (0, _data.about).title;
+        p.innerHTML = (0, _data.about).html;
+        aboutContainer.appendChild(header);
+        aboutContainer.appendChild(p);
+    } else removeAllChildNodes(aboutContainer);
+};
+const renderMainConent = ()=>{
+    renderAbout();
+    loadSketch();
 };
 const renderPage = ()=>{
-    const title = getTitle();
-    if (title) {
-        loadSketch(title);
-        options.style.display = "flex";
-    } else {
-        options.style.display = "none";
-        openSidePanel.innerText = "> select a sketch";
-    }
+    (0, _state.loadRoute)();
+    renderMainConent();
+    renderSketchList();
+    closeSidePanelLeft();
+    closeSidePanelRight();
+    renderOptions();
 };
 window.onhashchange = ()=>{
     renderPage();
@@ -748,22 +695,8 @@ window.onhashchange = ()=>{
 window.onload = ()=>{
     renderPage();
 };
-const loadSketch = (title)=>{
-    if (!title) return;
-    openSidePanel.innerText = `> ${title.replace(/_/g, " ")}`;
-    let selectedIndex = sketches.findIndex((pair)=>createLinkText(pair[0]) === title);
-    const sketch = selectedIndex > -1 ? sketches[selectedIndex][1] : ()=>null;
-    if (p) p.remove();
-    p = new (0, _p5Default.default)(sketch, document.getElementById("app"));
-    return p;
-};
-const resetButton = document.getElementById("reset");
-resetButton.onclick = ()=>{
-    if (p) p.remove();
-    p = loadSketch(getTitle());
-};
 
-},{"p5":"7Uk5U","./styles.scss":"kMfPY","./exercises":"hp8uI","./environment":"ix24y","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7Uk5U":[function(require,module,exports) {
+},{"p5":"7Uk5U","./styles.scss":"kMfPY","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./state":"1Yeju","./data":"6C1am","./util":"j2NOL"}],"7Uk5U":[function(require,module,exports) {
 /*! p5.js v1.6.0 February 22, 2023 */ var global = arguments[3];
 !function(e1) {
     module.exports = e1();
@@ -28336,130 +28269,415 @@ resetButton.onclick = ()=>{
     ])(251);
 });
 
-},{}],"kMfPY":[function() {},{}],"hp8uI":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _1ATriangleCollision = require("./1a_triangle_collision");
-parcelHelpers.exportAll(_1ATriangleCollision, exports);
-var _011DCollision = require("./0.1_1d_collision");
-parcelHelpers.exportAll(_011DCollision, exports);
-var _1MouseFollowers = require("./1_mouse_followers");
-parcelHelpers.exportAll(_1MouseFollowers, exports);
-var _21WindGravity = require("./2.1_wind_gravity");
-parcelHelpers.exportAll(_21WindGravity, exports);
-var _22WindGravityFriction = require("./2.2_wind_gravity_friction");
-parcelHelpers.exportAll(_22WindGravityFriction, exports);
-var _22BWindGravityFrictionCollision = require("./2.2b_wind_gravity_friction_collision");
-parcelHelpers.exportAll(_22BWindGravityFrictionCollision, exports);
-var _23Drag = require("./2.3_drag");
-parcelHelpers.exportAll(_23Drag, exports);
-var _26SingleDraggableAttractor = require("./2.6_single_draggable_attractor");
-parcelHelpers.exportAll(_26SingleDraggableAttractor, exports);
-var _28ManyAttractors = require("./2.8_many_attractors");
-parcelHelpers.exportAll(_28ManyAttractors, exports);
-var _32AngularRotation = require("./3.2_angular_rotation");
-parcelHelpers.exportAll(_32AngularRotation, exports);
-var _32Cannonball = require("./3.2_cannonball");
-parcelHelpers.exportAll(_32Cannonball, exports);
-var _35ArctanFollowers = require("./3.5_arctan_followers");
-parcelHelpers.exportAll(_35ArctanFollowers, exports);
-var _35BSpaceship = require("./3.5b_spaceship");
-parcelHelpers.exportAll(_35BSpaceship, exports);
-var _42ParticleSystem = require("./4.2_particle_system");
-parcelHelpers.exportAll(_42ParticleSystem, exports);
-var _42BParticleSystemCosmic = require("./4.2b_particle_system_cosmic");
-parcelHelpers.exportAll(_42BParticleSystemCosmic, exports);
-var _48Smoke = require("./4.8_smoke");
-parcelHelpers.exportAll(_48Smoke, exports);
-var _61SeekingATarget = require("./6.1_seeking_a_target");
-parcelHelpers.exportAll(_61SeekingATarget, exports);
-var _65Wanderers = require("./6.5_wanderers");
-parcelHelpers.exportAll(_65Wanderers, exports);
-var _66FlowFields = require("./6.6_flow_fields");
-parcelHelpers.exportAll(_66FlowFields, exports);
-var _68LinearPathFollowing = require("./6.8_linear_path_following");
-parcelHelpers.exportAll(_68LinearPathFollowing, exports);
-var _68BCircularPathFollowing = require("./6.8b_circular_path_following");
-parcelHelpers.exportAll(_68BCircularPathFollowing, exports);
-var _611GroupBehavior = require("./6.11_group_behavior");
-parcelHelpers.exportAll(_611GroupBehavior, exports);
-var _613Flocking = require("./6.13_flocking");
-parcelHelpers.exportAll(_613Flocking, exports);
-var _741DCellularAutomation = require("./7.4_1d_cellular_automation");
-parcelHelpers.exportAll(_741DCellularAutomation, exports);
-var _77GameOfLife = require("./7.7_game_of_life");
-parcelHelpers.exportAll(_77GameOfLife, exports);
-var _xcRayCasting = require("./xc_ray_casting");
-parcelHelpers.exportAll(_xcRayCasting, exports);
-var _xcRayCastingPlus = require("./xc_ray_casting_plus");
-parcelHelpers.exportAll(_xcRayCastingPlus, exports);
+},{}],"kMfPY":[function() {},{}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
-},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./6.8_linear_path_following":"4YCzK","./6.8b_circular_path_following":"hmyI3","./6.11_group_behavior":"6eN3I","./6.13_flocking":"kOVSr","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./xc_ray_casting":"bbKtJ","./xc_ray_casting_plus":"kaW6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./3.5b_spaceship":"eF5HV"}],"e1WNo":[function(require,module,exports) {
+},{}],"1Yeju":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "triangleCollisionSketch", ()=>triangleCollisionSketch);
-var _stylesScss = require("../styles.scss");
-var _util = require("../util");
-const triangleCollisionSketch = (p5)=>{
-    const WIDTH = 600;
-    const HEIGHT = 340;
-    const pts = [
-        p5.random(0, WIDTH),
-        p5.random(0, HEIGHT),
-        p5.random(0, WIDTH),
-        p5.random(0, HEIGHT),
-        p5.random(0, WIDTH),
-        p5.random(0, HEIGHT)
-    ];
-    let inside = false;
-    let hit = true;
-    let color = getColor();
-    let bg = getColor("dark");
-    function getColor(type) {
-        const dark = type === "dark";
-        const low = dark ? 0 : 100;
-        const high = dark ? 100 : 255;
-        return p5.color(p5.random(low, high), p5.random(low, high), p5.random(low, high));
+parcelHelpers.export(exports, "state", ()=>state);
+parcelHelpers.export(exports, "setCurrentSketch", ()=>setCurrentSketch);
+parcelHelpers.export(exports, "loadRoute", ()=>loadRoute);
+parcelHelpers.export(exports, "setRoute", ()=>setRoute);
+var _data = require("./data");
+var _util = require("./util");
+const state = {
+    p5: undefined,
+    currentSketch: {
+        file: undefined,
+        title: undefined,
+        param: undefined
+    },
+    currentCollection: {
+        title: "Nature of Code",
+        sketches: (0, _data.natureOfCodeSketches)
+    },
+    about: false
+};
+const resetState = ()=>{
+    state.about = false;
+    setCurrentSketch((0, _util.getDisplayTitle)());
+    state.currentCollection.title = "Nature of Code";
+    state.currentCollection.sketches = (0, _data.natureOfCodeSketches);
+};
+const setCurrentSketch = (title, file, param)=>{
+    state.currentSketch.title = title;
+    state.currentSketch.file = file;
+    state.currentSketch.param = param;
+};
+const getFile = (s)=>{
+    if (!s) return;
+    const currentSketchList = state.currentCollection.sketches;
+    const sketchPair = currentSketchList.find((pair)=>{
+        return (0, _util.createLinkText)(pair[0]) === s;
+    });
+    return sketchPair ? sketchPair[1] : ()=>null;
+};
+const getSketches = (s)=>{
+    const col = (0, _data.data).find((entry)=>{
+        return entry.collection.toLowerCase() === s;
+    });
+    return col?.sketches || [];
+};
+const loadRoute = ()=>{
+    const hash = window.location.hash;
+    if (!hash) {
+        resetState();
+        return;
     }
+    const hashGroups = hash.slice(2).split("/");
+    if (!hashGroups || !hashGroups.length) resetState();
+    else if (hashGroups.length === 1) {
+        const [sketch] = hashGroups;
+        switch((0, _util.decodeParam)(sketch)){
+            case "about":
+                state.about = true;
+                setCurrentSketch((0, _util.getDisplayTitle)());
+                state.currentCollection.title = "About";
+                state.currentCollection.sketches = undefined;
+                setCurrentSketch();
+                break;
+            case "misc":
+                state.about = false;
+                setCurrentSketch((0, _util.getDisplayTitle)());
+                state.currentCollection.title = "Misc";
+                state.currentCollection.sketches = (0, _data.miscSketches);
+                break;
+            default:
+                {
+                    state.about = false;
+                    state.currentCollection.title = "Nature of Code";
+                    state.currentCollection.sketches = (0, _data.natureOfCodeSketches);
+                    const param = (0, _util.decodeParam)(sketch);
+                    const file = getFile(param);
+                    const title = (0, _util.getDisplayTitle)(param);
+                    setCurrentSketch(title, file, param);
+                }
+        }
+    } else if (hashGroups.length === 2) {
+        const [collection, sketch] = hashGroups;
+        state.about = false;
+        state.currentCollection.title = collection;
+        state.currentCollection.sketches = getSketches((0, _util.decodeParam)(collection));
+        const param = (0, _util.decodeParam)(sketch);
+        const file = getFile(param);
+        const title = (0, _util.getDisplayTitle)(param);
+        setCurrentSketch(title, file, param);
+    }
+};
+const setRoute = (s, collection)=>{
+    if (collection) return `#/${(0, _util.createLinkText)(s)}`;
+    else {
+        if (state.currentCollection.title === "Nature of Code") return `#/${(0, _util.createLinkText)(s)}`;
+        else return `#/${(0, _util.createLinkText)(state.currentCollection.title)}/${(0, _util.createLinkText)(s)}`;
+    }
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./data":"6C1am","./util":"j2NOL"}],"6C1am":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "natureOfCodeSketches", ()=>natureOfCodeSketches);
+parcelHelpers.export(exports, "miscSketches", ()=>miscSketches);
+parcelHelpers.export(exports, "data", ()=>data);
+parcelHelpers.export(exports, "about", ()=>about);
+var _environment = require("./environment");
+var _exercises = require("./exercises");
+const natureOfCodeSketches = [
+    [
+        "1 - Mouse Followers",
+        (0, _exercises.mouseFollowersSketch)
+    ],
+    [
+        "2.1 - Wind & Gravity",
+        (0, _exercises.windGravitySketch)
+    ],
+    [
+        "2.2 - Wind, Gravity & Friction",
+        (0, _exercises.windGravityFrictionSketch)
+    ],
+    [
+        "2.2b - Wind, Gravity, Friction, Collision",
+        (0, _exercises.windGravityFrictionCollisionSketch)
+    ],
+    [
+        "2.3 - Drag",
+        (0, _exercises.dragSketch)
+    ],
+    [
+        "2.6 - Single Draggable Attractor",
+        (0, _exercises.singleDraggableAttractorSketch)
+    ],
+    [
+        "2.8 - Many Attractors",
+        (0, _exercises.manyAttractorsSketch)
+    ],
+    [
+        "3.2 - Angular Rotation",
+        (0, _exercises.angularRotationSketch)
+    ],
+    [
+        "3.2b - Cannonball",
+        (0, _exercises.cannonballSketch)
+    ],
+    [
+        "3.5 - Arctan Followers",
+        (0, _exercises.arctanFollowersSketch)
+    ],
+    [
+        "3.5b - Spaceship",
+        (0, _exercises.spaceshipSketch)
+    ],
+    [
+        "4.2 - Particle System",
+        (0, _exercises.ParticleSystemSketch)
+    ],
+    [
+        "4.2b - Particle System [COSMIC]",
+        (0, _exercises.ParticleSystemCosmicSketch)
+    ],
+    [
+        "4.8 - Smoke",
+        (0, _exercises.smokeSketch)
+    ],
+    [
+        "6.1 - Seeking a Target",
+        (0, _exercises.seekingATargetSketch)
+    ],
+    [
+        "6.4 - Wanderers",
+        (0, _exercises.wanderersSketch)
+    ],
+    [
+        "6.6 - Flow Fields",
+        (0, _exercises.flowFieldsSketch)
+    ],
+    [
+        "6.8 - Linear Path Following",
+        (0, _exercises.linearPathFollowingSketch)
+    ],
+    [
+        "6.8b - Circular Path Following",
+        (0, _exercises.circularPathFollowingSketch)
+    ],
+    [
+        "6.11 - Group Behavior",
+        (0, _exercises.groupBehaviorSketch)
+    ],
+    [
+        "6.13 - Flocking",
+        (0, _exercises.flockingSketch)
+    ],
+    [
+        "7.4 - 1d Cellular Automation",
+        (0, _exercises.oneDellularAutomationSketch)
+    ],
+    [
+        "7.7 - Game of Life",
+        (0, _exercises.gameOfLifeSketch)
+    ],
+    [
+        "WIP - environment project",
+        (0, _environment.environmentSketch)
+    ]
+];
+const miscSketches = [
+    [
+        "1D Collision",
+        (0, _exercises.oneDimendionalCollisionSketch)
+    ],
+    [
+        "Triangle Collision",
+        (0, _exercises.triangleCollisionSketch)
+    ],
+    [
+        "Ray Casting",
+        (0, _exercises.rayCastingSketch)
+    ],
+    [
+        "Ray Casting Plus",
+        (0, _exercises.rayCastingPlusSketch)
+    ]
+];
+const data = [
+    {
+        collection: "Nature of Code",
+        sketches: natureOfCodeSketches
+    },
+    {
+        collection: "Misc",
+        sketches: miscSketches
+    }
+];
+const about = {
+    title: "fun",
+    html: `</br>
+This site is a sketchbook.
+<br/><br/>
+The exercises in the Nature of Code section are from the awesome book <a href="https://natureofcode.com/" target="_blank" rel="noreferrer noopener">The Nature of Code</a>
+by Daniel Schiffman.
+<br/><br/>
+The sketches in the Misc section are anything that caught my interest. Many were inspired by <a href="https://thecodingtrain.com/challenges" target="_blank" rel="noreferrer noopener">The Coding Train</a>, also by Daniel Schiffman. The guy is a great teacher!
+<br/><br/>
+The source code lives <a href="https://github.com/SamVanTassel/nature-of-code" target="_blank">here</a>`
+};
+
+},{"./environment":"ix24y","./exercises":"hp8uI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ix24y":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "environmentSketch", ()=>environmentSketch);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+var _stylesScss = require("./styles.scss");
+var _util = require("./util");
+const environmentSketch = (p5)=>{
+    const WIDTH = 1000;
+    const HEIGHT = WIDTH;
+    const ants = [];
+    const G = .5;
+    const minGravDistance = 2;
+    const maxGravDistance = 25;
     p5.setup = ()=>{
         p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-        p5.noCursor();
+        for(let i = 0; i < 3; i++)ants.push(new Ant({}));
     };
     p5.draw = ()=>{
-        p5.background(bg);
-        hit = trianglePoint(p5.mouseX, p5.mouseY, pts[0], pts[2], pts[4], pts[1], pts[3], pts[5]);
-        if (hit && !inside) {
-            inside = true;
-            color = getColor();
-        }
-        if (!hit && inside) inside = false;
-        p5.noStroke();
-        p5.fill(inside ? color : p5.color("wheat"));
-        p5.triangle(...pts);
-        p5.stroke(0, 150);
-        p5.strokeWeight(10);
-        p5.point(p5.mouseX, p5.mouseY);
+        // p5.background(110, 90, 90);
+        ants.forEach((ant)=>{
+            ants.forEach((a)=>{
+                if (a !== ant) {
+                    const gravity = a.attract(ant);
+                    ant.applyForce(gravity);
+                }
+            });
+            ant.update();
+            ant.checkEdges();
+            ant.display();
+        });
     };
-    function trianglePoint(px, py, x1, x2, x3, y1, y2, y3) {
-        // get the area of the drawn triangle
-        const areaOrig = p5.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
-        // get the area of 3 triangles made between the point
-        // and the corners of the triangle
-        const area1 = p5.abs((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py));
-        const area2 = p5.abs((x2 - px) * (y3 - py) - (x3 - px) * (y2 - py));
-        const area3 = p5.abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
-        // if the area of the original triangle is the same as
-        // that of the three between the points and the mouse,
-        // the mouse is within the triangle
-        // some wiggle room for floating point math error too
-        return areaOrig + .0000000001 > area1 + area2 + area3;
-    }
+    p5.mouseClicked = ()=>{
+        ants.push(new Ant({
+            x: p5.mouseX,
+            y: p5.mouseY
+        }));
+    };
     p5.windowResized = ()=>{
         p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
     };
+    // CLASSES
+    class Mover {
+        constructor({ x , y , v , a , c , m  }){
+            this.location = p5.createVector(x, y);
+            this.velocity = v ? v : p5.createVector(0, 0);
+            this.acceleration = a ? a : p5.createVector(0, 0);
+            this.color = c;
+            this.mass = m;
+        }
+        applyForce(force) {
+            const f = (0, _p5Default.default).Vector.div(force, this.mass);
+            this.acceleration.add(f);
+        }
+        update() {
+            this.velocity.add(this.acceleration);
+            this.location.add(this.velocity);
+            this.acceleration.mult(0);
+        }
+    }
+    class Ant extends Mover {
+        constructor({ x , y , c , m  }){
+            const v = p5.createVector(p5.random(-0.2, .2), p5.random(-0.2, .2));
+            const a = p5.createVector(.001, .001);
+            // brownish color by default
+            const rc = p5.random(0, 50);
+            c = c ? c : p5.color(rc + p5.random(0, 50), rc, rc);
+            x = x ? x : p5.random(p5.width);
+            y = y ? y : p5.random(p5.height);
+            m = m ? m : p5.random(.1, .5);
+            super({
+                x,
+                y,
+                v,
+                a,
+                c,
+                m
+            });
+            this.radius = this.mass * 30;
+        }
+        attract(m) {
+            const force = (0, _p5Default.default).Vector.sub(this.location, m.location);
+            let distance = force.mag();
+            distance = p5.constrain(distance, minGravDistance, maxGravDistance);
+            force.normalize();
+            const strength = G * this.mass * m.mass / (distance * distance);
+            force.mult(strength);
+            return force;
+        }
+        applyForce(force) {
+            const f = (0, _p5Default.default).Vector.div(force, this.mass);
+            this.acceleration.add(f);
+        }
+        update() {
+            this.velocity.add(this.acceleration);
+            this.location.add(this.velocity);
+            this.acceleration.mult(0);
+        }
+        checkEdges() {
+            if (this.location.x < this.radius) this.location.x = p5.width - this.radius;
+            if (this.location.x > p5.width - this.radius) this.location.x = this.radius;
+            if (this.location.y < this.radius) this.location.y = p5.height - this.radius;
+            if (this.location.y > p5.height - this.radius) this.location.y = this.radius;
+        }
+        display() {
+            p5.noStroke();
+            p5.fill(this.color);
+            p5.ellipse(this.location.x, this.location.y, this.radius);
+        }
+    }
+    class Prey extends Mover {
+        constructor({ x , y , c , m  }){
+            super({
+                x,
+                y,
+                c,
+                m
+            });
+        }
+        checkEdges() {}
+        display() {
+            p5.noStroke();
+            p5.fill(this.color);
+            p5.ellipse(this.location.x, this.location.y, 15);
+        }
+    }
 };
 
-},{"../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"j2NOL":[function(require,module,exports) {
+},{"p5":"7Uk5U","./styles.scss":"kMfPY","./util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"j2NOL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorContrastChecker = require("./color_contrast_checker");
@@ -28472,8 +28690,10 @@ var _mover = require("./Mover");
 parcelHelpers.exportAll(_mover, exports);
 var _resize = require("./resize");
 parcelHelpers.exportAll(_resize, exports);
+var _paramHelpers = require("./param_helpers");
+parcelHelpers.exportAll(_paramHelpers, exports);
 
-},{"./color_contrast_checker":"ddYXH","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./resize":"6aTto","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ddYXH":[function(require,module,exports) {
+},{"./color_contrast_checker":"ddYXH","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./resize":"6aTto","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./param_helpers":"eFs6o"}],"ddYXH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "checkContrast", ()=>checkContrast);
@@ -28510,37 +28730,7 @@ const checkContrast = (color1, color2)=>{
     return ratio < 1 / 3;
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"jWrLI":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jWrLI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Draggable", ()=>Draggable);
@@ -28688,7 +28878,154 @@ const getSize = (w, h)=>{
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cX0vY":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eFs6o":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "decodeParam", ()=>decodeParam);
+parcelHelpers.export(exports, "getDisplayTitle", ()=>getDisplayTitle);
+parcelHelpers.export(exports, "createLinkText", ()=>createLinkText);
+parcelHelpers.export(exports, "titleOrPlaceholder", ()=>titleOrPlaceholder);
+const decodeParam = (s)=>{
+    return s.replace(/#/g, "").replace(/\//g, "");
+};
+const getDisplayTitle = (s)=>{
+    if (!s) return;
+    return s.replace(/_/g, " ").toLowerCase();
+};
+const createLinkText = (s)=>{
+    const splits = s.split("- ");
+    const title = splits[splits.length - 1];
+    return title.toLowerCase().replace(/ /g, "_");
+};
+const titleOrPlaceholder = (s, about)=>{
+    if (s) return getDisplayTitle(s);
+    return about ? "" : "select a sketch";
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hp8uI":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _1ATriangleCollision = require("./1a_triangle_collision");
+parcelHelpers.exportAll(_1ATriangleCollision, exports);
+var _011DCollision = require("./0.1_1d_collision");
+parcelHelpers.exportAll(_011DCollision, exports);
+var _1MouseFollowers = require("./1_mouse_followers");
+parcelHelpers.exportAll(_1MouseFollowers, exports);
+var _21WindGravity = require("./2.1_wind_gravity");
+parcelHelpers.exportAll(_21WindGravity, exports);
+var _22WindGravityFriction = require("./2.2_wind_gravity_friction");
+parcelHelpers.exportAll(_22WindGravityFriction, exports);
+var _22BWindGravityFrictionCollision = require("./2.2b_wind_gravity_friction_collision");
+parcelHelpers.exportAll(_22BWindGravityFrictionCollision, exports);
+var _23Drag = require("./2.3_drag");
+parcelHelpers.exportAll(_23Drag, exports);
+var _26SingleDraggableAttractor = require("./2.6_single_draggable_attractor");
+parcelHelpers.exportAll(_26SingleDraggableAttractor, exports);
+var _28ManyAttractors = require("./2.8_many_attractors");
+parcelHelpers.exportAll(_28ManyAttractors, exports);
+var _32AngularRotation = require("./3.2_angular_rotation");
+parcelHelpers.exportAll(_32AngularRotation, exports);
+var _32Cannonball = require("./3.2_cannonball");
+parcelHelpers.exportAll(_32Cannonball, exports);
+var _35ArctanFollowers = require("./3.5_arctan_followers");
+parcelHelpers.exportAll(_35ArctanFollowers, exports);
+var _35BSpaceship = require("./3.5b_spaceship");
+parcelHelpers.exportAll(_35BSpaceship, exports);
+var _42ParticleSystem = require("./4.2_particle_system");
+parcelHelpers.exportAll(_42ParticleSystem, exports);
+var _42BParticleSystemCosmic = require("./4.2b_particle_system_cosmic");
+parcelHelpers.exportAll(_42BParticleSystemCosmic, exports);
+var _48Smoke = require("./4.8_smoke");
+parcelHelpers.exportAll(_48Smoke, exports);
+var _61SeekingATarget = require("./6.1_seeking_a_target");
+parcelHelpers.exportAll(_61SeekingATarget, exports);
+var _65Wanderers = require("./6.5_wanderers");
+parcelHelpers.exportAll(_65Wanderers, exports);
+var _66FlowFields = require("./6.6_flow_fields");
+parcelHelpers.exportAll(_66FlowFields, exports);
+var _68LinearPathFollowing = require("./6.8_linear_path_following");
+parcelHelpers.exportAll(_68LinearPathFollowing, exports);
+var _68BCircularPathFollowing = require("./6.8b_circular_path_following");
+parcelHelpers.exportAll(_68BCircularPathFollowing, exports);
+var _611GroupBehavior = require("./6.11_group_behavior");
+parcelHelpers.exportAll(_611GroupBehavior, exports);
+var _613Flocking = require("./6.13_flocking");
+parcelHelpers.exportAll(_613Flocking, exports);
+var _741DCellularAutomation = require("./7.4_1d_cellular_automation");
+parcelHelpers.exportAll(_741DCellularAutomation, exports);
+var _77GameOfLife = require("./7.7_game_of_life");
+parcelHelpers.exportAll(_77GameOfLife, exports);
+var _xcRayCasting = require("./xc_ray_casting");
+parcelHelpers.exportAll(_xcRayCasting, exports);
+var _xcRayCastingPlus = require("./xc_ray_casting_plus");
+parcelHelpers.exportAll(_xcRayCastingPlus, exports);
+
+},{"./1a_triangle_collision":"e1WNo","./0.1_1d_collision":"cX0vY","./1_mouse_followers":"4h2st","./2.1_wind_gravity":"pZCl5","./2.2_wind_gravity_friction":"iID8r","./2.2b_wind_gravity_friction_collision":"9efCm","./2.3_drag":"8uhEp","./2.6_single_draggable_attractor":"dYpyA","./2.8_many_attractors":"fzUi2","./3.2_angular_rotation":"5S3Ld","./3.2_cannonball":"37MgY","./3.5_arctan_followers":"hzupi","./3.5b_spaceship":"eF5HV","./4.2_particle_system":"i1p4O","./4.2b_particle_system_cosmic":"hoOqi","./4.8_smoke":"1s4df","./6.1_seeking_a_target":"iRuCa","./6.5_wanderers":"ezWKu","./6.6_flow_fields":"lHbXq","./6.8_linear_path_following":"4YCzK","./6.8b_circular_path_following":"hmyI3","./6.11_group_behavior":"6eN3I","./6.13_flocking":"kOVSr","./7.4_1d_cellular_automation":"iaaHN","./7.7_game_of_life":"dZk0I","./xc_ray_casting":"bbKtJ","./xc_ray_casting_plus":"kaW6z","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"e1WNo":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "triangleCollisionSketch", ()=>triangleCollisionSketch);
+var _stylesScss = require("../styles.scss");
+var _util = require("../util");
+const triangleCollisionSketch = (p5)=>{
+    const WIDTH = 600;
+    const HEIGHT = 340;
+    const pts = [
+        p5.random(0, WIDTH),
+        p5.random(0, HEIGHT),
+        p5.random(0, WIDTH),
+        p5.random(0, HEIGHT),
+        p5.random(0, WIDTH),
+        p5.random(0, HEIGHT)
+    ];
+    let inside = false;
+    let hit = true;
+    let color = getColor();
+    let bg = getColor("dark");
+    function getColor(type) {
+        const dark = type === "dark";
+        const low = dark ? 0 : 100;
+        const high = dark ? 100 : 255;
+        return p5.color(p5.random(low, high), p5.random(low, high), p5.random(low, high));
+    }
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        p5.noCursor();
+    };
+    p5.draw = ()=>{
+        p5.background(bg);
+        hit = trianglePoint(p5.mouseX, p5.mouseY, pts[0], pts[2], pts[4], pts[1], pts[3], pts[5]);
+        if (hit && !inside) {
+            inside = true;
+            color = getColor();
+        }
+        if (!hit && inside) inside = false;
+        p5.noStroke();
+        p5.fill(inside ? color : p5.color("wheat"));
+        p5.triangle(...pts);
+        p5.stroke(0, 150);
+        p5.strokeWeight(10);
+        p5.point(p5.mouseX, p5.mouseY);
+    };
+    function trianglePoint(px, py, x1, x2, x3, y1, y2, y3) {
+        // get the area of the drawn triangle
+        const areaOrig = p5.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
+        // get the area of 3 triangles made between the point
+        // and the corners of the triangle
+        const area1 = p5.abs((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py));
+        const area2 = p5.abs((x2 - px) * (y3 - py) - (x3 - px) * (y2 - py));
+        const area3 = p5.abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
+        // if the area of the original triangle is the same as
+        // that of the three between the points and the mouse,
+        // the mouse is within the triangle
+        // some wiggle room for floating point math error too
+        return areaOrig + .0000000001 > area1 + area2 + area3;
+    }
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+};
+
+},{"../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"cX0vY":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "oneDimendionalCollisionSketch", ()=>oneDimendionalCollisionSketch);
@@ -29689,7 +30026,158 @@ const arctanFollowersSketch = (p5)=>{
     }
 };
 
-},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"i1p4O":[function(require,module,exports) {
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"eF5HV":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "spaceshipSketch", ()=>spaceshipSketch);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+var _util = require("../util");
+const spaceshipSketch = (p5)=>{
+    const WIDTH = 800;
+    const HEIGHT = WIDTH;
+    let s;
+    const boosterOff = p5.color("white");
+    const boosterOn = p5.color("red");
+    p5.setup = ()=>{
+        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+        s = new Spaceship();
+    };
+    p5.draw = ()=>{
+        p5.background(0);
+        checkKeys();
+        s.laserSystem.showLasers();
+        s.update();
+        s.display();
+    };
+    const checkKeys = ()=>{
+        if (p5.keyIsDown(37)) s.angularMomentum -= .001;
+        if (p5.keyIsDown(39)) s.angularMomentum += .001;
+        if (p5.keyIsDown(38)) {
+            s.boosterColor = boosterOn;
+            const boost = p5.createVector(0, .1);
+            boost.setHeading(s.angle + p5.PI / 2);
+            s.applyForce(boost);
+        } else s.boosterColor = boosterOff;
+        if (p5.keyIsDown(32)) s.shoot();
+    };
+    p5.windowResized = ()=>{
+        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
+    };
+    class Spaceship extends (0, _util.Mover) {
+        constructor(){
+            super({
+                p5,
+                v: new (0, _p5Default.default).Vector(0, 0)
+            });
+            this.angle = p5.random(2 * p5.PI);
+            this.velocity.setHeading(this.angle);
+            this.acceleration.setHeading(this.angle);
+            this.boosterColor = boosterOff;
+            this.maxSpeed = 5;
+            this.laserSystem = new LaserSystem(this);
+        }
+        update() {
+            this.velocity.add(this.acceleration);
+            this.velocity.limit(this.maxSpeed);
+            this.location.add(this.velocity);
+            this.checkEdges();
+            this.angularMomentum = p5.constrain(this.angularMomentum, -0.1, 1);
+            this.angularVelocity += this.angularMomentum;
+            this.angularVelocity = p5.constrain(this.angularVelocity, -2, 2);
+            this.angle += this.angularVelocity;
+            this.angularMomentum = 0;
+            this.acceleration.mult(0);
+        }
+        checkEdges() {
+            if (this.location.x < 0) this.location.x = p5.width;
+            if (this.location.y < 0) this.location.y = p5.height;
+            if (this.location.x > p5.width) this.location.x = 0;
+            if (this.location.y > p5.height) this.location.y = 0;
+        }
+        draw() {
+            p5.stroke("black");
+            p5.strokeWeight(1);
+            p5.push();
+            p5.translate(-10, -5);
+            p5.triangle(0, 0, 20, 0, 10, 30);
+            p5.fill(this.boosterColor);
+            p5.rect(2.5, 0, 5, -5);
+            p5.rect(12.5, 0, 5, -5);
+            p5.pop();
+        }
+        shoot() {
+            this.laserSystem.addLaser();
+            const boost = p5.createVector(0, .015);
+            boost.setHeading(s.angle - p5.PI / 2);
+            this.applyForce(boost);
+        }
+    }
+    class LaserSystem {
+        constructor(s){
+            this.lasers = [];
+            this.source = s;
+            this.maxLasers = 100;
+        }
+        addLaser() {
+            const origin = this.source.location.copy();
+            const ship = p5.createVector(0, 20);
+            ship.setHeading(this.source.angle + p5.PI / 2);
+            origin.add(ship);
+            this.lasers.push(new Laser(origin.x, origin.y, this.source.angle));
+            if (this.lasers.length > this.maxLasers) this.lasers.splice(0, 1);
+        }
+        showLasers() {
+            p5.strokeWeight(2);
+            this.lasers.forEach((l)=>{
+                l.update();
+                l.display();
+            });
+        }
+    }
+    class Laser {
+        constructor(x, y, angle){
+            this.location = p5.createVector(x, y);
+            this.previousLocation = this.location.copy();
+            this.angle = angle + p5.PI / 2;
+            this.velocity = (0, _p5Default.default).Vector.fromAngle(this.angle);
+            this.velocity.setMag(8);
+            this.lifeSpan = 100;
+        }
+        update() {
+            if (this.lifeSpan <= 0) return;
+            this.previousLocation = this.location.copy();
+            this.location.add(this.velocity);
+            this.checkEdges();
+            this.lifeSpan--;
+        }
+        checkEdges() {
+            if (this.location.x < 0) {
+                this.location.x = p5.width;
+                this.previousLocation.x = p5.width;
+            }
+            if (this.location.y < 0) {
+                this.location.y = p5.height;
+                this.previousLocation.y = p5.height;
+            }
+            if (this.location.x > p5.width) {
+                this.location.x = 0;
+                this.previousLocation.x = 0;
+            }
+            if (this.location.y > p5.height) {
+                this.location.y = 0;
+                this.previousLocation.y = 0;
+            }
+        }
+        display() {
+            if (this.lifeSpan <= 0) return;
+            p5.stroke(255, 0, 0, this.lifeSpan * 2);
+            p5.line(this.previousLocation.x, this.previousLocation.y, this.location.x, this.location.y);
+        }
+    }
+};
+
+},{"p5":"7Uk5U","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"i1p4O":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ParticleSystemSketch", ()=>ParticleSystemSketch);
@@ -31987,286 +32475,6 @@ const rayCastingPlusSketch = (p5)=>{
     }
 };
 
-},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"eF5HV":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "spaceshipSketch", ()=>spaceshipSketch);
-var _p5 = require("p5");
-var _p5Default = parcelHelpers.interopDefault(_p5);
-var _util = require("../util");
-const spaceshipSketch = (p5)=>{
-    const WIDTH = 800;
-    const HEIGHT = WIDTH;
-    let s;
-    const boosterOff = p5.color("white");
-    const boosterOn = p5.color("red");
-    p5.setup = ()=>{
-        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-        s = new Spaceship();
-    };
-    p5.draw = ()=>{
-        p5.background(0);
-        checkKeys();
-        s.laserSystem.showLasers();
-        s.update();
-        s.display();
-    };
-    const checkKeys = ()=>{
-        if (p5.keyIsDown(37)) s.angularMomentum -= .001;
-        if (p5.keyIsDown(39)) s.angularMomentum += .001;
-        if (p5.keyIsDown(38)) {
-            s.boosterColor = boosterOn;
-            const boost = p5.createVector(0, .1);
-            boost.setHeading(s.angle + p5.PI / 2);
-            s.applyForce(boost);
-        } else s.boosterColor = boosterOff;
-        if (p5.keyIsDown(32)) s.shoot();
-    };
-    p5.windowResized = ()=>{
-        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-    };
-    class Spaceship extends (0, _util.Mover) {
-        constructor(){
-            super({
-                p5,
-                v: new (0, _p5Default.default).Vector(0, 0)
-            });
-            this.angle = p5.random(2 * p5.PI);
-            this.velocity.setHeading(this.angle);
-            this.acceleration.setHeading(this.angle);
-            this.boosterColor = boosterOff;
-            this.maxSpeed = 5;
-            this.laserSystem = new LaserSystem(this);
-        }
-        update() {
-            this.velocity.add(this.acceleration);
-            this.velocity.limit(this.maxSpeed);
-            this.location.add(this.velocity);
-            this.checkEdges();
-            this.angularMomentum = p5.constrain(this.angularMomentum, -0.1, 1);
-            this.angularVelocity += this.angularMomentum;
-            this.angularVelocity = p5.constrain(this.angularVelocity, -2, 2);
-            this.angle += this.angularVelocity;
-            this.angularMomentum = 0;
-            this.acceleration.mult(0);
-        }
-        checkEdges() {
-            if (this.location.x < 0) this.location.x = p5.width;
-            if (this.location.y < 0) this.location.y = p5.height;
-            if (this.location.x > p5.width) this.location.x = 0;
-            if (this.location.y > p5.height) this.location.y = 0;
-        }
-        draw() {
-            p5.stroke("black");
-            p5.strokeWeight(1);
-            p5.push();
-            p5.translate(-10, -5);
-            p5.triangle(0, 0, 20, 0, 10, 30);
-            p5.fill(this.boosterColor);
-            p5.rect(2.5, 0, 5, -5);
-            p5.rect(12.5, 0, 5, -5);
-            p5.pop();
-        }
-        shoot() {
-            this.laserSystem.addLaser();
-            const boost = p5.createVector(0, .015);
-            boost.setHeading(s.angle - p5.PI / 2);
-            this.applyForce(boost);
-        }
-    }
-    class LaserSystem {
-        constructor(s){
-            this.lasers = [];
-            this.source = s;
-            this.maxLasers = 100;
-        }
-        addLaser() {
-            const origin = this.source.location.copy();
-            const ship = p5.createVector(0, 20);
-            ship.setHeading(this.source.angle + p5.PI / 2);
-            origin.add(ship);
-            this.lasers.push(new Laser(origin.x, origin.y, this.source.angle));
-            if (this.lasers.length > this.maxLasers) this.lasers.splice(0, 1);
-        }
-        showLasers() {
-            p5.strokeWeight(2);
-            this.lasers.forEach((l)=>{
-                l.update();
-                l.display();
-            });
-        }
-    }
-    class Laser {
-        constructor(x, y, angle){
-            this.location = p5.createVector(x, y);
-            this.previousLocation = this.location.copy();
-            this.velocity = p5.createVector(5, 5);
-            this.angle = angle + p5.PI / 2;
-            this.velocity.setHeading(this.angle);
-            this.lifeSpan = 100;
-        }
-        update() {
-            if (this.lifeSpan <= 0) return;
-            this.previousLocation = this.location.copy();
-            this.location.add(this.velocity);
-            this.checkEdges();
-            this.lifeSpan--;
-        }
-        checkEdges() {
-            if (this.location.x < 0) {
-                this.location.x = p5.width;
-                this.previousLocation.x = p5.width;
-            }
-            if (this.location.y < 0) {
-                this.location.y = p5.height;
-                this.previousLocation.y = p5.height;
-            }
-            if (this.location.x > p5.width) {
-                this.location.x = 0;
-                this.previousLocation.x = 0;
-            }
-            if (this.location.y > p5.height) {
-                this.location.y = 0;
-                this.previousLocation.y = 0;
-            }
-        }
-        display() {
-            if (this.lifeSpan <= 0) return;
-            p5.stroke(255, 0, 0, this.lifeSpan * 2);
-            p5.line(this.previousLocation.x, this.previousLocation.y, this.location.x, this.location.y);
-        }
-    }
-};
-
-},{"p5":"7Uk5U","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ix24y":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "environmentSketch", ()=>environmentSketch);
-var _p5 = require("p5");
-var _p5Default = parcelHelpers.interopDefault(_p5);
-var _stylesScss = require("./styles.scss");
-var _util = require("./util");
-const environmentSketch = (p5)=>{
-    const WIDTH = 1000;
-    const HEIGHT = WIDTH;
-    const ants = [];
-    const G = .5;
-    const minGravDistance = 2;
-    const maxGravDistance = 25;
-    p5.setup = ()=>{
-        p5.createCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-        for(let i = 0; i < 3; i++)ants.push(new Ant({}));
-    };
-    p5.draw = ()=>{
-        // p5.background(110, 90, 90);
-        ants.forEach((ant)=>{
-            ants.forEach((a)=>{
-                if (a !== ant) {
-                    const gravity = a.attract(ant);
-                    ant.applyForce(gravity);
-                }
-            });
-            ant.update();
-            ant.checkEdges();
-            ant.display();
-        });
-    };
-    p5.mouseClicked = ()=>{
-        ants.push(new Ant({
-            x: p5.mouseX,
-            y: p5.mouseY
-        }));
-    };
-    p5.windowResized = ()=>{
-        p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
-    };
-    // CLASSES
-    class Mover {
-        constructor({ x , y , v , a , c , m  }){
-            this.location = p5.createVector(x, y);
-            this.velocity = v ? v : p5.createVector(0, 0);
-            this.acceleration = a ? a : p5.createVector(0, 0);
-            this.color = c;
-            this.mass = m;
-        }
-        applyForce(force) {
-            const f = (0, _p5Default.default).Vector.div(force, this.mass);
-            this.acceleration.add(f);
-        }
-        update() {
-            this.velocity.add(this.acceleration);
-            this.location.add(this.velocity);
-            this.acceleration.mult(0);
-        }
-    }
-    class Ant extends Mover {
-        constructor({ x , y , c , m  }){
-            const v = p5.createVector(p5.random(-0.2, .2), p5.random(-0.2, .2));
-            const a = p5.createVector(.001, .001);
-            // brownish color by default
-            const rc = p5.random(0, 50);
-            c = c ? c : p5.color(rc + p5.random(0, 50), rc, rc);
-            x = x ? x : p5.random(p5.width);
-            y = y ? y : p5.random(p5.height);
-            m = m ? m : p5.random(.1, .5);
-            super({
-                x,
-                y,
-                v,
-                a,
-                c,
-                m
-            });
-            this.radius = this.mass * 30;
-        }
-        attract(m) {
-            const force = (0, _p5Default.default).Vector.sub(this.location, m.location);
-            let distance = force.mag();
-            distance = p5.constrain(distance, minGravDistance, maxGravDistance);
-            force.normalize();
-            const strength = G * this.mass * m.mass / (distance * distance);
-            force.mult(strength);
-            return force;
-        }
-        applyForce(force) {
-            const f = (0, _p5Default.default).Vector.div(force, this.mass);
-            this.acceleration.add(f);
-        }
-        update() {
-            this.velocity.add(this.acceleration);
-            this.location.add(this.velocity);
-            this.acceleration.mult(0);
-        }
-        checkEdges() {
-            if (this.location.x < this.radius) this.location.x = p5.width - this.radius;
-            if (this.location.x > p5.width - this.radius) this.location.x = this.radius;
-            if (this.location.y < this.radius) this.location.y = p5.height - this.radius;
-            if (this.location.y > p5.height - this.radius) this.location.y = this.radius;
-        }
-        display() {
-            p5.noStroke();
-            p5.fill(this.color);
-            p5.ellipse(this.location.x, this.location.y, this.radius);
-        }
-    }
-    class Prey extends Mover {
-        constructor({ x , y , c , m  }){
-            super({
-                x,
-                y,
-                c,
-                m
-            });
-        }
-        checkEdges() {}
-        display() {
-            p5.noStroke();
-            p5.fill(this.color);
-            p5.ellipse(this.location.x, this.location.y, 15);
-        }
-    }
-};
-
-},{"p5":"7Uk5U","./styles.scss":"kMfPY","./util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}]},["lSgxL","kuM8f"], "kuM8f", "parcelRequiread8c")
+},{"p5":"7Uk5U","../styles.scss":"kMfPY","../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}]},["lSgxL","kuM8f"], "kuM8f", "parcelRequiread8c")
 
 //# sourceMappingURL=index.6b815632.js.map
