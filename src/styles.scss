@@ -1,8 +1,7 @@
 $bg-color: #111;
 $txt-color: #DDD;
 $link-color: #facf70;
-$select-border: #777;
-$transition-time: 150ms;
+$transition-time: 200ms;
 
 *,
 *::before,
@@ -37,8 +36,7 @@ a, a:visited {
   align-items: center;
   font-size: 1.2rem;
   margin-bottom: 1rem;
-  padding-right: 1rem;
-  #open-side-panel {
+  button {
     font-size: 1.6rem;
     background-color: inherit;
     border-radius: 0px;
@@ -48,7 +46,7 @@ a, a:visited {
     font-family: inherit;
     font-size: inherit;
     padding: .5rem;
-    margin: 0 0 0 .5rem;
+    margin: 0 .5rem;
     text-align: center;
     height: 100%;
     &:hover {
@@ -64,12 +62,10 @@ a, a:visited {
   position: fixed;
   z-index: 1;
   top: 0;
-  left: -2px;
   background-color: $bg-color;
   overflow-x: hidden;
   transition: $transition-time;
   transition-timing-function: ease;
-  border-right: 2px solid $link-color;
   .close-bar {
     background-color: $bg-color;
     background: linear-gradient(180deg, rgba($bg-color, 1) 0%, rgba($bg-color, 1) 15%, rgba($bg-color,0) 100%);
@@ -103,6 +99,8 @@ a, a:visited {
   }
   a {
     padding: .4rem .4rem .4rem 2rem;
+  }
+  a {
     text-decoration: none;
     font-size: 1.25rem;
     color: $txt-color;
@@ -110,6 +108,7 @@ a, a:visited {
     transition: $transition-time;
     &:hover {
       color: $link-color;
+      cursor: pointer;
     }
   }
   .lower-fade {
@@ -121,6 +120,24 @@ a, a:visited {
   }
 }
 
+.side-panel-left {
+  left: -2px;
+  border-right: 2px solid $link-color;
+}
+
+.side-panel-right {
+  right: -2px;
+  border-left: 2px solid $link-color;
+}
+
+#about {
+  position: fixed;
+  bottom: 0;
+  padding: 1.5rem 2rem;
+  font-size: 1.25rem;
+  color: $txt-color;
+}
+
 .container {
   position: absolute;
   height: 100vh;
@@ -128,15 +145,13 @@ a, a:visited {
   grid-template-rows: 
     2.5rem
     auto
-    2rem
     2rem;
   grid-template-columns: auto;
   justify-items: center;
   grid-template-areas:
     "header"
     "main"
-    "options"
-    "footer";
+    "options";
   transition: $transition-time;
   transition-timing-function: ease;
   bottom: 0;
@@ -157,15 +172,11 @@ a, a:visited {
   padding-top: 2rem;
 }
 
-.credits {
-  width: 100%;
-  position: absolute;
-  grid-area: footer;
-  text-align: justify;
+#about-container {
+  margin: auto;
   display: flex;
-  justify-content: space-between;
-  bottom: 0;
-  padding: .7rem;
+  flex-direction: column;
+  width: 60%
 }
 
 .button-2 {

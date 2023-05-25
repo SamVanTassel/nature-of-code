@@ -1,148 +1,164 @@
 import P5 from "p5";
 import "./styles.scss";
-import {
-  oneDimendionalCollisionSketch,
-  mouseFollowersSketch,
-  windGravitySketch,
-  windGravityFrictionSketch,
-  windGravityFrictionCollisionSketch,
-  dragSketch,
-  singleDraggableAttractorSketch,
-  manyAttractorsSketch,
-  angularRotationSketch,
-  cannonballSketch,
-  arctanFollowersSketch,
-  spaceshipSketch,
-  triangleCollisionSketch,
-  oneDellularAutomationSketch,
-  gameOfLifeSketch,
-  seekingATargetSketch,
-  ParticleSystemSketch,
-  ParticleSystemCosmicSketch,
-  smokeSketch,
-  wanderersSketch,
-  flowFieldsSketch,
-  linearPathFollowingSketch,
-  circularPathFollowingSketch,
-  groupBehaviorSketch,
-  flockingSketch,
-  rayCastingSketch,
-  rayCastingPlusSketch,
-} from "./exercises";
-import { environmentSketch } from "./environment";
+import { loadRoute, setRoute, state } from "./state";
+import {  about, data } from "./data";
+import { titleOrPlaceholder } from "./util";
 
-const sketches: [string, (p5: P5) => void][] = [
-  ["0.1 - 1D Collision", oneDimendionalCollisionSketch],
-  ["1 - Mouse Followers", mouseFollowersSketch],
-  ["1a - Triangle Collision", triangleCollisionSketch],
-  ["2.1 - Wind & Gravity", windGravitySketch],
-  ["2.2 - Wind, Gravity & Friction", windGravityFrictionSketch],
-  [
-    "2.2b - Wind, Gravity, Friction, Collision",
-    windGravityFrictionCollisionSketch,
-  ],
-  ["2.3 - Drag", dragSketch],
-  ["2.6 - Single Draggable Attractor", singleDraggableAttractorSketch],
-  ["2.8 - Many Attractors", manyAttractorsSketch],
-  ["3.2 - Angular Rotation", angularRotationSketch],
-  ["3.2b - Cannonball", cannonballSketch],
-  ["3.5 - Arctan Followers", arctanFollowersSketch],
-  ["3.5b - Spaceship", spaceshipSketch],
-  ["4.2 - Particle System", ParticleSystemSketch],
-  ["4.2b - Particle System [COSMIC]", ParticleSystemCosmicSketch],
-  ["4.8 - Smoke", smokeSketch],
-  ["6.1 - Seeking a Target", seekingATargetSketch],
-  ["6.4 - Wanderers", wanderersSketch],
-  ["6.6 - Flow Fields", flowFieldsSketch],
-  ["6.8 - Linear Path Following", linearPathFollowingSketch],
-  ["6.8b - Circular Path Following", circularPathFollowingSketch],
-  ["6.11 - Group Behavior", groupBehaviorSketch],
-  ["6.13 - Flocking", flockingSketch],
-  ["7.4 - 1d Cellular Automation", oneDellularAutomationSketch],
-  ["7.7 - Game of Life", gameOfLifeSketch],
-  ["WIP - environment project", environmentSketch],
-  ["xc - Ray Casting", rayCastingSketch],
-  ["xc - Ray Casting Plus", rayCastingPlusSketch],
-];
-
-const sidePanel = document.getElementById("side-panel");
+const sidePanelLeft = document.getElementById("side-panel-left");
+const sidePanelRight = document.getElementById("side-panel-right");
 const sketchList = document.getElementById("side-panel-list");
 const container = document.getElementsByClassName(
   "container"
 )[0] as HTMLElement;
+const options = document.getElementsByClassName("options")[0] as HTMLElement;
 
-let sidePanelOpen = false;
+let sidePanelLeftOpen = false;
+let sidePanelRightOpen = false;
 
-const closeButton = document.getElementById("close-button");
-const closeSidePanel = () => {
-  sidePanel.style.width = "0";
-  sidePanel.style.left = "-2px";
+const closeButtonLeft = document.getElementById("close-button-left");
+const closeSidePanelLeft = () => {
+  sidePanelLeft.style.width = "0";
+  sidePanelLeft.style.left = "-2px";
   container.style.marginLeft = "0";
-  openSidePanel.innerText = `> ${getDisplayTitle()}`;
-  sidePanelOpen = false;
+  openSidePanelLeft.innerText = `> ${titleOrPlaceholder(state.currentSketch.title, state.about)}`;
+  sidePanelLeftOpen = false;
 };
-closeButton.onclick = () => {
-  closeSidePanel();
+closeButtonLeft.onclick = () => {
+  closeSidePanelLeft();
 };
-const openSidePanel = document.getElementById("open-side-panel");
-openSidePanel.onclick = () => {
-  if (!sidePanelOpen) {
-  sidePanel.style.width = "30rem";
-  sidePanel.style.left = "0";
+const openSidePanelLeft = document.getElementById("open-side-panel-left");
+openSidePanelLeft.onclick = () => {
+  if (!sidePanelLeftOpen) {
+  sidePanelLeft.style.width = "30rem";
+  sidePanelLeft.style.left = "0";
   container.style.marginLeft = "30rem";
-  openSidePanel.innerText = `< ${getDisplayTitle()}`;
-  sidePanelOpen =true;
-  } else closeSidePanel();
+  openSidePanelLeft.innerText = `< ${titleOrPlaceholder(state.currentSketch.title, state.about)}`;
+  sidePanelLeftOpen =true;
+  } else closeSidePanelLeft();
+};
+
+const closeButtonRight = document.getElementById("close-button-right");
+const closeSidePanelRight = () => {
+  sidePanelRight.style.width = "0";
+  sidePanelRight.style.right = "-2px";
+  container.style.marginRight = "0";
+  openSidePanelRight.innerText = `${titleOrPlaceholder(state.currentCollection.title, state.about)} <`;
+  sidePanelRightOpen = false;
+};
+closeButtonRight.onclick = () => {
+  closeSidePanelRight();
+};
+const openSidePanelRight = document.getElementById("open-side-panel-right");
+openSidePanelRight.onclick = () => {
+  if (!sidePanelRightOpen) {
+  sidePanelRight.style.width = "20rem";
+  sidePanelRight.style.right = "0";
+  container.style.marginRight = "20rem";
+  openSidePanelRight.innerText = `${titleOrPlaceholder(state.currentCollection.title, state.about)} >`;
+  sidePanelRightOpen =true;
+  } else closeSidePanelRight();
 };
 
 document.addEventListener("click", (event) => {
-  const clickedInSidenav = event.target instanceof Node && sidePanel.contains(event.target);
-  const clickedSidenavButton = event.target instanceof Node && openSidePanel.contains(event.target);
+  const clickedInContainer = event.target instanceof Node && container.contains(event.target);
+  const clickedOpenLeftPanelButton = event.target instanceof Node && openSidePanelLeft.contains(event.target);
+  const clickedOpenRightPanelButton = event.target instanceof Node && openSidePanelRight.contains(event.target);
 
-  if (!clickedInSidenav && !clickedSidenavButton) {
-    closeSidePanel();
+  if (clickedInContainer && !clickedOpenLeftPanelButton) {
+    closeSidePanelLeft();
+  }
+  if (clickedInContainer && !clickedOpenRightPanelButton) {
+    closeSidePanelRight();
   }
 });
 
-const createLinkText = (s: string) => {
-  const [, title] = s.match(/- (.*)/);
-  return title.toLowerCase().replace(/ /g, "_");
-};
-
-for (const pair of sketches) {
-  const title = document.createElement("li");
-  const a = document.createElement("a");
-  a.innerText = pair[0];
-  a.href = `#${createLinkText(pair[0])}`;
-  a.onclick = closeSidePanel;
-  title.appendChild(a);
-  sketchList.appendChild(title);
+const removeAllChildNodes = (parent: HTMLElement) => {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
 }
 
-const options = document.getElementsByClassName("options")[0] as HTMLElement;
-let p: P5;
-
-const getTitle = () => {
-  let title = window.location.hash;
-  title = title.replace("#", "");
-  return title;
-};
-
-const getDisplayTitle = () => {
-  let title = getTitle().replace(/_/g, " ");
-  if (!title) title = 'select a sketch'
-  return title;
+const renderSketchList = () => {
+  removeAllChildNodes(sketchList);
+  if (state.about) return;
+  for (const pair of state.currentCollection.sketches) {
+    const title = document.createElement("li");
+    const a = document.createElement("a");
+    a.innerText = pair[0];
+    a.href = setRoute(pair[0]);
+    a.onclick = closeSidePanelLeft;
+    title.appendChild(a);
+    sketchList.appendChild(title);
+  }
 }
 
-const renderPage = () => {
-  const title = getTitle();
-  if (title) {
-    loadSketch(title);
+const renderOptions = () => {
+  if (state.currentSketch.title) {
     options.style.display = "flex";
   } else {
     options.style.display = "none";
-    openSidePanel.innerText = "> select a sketch";
   }
+}
+
+const collections = data.map(el => el.collection);
+
+const collectionsList = document.getElementById('side-panel-list-right');
+for (const title of collections) {
+  const a = document.createElement('a');
+  a.innerText = title;
+  if (title === 'Nature of Code') {
+    a.href = setRoute('', true);
+  } else {
+    a.href = setRoute(title, true);
+  }
+  a.onclick = () => {
+    closeSidePanelRight();
+  };
+  collectionsList.appendChild(a);
+}
+
+const resetButton = document.getElementById("reset");
+resetButton.onclick = () => {
+  state.p5 = loadSketch();
+};
+
+const loadSketch = () => {
+  const title = state.currentSketch.title;
+  if (!title) {
+    if (state.p5) state.p5.remove();
+    return;
+  }
+  if (state.p5) state.p5.remove();
+  state.p5 = new P5(state.currentSketch.file, document.getElementById("app"));
+  return state.p5;
+};
+
+const renderAbout = () => {
+  const aboutContainer = document.getElementById('about-container');
+  if (state.about) {
+    const header = document.createElement('h2');
+    const p = document.createElement('p');
+    header.innerHTML = about.title;
+    p.innerHTML = about.html;
+    aboutContainer.appendChild(header);
+    aboutContainer.appendChild(p);
+  } else {
+    removeAllChildNodes(aboutContainer);
+  }
+}
+
+const renderMainConent = () => {
+  renderAbout();
+  loadSketch();
+}
+
+const renderPage = () => {
+  loadRoute();
+  renderMainConent();
+  renderSketchList();
+  closeSidePanelLeft();
+  closeSidePanelRight();
+  renderOptions();
 };
 
 window.onhashchange = () => {
@@ -151,22 +167,4 @@ window.onhashchange = () => {
 
 window.onload = () => {
   renderPage();
-};
-
-const loadSketch = (title: string) => {
-  if (!title) return;
-  openSidePanel.innerText = `> ${title.replace(/_/g, " ")}`;
-  let selectedIndex = sketches.findIndex(
-    (pair) => createLinkText(pair[0]) === title
-  );
-  const sketch = selectedIndex > -1 ? sketches[selectedIndex][1] : () => null;
-  if (p) p.remove();
-  p = new P5(sketch, document.getElementById("app"));
-  return p;
-};
-
-const resetButton = document.getElementById("reset");
-resetButton.onclick = () => {
-  if (p) p.remove();
-  p = loadSketch(getTitle());
 };
