@@ -564,15 +564,29 @@ var _stylesScss = require("./styles.scss");
 var _state = require("./state");
 var _data = require("./data");
 var _util = require("./util");
+const collectionTitles = (0, _data.data).map((el)=>el.title);
 const sidePanelLeft = document.getElementById("side-panel-left");
 const sidePanelRight = document.getElementById("side-panel-right");
 const sketchList = document.getElementById("side-panel-list");
 const container = document.getElementsByClassName("container")[0];
 const options = document.getElementsByClassName("options")[0];
+const resetButton = document.getElementById("reset");
 const infoButton = document.getElementById("sketch-info-button");
 const infoModal = document.getElementById("info-modal");
+const infoModalHeader = document.getElementById("info-modal-header");
 const infoModalContent = document.getElementById("info-modal-content");
 const closeButtonInfoModal = document.getElementById("close-button-info-modal");
+const collectionsList = document.getElementById("side-panel-list-right");
+for (const title of collectionTitles){
+    const a = document.createElement("a");
+    a.innerText = title;
+    if (title === "Nature of Code") a.href = (0, _state.setRoute)("", true);
+    else a.href = (0, _state.setRoute)(title, true);
+    a.onclick = ()=>{
+        closeSidePanelRight();
+    };
+    collectionsList.appendChild(a);
+}
 let sidePanelLeftOpen = false;
 let sidePanelRightOpen = false;
 const closeButtonLeft = document.getElementById("close-button-left");
@@ -617,6 +631,22 @@ openSidePanelRight.onclick = ()=>{
         sidePanelRightOpen = true;
     } else closeSidePanelRight();
 };
+const closeInfoModal = ()=>{
+    infoModal.style.display = "none";
+    (0, _state.state).infoModalOpen = false;
+};
+infoButton.onclick = ()=>{
+    if ((0, _state.state).infoModalOpen) closeInfoModal();
+    else {
+        infoModal.style.display = "flex";
+        (0, _state.state).infoModalOpen = true;
+    }
+};
+closeButtonInfoModal.onclick = closeInfoModal;
+(0, _util.dragElement)(infoModal, infoModalHeader);
+resetButton.onclick = ()=>{
+    (0, _state.state).p5 = loadSketch();
+};
 document.addEventListener("click", (event)=>{
     const clickedInContainer = event.target instanceof Node && container.contains(event.target);
     const clickedOpenLeftPanelButton = event.target instanceof Node && openSidePanelLeft.contains(event.target);
@@ -624,11 +654,8 @@ document.addEventListener("click", (event)=>{
     if (clickedInContainer && !clickedOpenLeftPanelButton) closeSidePanelLeft();
     if (clickedInContainer && !clickedOpenRightPanelButton) closeSidePanelRight();
 });
-const removeAllChildNodes = (parent)=>{
-    while(parent.firstChild)parent.removeChild(parent.firstChild);
-};
 const renderSketchList = ()=>{
-    removeAllChildNodes(sketchList);
+    (0, _util.removeAllChildNodes)(sketchList);
     if ((0, _state.state).about) return;
     for (const holder of (0, _state.state).currentCollection.sketches){
         const title = document.createElement("li");
@@ -647,28 +674,6 @@ const renderOptions = ()=>{
         if (info.about || info.controls) infoButton.style.display = "block";
         else infoButton.style.display = "none";
     } else options.style.display = "none";
-};
-const collectionTitles = (0, _data.data).map((el)=>el.title);
-const collectionsList = document.getElementById("side-panel-list-right");
-for (const title of collectionTitles){
-    const a = document.createElement("a");
-    a.innerText = title;
-    if (title === "Nature of Code") a.href = (0, _state.setRoute)("", true);
-    else a.href = (0, _state.setRoute)(title, true);
-    a.onclick = ()=>{
-        closeSidePanelRight();
-    };
-    collectionsList.appendChild(a);
-}
-infoButton.onclick = ()=>{
-    infoModal.style.display = "flex";
-};
-closeButtonInfoModal.onclick = ()=>{
-    infoModal.style.display = "none";
-};
-const resetButton = document.getElementById("reset");
-resetButton.onclick = ()=>{
-    (0, _state.state).p5 = loadSketch();
 };
 const loadSketch = ()=>{
     const title = (0, _state.state).currentSketch.title;
@@ -689,20 +694,13 @@ const renderAbout = ()=>{
         p.innerHTML = (0, _data.about).html;
         aboutContainer.appendChild(header);
         aboutContainer.appendChild(p);
-    } else removeAllChildNodes(aboutContainer);
+    } else (0, _util.removeAllChildNodes)(aboutContainer);
 };
 const renderInfoModal = ()=>{
-    removeAllChildNodes(infoModalContent);
+    closeInfoModal();
+    (0, _util.removeAllChildNodes)(infoModalContent);
     const info = (0, _state.state).currentSketch.info;
     if (info) {
-        if (info.controls) {
-            const controlsHeader = document.createElement("h3");
-            const controls = document.createElement("p");
-            controlsHeader.innerText = "controls:";
-            controls.innerHTML = info.controls;
-            infoModalContent.appendChild(controlsHeader);
-            infoModalContent.appendChild(controls);
-        }
         if (info.about) {
             const aboutHeader = document.createElement("h3");
             const about = document.createElement("p");
@@ -711,11 +709,18 @@ const renderInfoModal = ()=>{
             infoModalContent.appendChild(aboutHeader);
             infoModalContent.appendChild(about);
         }
+        if (info.controls) {
+            const controlsHeader = document.createElement("h3");
+            const controls = document.createElement("p");
+            controlsHeader.innerText = "controls:";
+            controls.innerHTML = info.controls;
+            infoModalContent.appendChild(controlsHeader);
+            infoModalContent.appendChild(controls);
+        }
     }
 };
 const renderMainConent = ()=>{
     renderAbout();
-    renderInfoModal();
     loadSketch();
 };
 const renderPage = ()=>{
@@ -725,6 +730,7 @@ const renderPage = ()=>{
     closeSidePanelLeft();
     closeSidePanelRight();
     renderOptions();
+    renderInfoModal();
 };
 window.onhashchange = ()=>{
     renderPage();
@@ -28357,13 +28363,15 @@ const state = {
         title: "Nature of Code",
         sketches: (0, _data.natureOfCodeSketches)
     },
-    about: false
+    about: false,
+    infoModalOpen: false
 };
 const resetState = ()=>{
     state.about = false;
     setCurrentSketch();
     state.currentCollection.title = "Nature of Code";
     state.currentCollection.sketches = (0, _data.natureOfCodeSketches);
+    state.infoModalOpen = false;
 };
 const setCurrentSketch = (sh)=>{
     if (!sh) {
@@ -28502,12 +28510,12 @@ const about = {
     html: `</br>
 This site is a sketchbook.
 <br/><br/>
-The exercises in the Nature of Code section are from the awesome book <a href="https://natureofcode.com/" target="_blank" rel="noreferrer noopener">The Nature of Code</a>
+The sketches in the Nature of Code section are from the (awesome) book <a href="https://natureofcode.com/" target="_blank" rel="noreferrer noopener">The Nature of Code</a>
 by Daniel Schiffman.
 <br/><br/>
-The sketches in the Misc section are anything that caught my interest. Many were inspired by <a href="https://thecodingtrain.com/challenges" target="_blank" rel="noreferrer noopener">The Coding Train</a>, also by Daniel Schiffman. The guy is a great teacher!
+The sketches in the Misc section are anything that caught my interest. Many were inspired by <a href="https://thecodingtrain.com/challenges" target="_blank" rel="noreferrer noopener">The Coding Train</a>, also by Daniel Schiffman - the guy is a great teacher!
 <br/><br/>
-The source code lives <a href="https://github.com/SamVanTassel/nature-of-code" target="_blank">here</a>`
+The source code lives <a href="https://github.com/SamVanTassel/nature-of-code" target="_blank">here</a>.`
 };
 
 },{"./sketches/nature_of_code":"1aBdy","./sketches/misc":"eVzK8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1aBdy":[function(require,module,exports) {
@@ -28636,18 +28644,20 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorContrastChecker = require("./color_contrast_checker");
 parcelHelpers.exportAll(_colorContrastChecker, exports);
+var _domHelpers = require("./dom_helpers");
+parcelHelpers.exportAll(_domHelpers, exports);
 var _draggable = require("./Draggable");
 parcelHelpers.exportAll(_draggable, exports);
 var _getColors = require("./get_colors");
 parcelHelpers.exportAll(_getColors, exports);
 var _mover = require("./Mover");
 parcelHelpers.exportAll(_mover, exports);
-var _resize = require("./resize");
-parcelHelpers.exportAll(_resize, exports);
 var _paramHelpers = require("./param_helpers");
 parcelHelpers.exportAll(_paramHelpers, exports);
+var _resize = require("./resize");
+parcelHelpers.exportAll(_resize, exports);
 
-},{"./color_contrast_checker":"ddYXH","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./resize":"6aTto","./param_helpers":"eFs6o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ddYXH":[function(require,module,exports) {
+},{"./color_contrast_checker":"ddYXH","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./resize":"6aTto","./param_helpers":"eFs6o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./dom_helpers":"dfh5F"}],"ddYXH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "checkContrast", ()=>checkContrast);
@@ -28861,6 +28871,45 @@ const titleOrPlaceholder = (s, about)=>{
     return about ? "" : "select a sketch";
 };
 
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dfh5F":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "dragElement", ()=>dragElement);
+parcelHelpers.export(exports, "removeAllChildNodes", ()=>removeAllChildNodes);
+const dragElement = (element, dragHandle)=>{
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (dragHandle) dragHandle.onmousedown = dragMouseDown;
+    else element.onmousedown = dragMouseDown;
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        element.style.top = element.offsetTop - pos2 + "px";
+        element.style.left = element.offsetLeft - pos1 + "px";
+    }
+    function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+};
+const removeAllChildNodes = (parent)=>{
+    while(parent.firstChild)parent.removeChild(parent.firstChild);
+};
+
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"827uj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -28937,7 +28986,7 @@ const windGravitySketch = {
     sketch,
     info: {
         title: "2.1 - Wind & Gravity",
-        controls: "",
+        controls: "click to add another ball",
         about: ""
     }
 };
@@ -29026,7 +29075,7 @@ const windGravityFrictionSketch = {
     sketch,
     info: {
         title: "2.2 - Wind, Gravity & Friction",
-        controls: "",
+        controls: "click to add another ball",
         about: ""
     }
 };
@@ -29148,8 +29197,8 @@ const windGravityFrictionCollisionSketch = {
     sketch,
     info: {
         title: "2.2b - Wind, Gravity, Friction, Collision",
-        controls: "",
-        about: ""
+        controls: "click to add another ball",
+        about: "trying to get collisions to render naturally... still having problems with balls smooshing together"
     }
 };
 
@@ -29268,7 +29317,7 @@ const dragSketch = {
     sketch,
     info: {
         title: "2.3 - Drag",
-        controls: "",
+        controls: "click to add another ball",
         about: ""
     }
 };
@@ -29400,7 +29449,7 @@ const singleDraggableAttractorSketch = {
     sketch,
     info: {
         title: "2.6 - Single Draggable Attractor",
-        controls: "",
+        controls: "- attractor can be dragged around. <br/> - click to add an orbiter",
         about: ""
     }
 };
@@ -29485,7 +29534,7 @@ const manyAttractorsSketch = {
     sketch,
     info: {
         title: "2.8 - Many Attractors",
-        controls: "",
+        controls: "click to add an orbiter",
         about: ""
     }
 };
@@ -29585,7 +29634,7 @@ const angularRotationSketch = {
     sketch,
     info: {
         title: "3.2 - Angular Rotation",
-        controls: "",
+        controls: "- attractor can be dragged around <br/> - click to add a flippy card",
         about: ""
     }
 };
@@ -29667,7 +29716,7 @@ const cannonballSketch = {
     sketch,
     info: {
         title: "3.2b - Cannonball",
-        controls: "",
+        controls: "just gotta watch this one",
         about: ""
     }
 };
@@ -29743,7 +29792,7 @@ const arctanFollowersSketch = {
     sketch,
     info: {
         title: "3.5 - Arctan Followers",
-        controls: "",
+        controls: "click to add a follower",
         about: ""
     }
 };
@@ -29902,8 +29951,8 @@ const spaceshipSketch = {
     sketch,
     info: {
         title: "3.5b - Spaceship",
-        controls: "",
-        about: ""
+        controls: "- left and right arrow keys turn the ship <br/> - up arrow key fires thrusters <br/> - space bar fires lasers",
+        about: "experiementing with arctan led to this near game. try accelerating a bunch and turning then getting the ship to stand still again"
     }
 };
 
@@ -30130,8 +30179,8 @@ const particleSystemSketch = {
     sketch,
     info: {
         title: "4.2 - Particle System",
-        controls: "",
-        about: ""
+        controls: "- click to add a new particle system <br/> - attractors/repellers can be dragged",
+        about: "little physics box with attractors and repellers and gravity"
     }
 };
 
@@ -30404,8 +30453,8 @@ const particleSystemCosmicSketch = {
     sketch,
     info: {
         title: "4.2b - Particle System [COSMIC]",
-        controls: "",
-        about: ""
+        controls: "- click to add a new particle system <br/> - attractors/repellers can be dragged",
+        about: "like cosmis bowling in zero g"
     }
 };
 
@@ -30602,8 +30651,8 @@ const smokeSketch = {
     sketch,
     info: {
         title: "4.8 - Smoke",
-        controls: "",
-        about: ""
+        controls: "move the match around with the mouse",
+        about: "simple smoke simulation. red line on top represents wind relative to current match position"
     }
 };
 
@@ -30702,8 +30751,8 @@ const seekingATargetSketch = {
     sketch,
     info: {
         title: "6.1 - Seeking a Target",
-        controls: "",
-        about: ""
+        controls: "clicking does... something",
+        about: "wtf this one needs serious work to be anything interesting"
     }
 };
 
@@ -30823,8 +30872,8 @@ const wanderersSketch = {
     sketch,
     info: {
         title: "6.4 - Wanderers",
-        controls: "",
-        about: ""
+        controls: "click to add a wanderer",
+        about: "the wanderers avoid the walls and move in a semi-random way"
     }
 };
 
@@ -30982,7 +31031,7 @@ const flowFieldsSketch = {
     info: {
         title: "6.6 - Flow Fields",
         controls: "",
-        about: ""
+        about: "it's like throwing sand onto a grid of moving arrows, and each grain of sand follows the arrows while tracing its path... looks like hair"
     }
 };
 
@@ -31161,7 +31210,7 @@ const linearPathFollowingSketch = {
     info: {
         title: "6.8 - Linear Path Following",
         controls: "",
-        about: ""
+        about: "movers try to follow the path, with different starting positions and velocities"
     }
 };
 
@@ -31198,7 +31247,6 @@ const sketch = (p5)=>{
             vs.push(new Vehicle());
             if (vs.length > maxVehicles) vs = vs.slice(1);
         }
-        if (p5.frameCount < 300) p5.text("press spacebar to see the path", p5.width / 8 * 5, p5.height / 20 * 19);
     };
     p5.windowResized = ()=>{
         p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
@@ -31361,8 +31409,8 @@ const circularPathFollowingSketch = {
     sketch,
     info: {
         title: "6.8b - Circular Path Following",
-        controls: "",
-        about: ""
+        controls: "- press space to view the path </br> - click to add a racer",
+        about: "racers try to avoid each other and stay within the bounds of the path"
     }
 };
 
@@ -31505,8 +31553,8 @@ const groupBehaviorSketch = {
     sketch,
     info: {
         title: "6.11 - Group Behavior",
-        controls: "",
-        about: ""
+        controls: "hold the mouse down to spawn more movers",
+        about: "each mover tries to maintain serparation from every other mover, with larger ones wating more space"
     }
 };
 
@@ -31690,8 +31738,8 @@ const flockingSketch = {
     sketch,
     info: {
         title: "6.13 - Flocking",
-        controls: "",
-        about: ""
+        controls: "hold the mouse button to add more boids",
+        about: "this is why i wanted to do this book. each boid tries to stay separate from nearby boids, tries to stay in a group with nearby boids, and tries to fly in the same direction as nearby boids"
     }
 };
 
@@ -31836,7 +31884,7 @@ const oneDCellularAutomationSketch = {
     info: {
         title: "7.4 - 1d Cellular Automation",
         controls: "",
-        about: ""
+        about: 'each line represents an evolution of the next according to a fixed set of rules. read more about that process <a href="https://natureofcode.com/book/chapter-7-cellular-automata/" target="_blank">here</a><br/>this sketch pulls from a small set of all possible rules for a 2-color, 1d cellular automa. the rules were chosen to for their interesting results'
     }
 };
 
@@ -31966,7 +32014,7 @@ const gameOfLifeSketch = {
     info: {
         title: "7.7 - Game of Life",
         controls: "",
-        about: ""
+        about: 'John Conway\'s Game of Life is a 2d cellular automation. each cell lives or dies from one frame to the next based on the number of neighbors around it. it\'s a classic thing. read more about it <a href="https://playgameoflife.com/" target="_blank">here</a>. or look it up on google for a fun surprise'
     }
 };
 
@@ -32103,7 +32151,7 @@ const environmentSketch = {
     info: {
         title: "WIP - environment project",
         controls: "",
-        about: ""
+        about: "this is nothing yet"
     }
 };
 
@@ -32246,7 +32294,7 @@ const oneDimendionalCollisionSketch = {
     info: {
         title: "1D Collision",
         controls: "",
-        about: ""
+        about: "about as basic as it gets, inelastic collision between two objects in one dimension"
     }
 };
 
@@ -32319,7 +32367,7 @@ const triangleCollisionSketch = {
     info: {
         title: "Triangle Collision",
         controls: "",
-        about: ""
+        about: "is the cursor inside the triangle? collision detection practice"
     }
 };
 
@@ -32366,8 +32414,8 @@ const sketch = (p5)=>{
         });
         if (viewStates[viewIndex] === "p1" || viewStates[viewIndex] === "all") {
             particle.update(p5.noise(xoff) * p5.width, p5.noise(yoff) * p5.height);
-            xoff += .01;
-            yoff += .01;
+            xoff += .005;
+            yoff += .005;
             particle.look(walls);
         }
         if (viewStates[viewIndex] === "p2" || viewStates[viewIndex] === "all") {
@@ -32478,8 +32526,8 @@ const rayCastingSketch = {
     sketch,
     info: {
         title: "Ray Casting",
-        controls: "",
-        about: ""
+        controls: "- click and drag the mouse to add more walls <br/> - press space to change modes <br/> - the red star may be moved with the arrow keys",
+        about: 'the stars project rays in all directions, between its location and whatever wall it encounters first. this creates a simulated "line of sight" of the star'
     }
 };
 
@@ -32518,8 +32566,10 @@ const sketch = (p5)=>{
         });
         if (p5.keyIsDown(p5.LEFT_ARROW)) p2.rotate(-0.05);
         if (p5.keyIsDown(p5.RIGHT_ARROW)) p2.rotate(.05);
-        if (p5.keyIsDown(p5.UP_ARROW)) p2.move(true);
-        if (p5.keyIsDown(p5.DOWN_ARROW)) p2.move(false);
+        if (p5.keyIsDown(87)) p2.move("forward");
+        if (p5.keyIsDown(83)) p2.move("backward");
+        if (p5.keyIsDown(65)) p2.move("left");
+        if (p5.keyIsDown(68)) p2.move("right");
         p2.look(walls);
     };
     p5.windowResized = ()=>{
@@ -32641,12 +32691,24 @@ const sketch = (p5)=>{
                 p5.stroke(brightness);
                 const wallHeight = p5.map(num, 0, maxView, maxWallHeight, 0);
                 p5.line(lineWidth * i, -wallHeight * 1 / 2, lineWidth * i, wallHeight * 1 / 2);
-            // p5.rect(lineWidth * i, -wallHeight * 1/2, lineWidth, wallHeight * 1/2);
             });
             p5.pop();
         }
-        move(forward) {
-            this.p.add((0, _p5Default.default).Vector.fromAngle(this.heading).mult(forward ? p2Speed : -p2Speed));
+        checkWalls() {
+            if (this.p.x < 0) this.p.x = 0;
+            if (this.p.y < 0) this.p.y = 0;
+            if (this.p.x > p5.width / 2) this.p.x = p5.width / 2;
+            if (this.p.y > p5.height) this.p.y = p5.height;
+        }
+        move(direction) {
+            const map = {
+                forward: 0,
+                backward: p5.PI,
+                left: -p5.PI / 2,
+                right: p5.PI / 2
+            };
+            this.p.add((0, _p5Default.default).Vector.fromAngle(this.heading + map[direction]).mult(p2Speed));
+            this.checkWalls();
             this.update(this.p.x, this.p.y);
         }
         update(x, y) {
@@ -32663,8 +32725,8 @@ const rayCastingPlusSketch = {
     sketch,
     info: {
         title: "Ray Casting Plus",
-        controls: "",
-        about: ""
+        controls: "- click and drag the mouse to add more walls <br/> - use the arrow keys to rotate camera <br/> - use wasd to move <br/> - press f to enable fisheye view",
+        about: "each ray cast to a wall corresponds to a vertical line on the right half of the screen. the height and brightness of the line are determined by the length of the ray. shorter rays create taller, brighter lines, which together create a simulated first person view"
     }
 };
 

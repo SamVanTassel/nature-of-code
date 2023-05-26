@@ -173,6 +173,7 @@ a:hover, a:visited:hover {
 #info-modal {
   width: -moz-fit-content;
   width: fit-content;
+  max-width: 40rem;
   height: -moz-fit-content;
   height: fit-content;
   background-color: #111;
@@ -180,13 +181,14 @@ a:hover, a:visited:hover {
   flex-direction: column;
   display: none;
   position: absolute;
-  bottom: 5rem;
-  left: 30%;
+  top: 4rem;
+  left: 70%;
   overflow-x: hidden;
 }
 
 #info-modal .close-bar {
   height: 1.5rem;
+  cursor: move;
   background: #facf70;
 }
 
@@ -202,6 +204,10 @@ a:hover, a:visited:hover {
   color: #ddd;
   flex-direction: column;
   padding: 1.5rem 2rem;
+}
+
+#info-modal-content p {
+  padding: .5rem 0;
 }
 
 .button-primary {
