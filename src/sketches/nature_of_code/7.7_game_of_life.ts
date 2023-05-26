@@ -152,6 +152,6 @@ export const gameOfLifeSketch: SketchHolder = {
   info: {
     title: "7.7 - Game of Life",
     controls: '',
-    about: '',
+    about: 'John Conway\'s Game of Life is a 2d cellular automation. each cell lives or dies from one frame to the next based on the number of neighbors around it. it\'s a classic thing. read more about it <a href="https://playgameoflife.com/" target="_blank">here</a>. or look it up on google for a fun surprise',
   }
 };

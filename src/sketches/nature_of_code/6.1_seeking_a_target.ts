@@ -111,7 +111,7 @@ export const seekingATargetSketch: SketchHolder = {
   sketch,
   info: {
     title: "6.1 - Seeking a Target",
-    controls: '',
-    about: '',
+    controls: 'clicking does... something',
+    about: 'wtf this one needs serious work to be anything interesting',
   }
 };

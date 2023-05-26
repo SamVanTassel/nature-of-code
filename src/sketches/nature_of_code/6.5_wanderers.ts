@@ -131,7 +131,7 @@ export const wanderersSketch: SketchHolder = {
   sketch,
   info: {
     title: "6.4 - Wanderers",
-    controls: '',
-    about: '',
+    controls: 'click to add a wanderer',
+    about: 'the wanderers avoid the walls and move in a semi-random way',
   }
 };

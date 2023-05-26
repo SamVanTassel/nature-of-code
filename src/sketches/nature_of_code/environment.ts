@@ -160,7 +160,7 @@ export const environmentSketch: SketchHolder = {
   info: {
     title: "WIP - environment project",
     controls: '',
-    about: '',
+    about: 'this is nothing yet',
   }
 }
 

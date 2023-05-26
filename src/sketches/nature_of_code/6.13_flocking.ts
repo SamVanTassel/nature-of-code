@@ -233,7 +233,7 @@ export const flockingSketch: SketchHolder = {
   sketch,
   info: {
     title: "6.13 - Flocking",
-    controls: '',
-    about: '',
+    controls: 'hold the mouse button to add more boids',
+    about: 'this is why i wanted to do this book. each boid tries to stay separate from nearby boids, tries to stay in a group with nearby boids, and tries to fly in the same direction as nearby boids',
   }
 };

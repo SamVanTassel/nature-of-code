@@ -94,7 +94,7 @@ export const windGravitySketch: SketchHolder = {
   sketch,
   info: {
     title: "2.1 - Wind & Gravity",
-    controls: '',
+    controls: 'click to add another ball',
     about: '',
   }
 };

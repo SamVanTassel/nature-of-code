@@ -176,6 +176,6 @@ export const oneDimendionalCollisionSketch: SketchHolder = {
   info: {
     title: "1D Collision",
     controls: '',
-    about: '',
+    about: 'about as basic as it gets, inelastic collision between two objects in one dimension',
   }
 };

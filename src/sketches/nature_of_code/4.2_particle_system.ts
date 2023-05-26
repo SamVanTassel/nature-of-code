@@ -300,7 +300,7 @@ export const particleSystemSketch: SketchHolder = {
   sketch,
   info: {
     title: "4.2 - Particle System",
-    controls: '',
-    about: '',
+    controls: '- click to add a new particle system <br/> - attractors/repellers can be dragged',
+    about: 'little physics box with attractors and repellers and gravity',
   }
 };

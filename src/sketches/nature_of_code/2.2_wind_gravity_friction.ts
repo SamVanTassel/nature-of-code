@@ -107,7 +107,7 @@ export const windGravityFrictionSketch: SketchHolder = {
   sketch,
   info: {
     title: "2.2 - Wind, Gravity & Friction",
-    controls: '',
+    controls: 'click to add another ball',
     about: '',
   }
 };

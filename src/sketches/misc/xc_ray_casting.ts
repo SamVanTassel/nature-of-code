@@ -56,8 +56,8 @@ const sketch = (p5: P5) => {
 
     if (viewStates[viewIndex] === 'p1' || viewStates[viewIndex] === 'all') {
       particle.update(p5.noise(xoff)* p5.width, p5.noise(yoff) * p5.height);
-      xoff += .01;
-      yoff += .01;
+      xoff += .005;
+      yoff += .005;
       particle.look(walls);
     }
     if (viewStates[viewIndex] === 'p2' || viewStates[viewIndex] === 'all') {
@@ -212,7 +212,7 @@ export const rayCastingSketch: SketchHolder = {
   sketch,
   info: {
     title: "Ray Casting",
-    controls: '',
-    about: '',
+    controls: '- click and drag the mouse to add more walls <br/> - press space to change modes <br/> - the red star may be moved with the arrow keys',
+    about: 'the stars project rays in all directions, between its location and whatever wall it encounters first. this creates a simulated "line of sight" of the star',
   }
 };

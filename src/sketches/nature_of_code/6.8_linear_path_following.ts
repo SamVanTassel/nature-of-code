@@ -213,6 +213,6 @@ export const linearPathFollowingSketch: SketchHolder = {
   info: {
     title: "6.8 - Linear Path Following",
     controls: '',
-    about: '',
+    about: 'movers try to follow the path, with different starting positions and velocities',
   }
 };

@@ -13,6 +13,7 @@ export interface State {
     sketches?: SketchHolder[]
   }
   about: boolean
+  infoModalOpen: boolean
 }
 
 export type SketchInfo = {

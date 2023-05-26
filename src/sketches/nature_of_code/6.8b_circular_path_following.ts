@@ -33,9 +33,6 @@ const sketch = (p5: P5) => {
       vs.push(new Vehicle());
       if (vs.length > maxVehicles) vs = vs.slice(1);
     }
-    if (p5.frameCount < 300) {
-      p5.text('press spacebar to see the path', p5.width/8*5, p5.height/20 * 19);
-    }
   };
 
   p5.windowResized = () => {
@@ -254,7 +251,7 @@ export const circularPathFollowingSketch: SketchHolder = {
   sketch,
   info: {
     title: "6.8b - Circular Path Following",
-    controls: '',
-    about: '',
+    controls: '- press space to view the path </br> - click to add a racer',
+    about: 'racers try to avoid each other and stay within the bounds of the path',
   }
 };

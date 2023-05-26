@@ -51,11 +51,17 @@ const sketch = (p5: P5) => {
     if (p5.keyIsDown(p5.RIGHT_ARROW)) {
       p2.rotate(.05);
     }
-    if (p5.keyIsDown(p5.UP_ARROW)) {
-      p2.move(true);
+    if (p5.keyIsDown(87)) {
+      p2.move('forward');
     }
-    if (p5.keyIsDown(p5.DOWN_ARROW)) {
-      p2.move(false);
+    if (p5.keyIsDown(83)) {
+      p2.move('backward');
+    }
+    if (p5.keyIsDown(65)) {
+      p2.move('left');
+    }
+    if (p5.keyIsDown(68)) {
+      p2.move('right');
     }
     p2.look(walls);
 
@@ -217,13 +223,26 @@ const sketch = (p5: P5) => {
         p5.stroke(brightness);
         const wallHeight = p5.map(num, 0, maxView, maxWallHeight, 0);
         p5.line(lineWidth * i, -wallHeight * 1/2, lineWidth * i, wallHeight * 1/2);
-        // p5.rect(lineWidth * i, -wallHeight * 1/2, lineWidth, wallHeight * 1/2);
       });
       p5.pop();
     }
 
-    move(forward: boolean) {
-      this.p.add(P5.Vector.fromAngle(this.heading).mult(forward ? p2Speed : - p2Speed));
+    checkWalls() {
+      if (this.p.x < 0) this.p.x = 0;
+      if (this.p.y < 0) this.p.y = 0;
+      if (this.p.x > p5.width/2) this.p.x = p5.width/2;
+      if (this.p.y > p5.height) this.p.y = p5.height;
+    }
+
+    move(direction: 'forward'|'backward'|'left'|'right') {
+      const map = {
+        forward: 0,
+        backward: p5.PI,
+        left: -p5.PI/2,
+        right: p5.PI/2,
+      };
+      this.p.add(P5.Vector.fromAngle(this.heading + map[direction]).mult(p2Speed));
+      this.checkWalls();
       this.update(this.p.x, this.p.y);
     }
 
@@ -242,7 +261,7 @@ export const rayCastingPlusSketch: SketchHolder = {
   sketch,
   info: {
     title: "Ray Casting Plus",
-    controls: '',
-    about: '',
+    controls: '- click and drag the mouse to add more walls <br/> - use the arrow keys to rotate camera <br/> - use wasd to move <br/> - press f to enable fisheye view',
+    about: 'each ray cast to a wall corresponds to a vertical line on the right half of the screen. the height and brightness of the line are determined by the length of the ray. shorter rays create taller, brighter lines, which together create a simulated first person view',
   }
 };

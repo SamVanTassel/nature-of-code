@@ -316,7 +316,7 @@ export const particleSystemCosmicSketch: SketchHolder = {
   sketch,
   info: {
     title: "4.2b - Particle System [COSMIC]",
-    controls: '',
-    about: '',
+    controls:  '- click to add a new particle system <br/> - attractors/repellers can be dragged',
+    about: 'like cosmis bowling in zero g',
   }
 };

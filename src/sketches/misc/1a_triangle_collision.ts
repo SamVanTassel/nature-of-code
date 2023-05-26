@@ -85,6 +85,6 @@ export const triangleCollisionSketch: SketchHolder = {
   info: {
     title: "Triangle Collision",
     controls: '',
-    about: '',
+    about: 'is the cursor inside the triangle? collision detection practice',
   }
 };

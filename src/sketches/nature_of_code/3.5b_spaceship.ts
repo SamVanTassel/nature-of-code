@@ -189,7 +189,7 @@ export const spaceshipSketch: SketchHolder = {
   sketch,
   info: {
     title: "3.5b - Spaceship",
-    controls: '',
-    about: '',
+    controls: '- left and right arrow keys turn the ship <br/> - up arrow key fires thrusters <br/> - space bar fires lasers',
+    about: 'experiementing with arctan led to this near game. try accelerating a bunch and turning then getting the ship to stand still again',
   }
 };

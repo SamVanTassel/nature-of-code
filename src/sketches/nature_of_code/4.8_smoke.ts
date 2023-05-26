@@ -239,7 +239,7 @@ export const smokeSketch: SketchHolder = {
   sketch,
   info: {
     title: "4.8 - Smoke",
-    controls: '',
-    about: '',
+    controls: 'move the match around with the mouse',
+    about: 'simple smoke simulation. red line on top represents wind relative to current match position',
   }
 };

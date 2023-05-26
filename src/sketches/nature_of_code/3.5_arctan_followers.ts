@@ -95,7 +95,7 @@ export const arctanFollowersSketch: SketchHolder = {
   sketch,
   info: {
     title: "3.5 - Arctan Followers",
-    controls: '',
+    controls: 'click to add a follower',
     about: '',
   }
 };

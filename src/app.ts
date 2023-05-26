@@ -2,7 +2,9 @@ import P5 from "p5";
 import "./styles.scss";
 import { loadRoute, setRoute, state } from "./state";
 import {  about, data } from "./data";
-import { titleOrPlaceholder } from "./util";
+import { dragElement, removeAllChildNodes, titleOrPlaceholder } from "./util";
+
+const collectionTitles = data.map(el => el.title);
 
 const sidePanelLeft = document.getElementById("side-panel-left");
 const sidePanelRight = document.getElementById("side-panel-right");
@@ -11,10 +13,27 @@ const container = document.getElementsByClassName(
   "container"
 )[0] as HTMLElement;
 const options = document.getElementsByClassName("options")[0] as HTMLElement;
+const resetButton = document.getElementById("reset");
 const infoButton = document.getElementById("sketch-info-button");
 const infoModal = document.getElementById("info-modal");
+const infoModalHeader = document.getElementById("info-modal-header");
 const infoModalContent = document.getElementById("info-modal-content");
 const closeButtonInfoModal = document.getElementById("close-button-info-modal");
+
+const collectionsList = document.getElementById('side-panel-list-right');
+for (const title of collectionTitles) {
+  const a = document.createElement('a');
+  a.innerText = title;
+  if (title === 'Nature of Code') {
+    a.href = setRoute('', true);
+  } else {
+    a.href = setRoute(title, true);
+  }
+  a.onclick = () => {
+    closeSidePanelRight();
+  };
+  collectionsList.appendChild(a);
+}
 
 let sidePanelLeftOpen = false;
 let sidePanelRightOpen = false;
@@ -63,6 +82,26 @@ openSidePanelRight.onclick = () => {
   } else closeSidePanelRight();
 };
 
+const closeInfoModal = () => {
+  infoModal.style.display = "none";
+  state.infoModalOpen = false;
+}
+
+infoButton.onclick = () => {
+  if (state.infoModalOpen) {
+    closeInfoModal();
+  } else {
+    infoModal.style.display = "flex";
+    state.infoModalOpen = true;
+  }
+};
+closeButtonInfoModal.onclick = closeInfoModal;
+dragElement(infoModal, infoModalHeader);
+
+resetButton.onclick = () => {
+  state.p5 = loadSketch();
+};
+
 document.addEventListener("click", (event) => {
   const clickedInContainer = event.target instanceof Node && container.contains(event.target);
   const clickedOpenLeftPanelButton = event.target instanceof Node && openSidePanelLeft.contains(event.target);
@@ -75,12 +114,6 @@ document.addEventListener("click", (event) => {
     closeSidePanelRight();
   }
 });
-
-const removeAllChildNodes = (parent: HTMLElement) => {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-}
 
 const renderSketchList = () => {
   removeAllChildNodes(sketchList);
@@ -110,35 +143,6 @@ const renderOptions = () => {
   }
 }
 
-const collectionTitles = data.map(el => el.title);
-
-const collectionsList = document.getElementById('side-panel-list-right');
-for (const title of collectionTitles) {
-  const a = document.createElement('a');
-  a.innerText = title;
-  if (title === 'Nature of Code') {
-    a.href = setRoute('', true);
-  } else {
-    a.href = setRoute(title, true);
-  }
-  a.onclick = () => {
-    closeSidePanelRight();
-  };
-  collectionsList.appendChild(a);
-}
-
-infoButton.onclick = () => {
-  infoModal.style.display = "flex";
-};
-closeButtonInfoModal.onclick = () => {
-  infoModal.style.display = "none";
-};
-
-const resetButton = document.getElementById("reset");
-resetButton.onclick = () => {
-  state.p5 = loadSketch();
-};
-
 const loadSketch = () => {
   const title = state.currentSketch.title;
   if (!title) {
@@ -165,17 +169,10 @@ const renderAbout = () => {
 }
 
 const renderInfoModal = () => {
+  closeInfoModal();
   removeAllChildNodes(infoModalContent);
   const info = state.currentSketch.info;
   if (info) {
-    if (info.controls) {
-      const controlsHeader = document.createElement('h3');
-      const controls = document.createElement('p');
-      controlsHeader.innerText = 'controls:';
-      controls.innerHTML = info.controls;
-      infoModalContent.appendChild(controlsHeader);
-      infoModalContent.appendChild(controls);
-    }
     if (info.about) {
       const aboutHeader = document.createElement('h3');
       const about = document.createElement('p');
@@ -184,12 +181,19 @@ const renderInfoModal = () => {
       infoModalContent.appendChild(aboutHeader);
       infoModalContent.appendChild(about);
     }
+    if (info.controls) {
+      const controlsHeader = document.createElement('h3');
+      const controls = document.createElement('p');
+      controlsHeader.innerText = 'controls:';
+      controls.innerHTML = info.controls;
+      infoModalContent.appendChild(controlsHeader);
+      infoModalContent.appendChild(controls);
+    }
   }
 }
 
 const renderMainConent = () => {
   renderAbout();
-  renderInfoModal();
   loadSketch();
 }
 
@@ -200,6 +204,7 @@ const renderPage = () => {
   closeSidePanelLeft();
   closeSidePanelRight();
   renderOptions();
+  renderInfoModal();
 };
 
 window.onhashchange = () => {

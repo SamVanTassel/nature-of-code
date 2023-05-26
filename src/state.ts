@@ -15,6 +15,7 @@ export const state: State = {
     sketches: natureOfCodeSketches,
   },  
   about: false,
+  infoModalOpen: false,
 }
 
 const resetState = () => {
@@ -22,6 +23,7 @@ const resetState = () => {
   setCurrentSketch();
   state.currentCollection.title = 'Nature of Code';
   state.currentCollection.sketches = natureOfCodeSketches;
+  state.infoModalOpen = false;
 }
 
 export const setCurrentSketch = (sh?: SketchHolder) => {

@@ -128,6 +128,6 @@ export const oneDCellularAutomationSketch: SketchHolder = {
   info: {
     title: "7.4 - 1d Cellular Automation",
     controls: '',
-    about: '',
+    about: 'each line represents an evolution of the next according to a fixed set of rules. read more about that process <a href="https://natureofcode.com/book/chapter-7-cellular-automata/" target="_blank">here</a><br/>this sketch pulls from a small set of all possible rules for a 2-color, 1d cellular automa. the rules were chosen to for their interesting results',
   }
 };

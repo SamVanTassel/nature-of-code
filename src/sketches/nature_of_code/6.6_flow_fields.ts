@@ -187,6 +187,6 @@ export const flowFieldsSketch: SketchHolder = {
   info: {
     title: "6.6 - Flow Fields",
     controls: '',
-    about: '',
+    about: 'it\'s like throwing sand onto a grid of moving arrows, and each grain of sand follows the arrows while tracing its path... looks like hair',
   }
 };

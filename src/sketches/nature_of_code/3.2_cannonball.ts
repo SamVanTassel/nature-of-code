@@ -77,7 +77,7 @@ export const cannonballSketch: SketchHolder = {
   sketch,
   info: {
     title: "3.2b - Cannonball",
-    controls: '',
+    controls: 'just gotta watch this one',
     about: '',
   }
 };

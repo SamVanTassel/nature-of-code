@@ -152,7 +152,7 @@ export const windGravityFrictionCollisionSketch: SketchHolder = {
   sketch,
   info: {
     title: "2.2b - Wind, Gravity, Friction, Collision",
-    controls: '',
-    about: '',
+    controls: 'click to add another ball',
+    about: 'trying to get collisions to render naturally... still having problems with balls smooshing together',
   }
 };

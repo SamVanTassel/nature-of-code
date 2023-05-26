@@ -176,7 +176,7 @@ export const singleDraggableAttractorSketch: SketchHolder = {
   sketch,
   info: {
     title: "2.6 - Single Draggable Attractor",
-    controls: '',
+    controls: '- attractor can be dragged around. <br/> - click to add an orbiter',
     about: '',
   }
 };

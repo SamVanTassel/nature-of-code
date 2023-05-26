@@ -96,7 +96,7 @@ export const manyAttractorsSketch: SketchHolder = {
   sketch,
   info: {
     title: "2.8 - Many Attractors",
-    controls: '',
+    controls: 'click to add an orbiter',
     about: '',
   }
 };

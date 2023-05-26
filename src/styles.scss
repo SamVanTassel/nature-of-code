@@ -187,9 +187,10 @@ a, a:visited {
   display: none;
   flex-direction: column;
   position: absolute;
-  bottom: 5rem;
-  left: 30%;
+  top: 4rem;
+  left: 70%;
   width: fit-content;
+  max-width: 40rem;
   height: fit-content;
   overflow-x: hidden;
   border: $link-color solid 2px;
@@ -198,6 +199,7 @@ a, a:visited {
     background: none;
     background-color: $link-color;
     height: 1.5rem;
+    cursor: move;
   }
   .close-button {
     font-size: 2rem;
@@ -212,6 +214,9 @@ a, a:visited {
   color: $txt-color;
   flex-direction: column;
   padding: 1.5rem 2rem;
+  p {
+    padding: .5rem 0;
+  }
 }
 
 .button-primary {

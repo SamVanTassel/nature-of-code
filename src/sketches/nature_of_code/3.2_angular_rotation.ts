@@ -109,7 +109,7 @@ export const angularRotationSketch: SketchHolder = {
   sketch,
   info: {
     title: "3.2 - Angular Rotation",
-    controls: '',
+    controls: '- attractor can be dragged around <br/> - click to add a flippy card',
     about: '',
   }
 };

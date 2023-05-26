@@ -82,10 +82,10 @@ export const about = {
 `</br>
 This site is a sketchbook.
 <br/><br/>
-The exercises in the Nature of Code section are from the awesome book <a href="https://natureofcode.com/" target="_blank" rel="noreferrer noopener">The Nature of Code</a>
+The sketches in the Nature of Code section are from the (awesome) book <a href="https://natureofcode.com/" target="_blank" rel="noreferrer noopener">The Nature of Code</a>
 by Daniel Schiffman.
 <br/><br/>
-The sketches in the Misc section are anything that caught my interest. Many were inspired by <a href="https://thecodingtrain.com/challenges" target="_blank" rel="noreferrer noopener">The Coding Train</a>, also by Daniel Schiffman. The guy is a great teacher!
+The sketches in the Misc section are anything that caught my interest. Many were inspired by <a href="https://thecodingtrain.com/challenges" target="_blank" rel="noreferrer noopener">The Coding Train</a>, also by Daniel Schiffman - the guy is a great teacher!
 <br/><br/>
-The source code lives <a href="https://github.com/SamVanTassel/nature-of-code" target="_blank">here</a>`
+The source code lives <a href="https://github.com/SamVanTassel/nature-of-code" target="_blank">here</a>.`
 }

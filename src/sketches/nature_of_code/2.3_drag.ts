@@ -155,7 +155,7 @@ export const dragSketch: SketchHolder = {
   sketch,
   info: {
     title: "2.3 - Drag",
-    controls: '',
+    controls: 'click to add another ball',
     about: '',
   }
 };

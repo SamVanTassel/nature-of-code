@@ -180,7 +180,7 @@ export const groupBehaviorSketch: SketchHolder = {
   sketch,
   info: {
     title: "6.11 - Group Behavior",
-    controls: '',
-    about: '',
+    controls: 'hold the mouse down to spawn more movers',
+    about: 'each mover tries to maintain serparation from every other mover, with larger ones wating more space',
   }
 };
