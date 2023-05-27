@@ -5,10 +5,11 @@ import type { CollectionTitle, SketchHolder, State } from './types';
 export const state: State = {
   p5: undefined,
   currentSketch: {
-    file: undefined,
-    title: undefined,
+    sketch: undefined,
+    displayTitle: undefined,
     param: undefined,
     info: undefined,
+    inputs: undefined,
   },
   currentCollection: {
     title: 'Nature of Code',
@@ -28,16 +29,18 @@ const resetState = () => {
 
 export const setCurrentSketch = (sh?: SketchHolder) => {
   if (!sh) {
-    state.currentSketch.title = undefined;
-    state.currentSketch.file = undefined;
+    state.currentSketch.sketch = undefined;
+    state.currentSketch.displayTitle = undefined;
     state.currentSketch.param = undefined;
     state.currentSketch.info = undefined;
+    state.currentSketch.inputs = undefined;
     return;
   }
-  state.currentSketch.file= sh.sketch;
-  state.currentSketch.title = sh.info?.title || '';
-  state.currentSketch.info = sh.info;
+  state.currentSketch.sketch = sh.sketch;
+  state.currentSketch.displayTitle = sh.info?.title || '';
   state.currentSketch.param = encodeParam(sh.info?.title || '');
+  state.currentSketch.info = sh.info;
+  state.currentSketch.inputs = sh.inputs;
 }
 
 const getSketchHolder = (s?: string) => {

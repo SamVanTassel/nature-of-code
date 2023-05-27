@@ -3,6 +3,7 @@ import "./styles.scss";
 import { loadRoute, setRoute, state } from "./state";
 import {  about, data } from "./data";
 import { dragElement, removeAllChildNodes, titleOrPlaceholder } from "./util";
+import { SketchInput } from "./types";
 
 const collectionTitles = data.map(el => el.title);
 
@@ -14,6 +15,7 @@ const container = document.getElementsByClassName(
 )[0] as HTMLElement;
 const options = document.getElementsByClassName("options")[0] as HTMLElement;
 const resetButton = document.getElementById("reset");
+const inputsContainer = document.getElementById("inputs");
 const infoButton = document.getElementById("sketch-info-button");
 const infoModal = document.getElementById("info-modal");
 const infoModalHeader = document.getElementById("info-modal-header");
@@ -43,7 +45,7 @@ const closeSidePanelLeft = () => {
   sidePanelLeft.style.width = "0";
   sidePanelLeft.style.left = "-2px";
   container.style.marginLeft = "0";
-  openSidePanelLeft.innerText = `> ${titleOrPlaceholder(state.currentSketch.title, state.about)}`;
+  openSidePanelLeft.innerText = `> ${titleOrPlaceholder(state.currentSketch.displayTitle, state.about)}`;
   sidePanelLeftOpen = false;
 };
 closeButtonLeft.onclick = () => {
@@ -55,7 +57,7 @@ openSidePanelLeft.onclick = () => {
   sidePanelLeft.style.width = "30rem";
   sidePanelLeft.style.left = "0";
   container.style.marginLeft = "30rem";
-  openSidePanelLeft.innerText = `< ${titleOrPlaceholder(state.currentSketch.title, state.about)}`;
+  openSidePanelLeft.innerText = `< ${titleOrPlaceholder(state.currentSketch.displayTitle, state.about)}`;
   sidePanelLeftOpen =true;
   } else closeSidePanelLeft();
 };
@@ -129,28 +131,67 @@ const renderSketchList = () => {
   }
 }
 
+const renderInputs = (inputs: SketchInput[]) => {
+  removeAllChildNodes(inputsContainer);
+  inputs.forEach(input => {
+    switch (input.type) {
+      case 'slider': {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.style.display = 'flex';
+        sliderContainer.style.flexDirection = 'column';
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.oninput = input.onChange;
+        if (input.min) slider.min = input.min.toString();
+        if (input.max) slider.max = input.max.toString();
+        slider.step = 'any';
+        if (input.initialValue) slider.value = input.initialValue.toString();
+        const label = document.createElement('label');
+        label.innerText = input.name;
+        sliderContainer.appendChild(label);
+        label.appendChild(slider);
+        inputsContainer.appendChild(sliderContainer);
+      }
+    }
+  });
+}
+
 const renderOptions = () => {
-  if (state.currentSketch.title) {
+  let hasOptions = false;
+  if (state.currentSketch.displayTitle) {
     options.style.display = "flex";
+    // info
     const info = state.currentSketch.info;
     if (info.about || info.controls) {
+      hasOptions = true;
       infoButton.style.display = "block";
     } else {
       infoButton.style.display = "none";
     }
+    // inputs
+    const inputs = state.currentSketch.inputs;
+    if (inputs && inputs.length) {
+      inputsContainer.style.display = 'flex';
+      renderInputs(inputs);
+    } else {
+      inputsContainer.style.display = 'none';
+    }
   } else {
     options.style.display = "none";
   }
+  // reset button
+  if (hasOptions) resetButton.style.marginLeft = '0';
+  else resetButton.style.marginLeft = 'auto';
 }
 
 const loadSketch = () => {
-  const title = state.currentSketch.title;
-  if (!title) {
+  const sketch = state.currentSketch.sketch;
+  if (!sketch) {
     if (state.p5) state.p5.remove();
     return;
   }
   if (state.p5) state.p5.remove();
-  state.p5 = new P5(state.currentSketch.file, document.getElementById("app"));
+  state.p5 = new P5(state.currentSketch.sketch, document.getElementById("app"));
   return state.p5;
 };
 
@@ -163,8 +204,10 @@ const renderAbout = () => {
     p.innerHTML = about.html;
     aboutContainer.appendChild(header);
     aboutContainer.appendChild(p);
+    openSidePanelLeft.style.display = "none"
   } else {
     removeAllChildNodes(aboutContainer);
+    openSidePanelLeft.style.display = "block";
   }
 }
 
@@ -195,6 +238,7 @@ const renderInfoModal = () => {
 const renderMainConent = () => {
   renderAbout();
   loadSketch();
+  renderOptions();
 }
 
 const renderPage = () => {
@@ -203,7 +247,6 @@ const renderPage = () => {
   renderSketchList();
   closeSidePanelLeft();
   closeSidePanelRight();
-  renderOptions();
   renderInfoModal();
 };
 
