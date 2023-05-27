@@ -571,6 +571,7 @@ const sketchList = document.getElementById("side-panel-list");
 const container = document.getElementsByClassName("container")[0];
 const options = document.getElementsByClassName("options")[0];
 const resetButton = document.getElementById("reset");
+const inputsContainer = document.getElementById("inputs");
 const infoButton = document.getElementById("sketch-info-button");
 const infoModal = document.getElementById("info-modal");
 const infoModalHeader = document.getElementById("info-modal-header");
@@ -594,7 +595,7 @@ const closeSidePanelLeft = ()=>{
     sidePanelLeft.style.width = "0";
     sidePanelLeft.style.left = "-2px";
     container.style.marginLeft = "0";
-    openSidePanelLeft.innerText = `> ${(0, _util.titleOrPlaceholder)((0, _state.state).currentSketch.title, (0, _state.state).about)}`;
+    openSidePanelLeft.innerText = `> ${(0, _util.titleOrPlaceholder)((0, _state.state).currentSketch.displayTitle, (0, _state.state).about)}`;
     sidePanelLeftOpen = false;
 };
 closeButtonLeft.onclick = ()=>{
@@ -606,7 +607,7 @@ openSidePanelLeft.onclick = ()=>{
         sidePanelLeft.style.width = "30rem";
         sidePanelLeft.style.left = "0";
         container.style.marginLeft = "30rem";
-        openSidePanelLeft.innerText = `< ${(0, _util.titleOrPlaceholder)((0, _state.state).currentSketch.title, (0, _state.state).about)}`;
+        openSidePanelLeft.innerText = `< ${(0, _util.titleOrPlaceholder)((0, _state.state).currentSketch.displayTitle, (0, _state.state).about)}`;
         sidePanelLeftOpen = true;
     } else closeSidePanelLeft();
 };
@@ -667,22 +668,60 @@ const renderSketchList = ()=>{
         sketchList.appendChild(title);
     }
 };
+const renderInputs = (inputs)=>{
+    (0, _util.removeAllChildNodes)(inputsContainer);
+    inputs.forEach((input)=>{
+        switch(input.type){
+            case "slider":
+                {
+                    const sliderContainer = document.createElement("div");
+                    sliderContainer.style.display = "flex";
+                    sliderContainer.style.flexDirection = "column";
+                    const slider = document.createElement("input");
+                    slider.type = "range";
+                    slider.oninput = input.onChange;
+                    if (input.min) slider.min = input.min.toString();
+                    if (input.max) slider.max = input.max.toString();
+                    slider.step = "any";
+                    if (input.initialValue) slider.value = input.initialValue.toString();
+                    const label = document.createElement("label");
+                    label.innerText = input.name;
+                    sliderContainer.appendChild(label);
+                    label.appendChild(slider);
+                    inputsContainer.appendChild(sliderContainer);
+                }
+        }
+    });
+};
 const renderOptions = ()=>{
-    if ((0, _state.state).currentSketch.title) {
+    let hasOptions = false;
+    if ((0, _state.state).currentSketch.displayTitle) {
         options.style.display = "flex";
+        // info
         const info = (0, _state.state).currentSketch.info;
-        if (info.about || info.controls) infoButton.style.display = "block";
-        else infoButton.style.display = "none";
+        if (info.about || info.controls) {
+            hasOptions = true;
+            infoButton.style.display = "block";
+        } else infoButton.style.display = "none";
+        // inputs
+        const inputs = (0, _state.state).currentSketch.inputs;
+        if (inputs && inputs.length) {
+            inputsContainer.style.display = "flex";
+            renderInputs(inputs);
+        } else inputsContainer.style.display = "none";
     } else options.style.display = "none";
+    // reset button
+    if (hasOptions) resetButton.style.marginLeft = "0";
+    else resetButton.style.marginLeft = "auto";
 };
 const loadSketch = ()=>{
-    const title = (0, _state.state).currentSketch.title;
-    if (!title) {
+    const sketch = (0, _state.state).currentSketch.sketch;
+    if (!sketch) {
         if ((0, _state.state).p5) (0, _state.state).p5.remove();
         return;
     }
     if ((0, _state.state).p5) (0, _state.state).p5.remove();
-    (0, _state.state).p5 = new (0, _p5Default.default)((0, _state.state).currentSketch.file, document.getElementById("app"));
+    (0, _state.state).p5 = new (0, _p5Default.default)((0, _state.state).currentSketch.sketch, document.getElementById("app"));
     return (0, _state.state).p5;
 };
 const renderAbout = ()=>{
@@ -694,7 +733,11 @@ const renderAbout = ()=>{
         p.innerHTML = (0, _data.about).html;
         aboutContainer.appendChild(header);
         aboutContainer.appendChild(p);
-    } else (0, _util.removeAllChildNodes)(aboutContainer);
+        openSidePanelLeft.style.display = "none";
+    } else {
+        (0, _util.removeAllChildNodes)(aboutContainer);
+        openSidePanelLeft.style.display = "block";
+    }
 };
 const renderInfoModal = ()=>{
     closeInfoModal();
@@ -722,6 +765,7 @@ const renderInfoModal = ()=>{
 const renderMainConent = ()=>{
     renderAbout();
     loadSketch();
+    renderOptions();
 };
 const renderPage = ()=>{
     (0, _state.loadRoute)();
@@ -729,7 +773,6 @@ const renderPage = ()=>{
     renderSketchList();
     closeSidePanelLeft();
     closeSidePanelRight();
-    renderOptions();
     renderInfoModal();
 };
 window.onhashchange = ()=>{
@@ -739,7 +782,7 @@ window.onload = ()=>{
     renderPage();
 };
 
-},{"p5":"7Uk5U","./styles.scss":"kMfPY","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./state":"1Yeju","./data":"6C1am","./util":"j2NOL"}],"7Uk5U":[function(require,module,exports) {
+},{"p5":"7Uk5U","./styles.scss":"kMfPY","./state":"1Yeju","./data":"6C1am","./util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7Uk5U":[function(require,module,exports) {
 /*! p5.js v1.6.0 February 22, 2023 */ var global = arguments[3];
 !function(e1) {
     module.exports = e1();
@@ -28312,37 +28355,7 @@ window.onload = ()=>{
     ])(251);
 });
 
-},{}],"kMfPY":[function() {},{}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"1Yeju":[function(require,module,exports) {
+},{}],"kMfPY":[function() {},{}],"1Yeju":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -28354,10 +28367,11 @@ var _util = require("./util");
 const state = {
     p5: undefined,
     currentSketch: {
-        file: undefined,
-        title: undefined,
+        sketch: undefined,
+        displayTitle: undefined,
         param: undefined,
-        info: undefined
+        info: undefined,
+        inputs: undefined
     },
     currentCollection: {
         title: "Nature of Code",
@@ -28375,16 +28389,18 @@ const resetState = ()=>{
 };
 const setCurrentSketch = (sh)=>{
     if (!sh) {
-        state.currentSketch.title = undefined;
-        state.currentSketch.file = undefined;
+        state.currentSketch.sketch = undefined;
+        state.currentSketch.displayTitle = undefined;
         state.currentSketch.param = undefined;
         state.currentSketch.info = undefined;
+        state.currentSketch.inputs = undefined;
         return;
     }
-    state.currentSketch.file = sh.sketch;
-    state.currentSketch.title = sh.info?.title || "";
-    state.currentSketch.info = sh.info;
+    state.currentSketch.sketch = sh.sketch;
+    state.currentSketch.displayTitle = sh.info?.title || "";
     state.currentSketch.param = (0, _util.encodeParam)(sh.info?.title || "");
+    state.currentSketch.info = sh.info;
+    state.currentSketch.inputs = sh.inputs;
 };
 const getSketchHolder = (s)=>{
     if (!s) return;
@@ -28578,6 +28594,25 @@ var _p5 = require("p5");
 var _p5Default = parcelHelpers.interopDefault(_p5);
 var _stylesScss = require("../../styles.scss");
 var _util = require("../../util");
+var _clickHelpers = require("../../util/click_helpers");
+const externals = {
+    speed: {
+        current: 10,
+        max: 50,
+        min: 0
+    },
+    attraction: {
+        current: 0.5,
+        max: 1.0,
+        min: 0.05
+    }
+};
+const setTopSpeed = (e)=>{
+    if (e.target.valueAsNumber !== undefined) externals.speed.current = e.target.valueAsNumber;
+};
+const setAttraction = (e)=>{
+    if (e.target.valueAsNumber !== undefined) externals.attraction.current = e.target.valueAsNumber;
+};
 const sketch = (p5)=>{
     const movers = [];
     const WIDTH = 600;
@@ -28595,7 +28630,7 @@ const sketch = (p5)=>{
         });
     };
     p5.mouseClicked = ()=>{
-        movers.push(new Mover(p5.mouseX, p5.mouseY));
+        if ((0, _clickHelpers.inbounds)(p5)) movers.push(new Mover(p5.mouseX, p5.mouseY));
     };
     p5.windowResized = ()=>{
         p5.resizeCanvas((0, _util.getSize)(WIDTH, HEIGHT).w, (0, _util.getSize)(WIDTH, HEIGHT).h);
@@ -28604,17 +28639,16 @@ const sketch = (p5)=>{
         constructor(x, y){
             this.location = x & y ? p5.createVector(x, y) : p5.createVector(p5.random(p5.width), p5.random(p5.height));
             this.velocity = p5.createVector(p5.random(-2, 2), p5.random(-2, 2));
-            this.acceleration = p5.createVector(-0.001, .01);
-            this.topspeed = 10;
+            this.acceleration = p5.createVector(-0.001, 0.01);
             this.color = p5.color(p5.random(0, 255), p5.random(0, 255), p5.random(0, 255), p5.random(0, 255));
         }
         update() {
             const mouse = p5.createVector(p5.mouseX, p5.mouseY);
             const dir = (0, _p5Default.default).Vector.sub(mouse, this.location).normalize();
-            dir.mult(.5);
+            dir.mult(externals.attraction.current);
             this.acceleration = dir;
             this.velocity.add(this.acceleration);
-            this.velocity.limit(this.topspeed);
+            this.velocity.limit(externals.speed.current);
             this.location.add(this.velocity);
         }
         display() {
@@ -28636,10 +28670,28 @@ const mouseFollowersSketch = {
         title: "1 - Mouse Followers",
         controls: "click to add another follower",
         about: ""
-    }
+    },
+    inputs: [
+        {
+            type: "slider",
+            name: "top speed",
+            initialValue: externals.speed.current,
+            max: externals.speed.max,
+            min: externals.speed.min,
+            onChange: setTopSpeed
+        },
+        {
+            type: "slider",
+            name: "attraction",
+            initialValue: externals.attraction.current,
+            max: externals.attraction.max,
+            min: externals.attraction.min,
+            onChange: setAttraction
+        }
+    ]
 };
 
-},{"p5":"7Uk5U","../../styles.scss":"kMfPY","../../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kMfPY":[function() {},{}],"j2NOL":[function(require,module,exports) {
+},{"p5":"7Uk5U","../../styles.scss":"kMfPY","../../util":"j2NOL","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../util/click_helpers":"h9d9J"}],"kMfPY":[function() {},{}],"j2NOL":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _colorContrastChecker = require("./color_contrast_checker");
@@ -28657,7 +28709,7 @@ parcelHelpers.exportAll(_paramHelpers, exports);
 var _resize = require("./resize");
 parcelHelpers.exportAll(_resize, exports);
 
-},{"./color_contrast_checker":"ddYXH","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./resize":"6aTto","./param_helpers":"eFs6o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./dom_helpers":"dfh5F"}],"ddYXH":[function(require,module,exports) {
+},{"./color_contrast_checker":"ddYXH","./dom_helpers":"dfh5F","./Draggable":"jWrLI","./get_colors":"6wJIa","./Mover":"i6OBO","./param_helpers":"eFs6o","./resize":"6aTto","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ddYXH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "checkContrast", ()=>checkContrast);
@@ -28692,6 +28744,75 @@ const checkContrast = (color1, color2)=>{
     const c2luminance = luminance(c2rgb);
     const ratio = c1luminance > c2luminance ? (c2luminance + 0.05) / (c1luminance + 0.05) : (c1luminance + 0.05) / (c2luminance + 0.05);
     return ratio < 1 / 3;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"dfh5F":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "dragElement", ()=>dragElement);
+parcelHelpers.export(exports, "removeAllChildNodes", ()=>removeAllChildNodes);
+const dragElement = (element, dragHandle)=>{
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (dragHandle) dragHandle.onmousedown = dragMouseDown;
+    else element.onmousedown = dragMouseDown;
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        element.style.top = element.offsetTop - pos2 + "px";
+        element.style.left = element.offsetLeft - pos1 + "px";
+    }
+    function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+};
+const removeAllChildNodes = (parent)=>{
+    while(parent.firstChild)parent.removeChild(parent.firstChild);
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jWrLI":[function(require,module,exports) {
@@ -28803,7 +28924,36 @@ class Mover {
     }
 }
 
-},{"p5":"7Uk5U","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6aTto":[function(require,module,exports) {
+},{"p5":"7Uk5U","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eFs6o":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "decodeParam", ()=>decodeParam);
+parcelHelpers.export(exports, "encodeParam", ()=>encodeParam);
+parcelHelpers.export(exports, "getDisplayTitle", ()=>getDisplayTitle);
+parcelHelpers.export(exports, "createLinkText", ()=>createLinkText);
+parcelHelpers.export(exports, "titleOrPlaceholder", ()=>titleOrPlaceholder);
+const decodeParam = (s)=>{
+    return s.replace(/#/g, "").replace(/\//g, "");
+};
+const encodeParam = (s)=>{
+    return `#/${createLinkText(s)}`;
+};
+const getDisplayTitle = (s)=>{
+    if (!s) return;
+    return s.replace(/_/g, " ").toLowerCase();
+};
+const createLinkText = (s)=>{
+    if (!s) return "";
+    const splits = s.split("- ");
+    const title = splits[splits.length - 1];
+    return title.toLowerCase().replace(/ /g, "_");
+};
+const titleOrPlaceholder = (s, about)=>{
+    if (s) return getDisplayTitle(s);
+    return about ? "" : "select a sketch";
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6aTto":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getSize", ()=>getSize);
@@ -28842,75 +28992,18 @@ const getSize = (w, h)=>{
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eFs6o":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"h9d9J":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "decodeParam", ()=>decodeParam);
-parcelHelpers.export(exports, "encodeParam", ()=>encodeParam);
-parcelHelpers.export(exports, "getDisplayTitle", ()=>getDisplayTitle);
-parcelHelpers.export(exports, "createLinkText", ()=>createLinkText);
-parcelHelpers.export(exports, "titleOrPlaceholder", ()=>titleOrPlaceholder);
-const decodeParam = (s)=>{
-    return s.replace(/#/g, "").replace(/\//g, "");
-};
-const encodeParam = (s)=>{
-    return `#/${createLinkText(s)}`;
-};
-const getDisplayTitle = (s)=>{
-    if (!s) return;
-    return s.replace(/_/g, " ").toLowerCase();
-};
-const createLinkText = (s)=>{
-    if (!s) return "";
-    const splits = s.split("- ");
-    const title = splits[splits.length - 1];
-    return title.toLowerCase().replace(/ /g, "_");
-};
-const titleOrPlaceholder = (s, about)=>{
-    if (s) return getDisplayTitle(s);
-    return about ? "" : "select a sketch";
+parcelHelpers.export(exports, "inbounds", ()=>inbounds);
+var _p5 = require("p5");
+var _p5Default = parcelHelpers.interopDefault(_p5);
+const inbounds = (p5)=>{
+    if (p5.mouseX <= p5.width && p5.mouseX >= 0 && p5.mouseY <= p5.height && p5.mouseY >= 0) return true;
+    else return false;
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dfh5F":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "dragElement", ()=>dragElement);
-parcelHelpers.export(exports, "removeAllChildNodes", ()=>removeAllChildNodes);
-const dragElement = (element, dragHandle)=>{
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    if (dragHandle) dragHandle.onmousedown = dragMouseDown;
-    else element.onmousedown = dragMouseDown;
-    function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
-    }
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        element.style.top = element.offsetTop - pos2 + "px";
-        element.style.left = element.offsetLeft - pos1 + "px";
-    }
-    function closeDragElement() {
-        // stop moving when mouse button is released:
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
-};
-const removeAllChildNodes = (parent)=>{
-    while(parent.firstChild)parent.removeChild(parent.firstChild);
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"827uj":[function(require,module,exports) {
+},{"p5":"7Uk5U","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"827uj":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "windGravitySketch", ()=>windGravitySketch);

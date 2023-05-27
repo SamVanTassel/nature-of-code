@@ -52,6 +52,10 @@ a:hover, a:visited:hover {
   background-color: #111;
 }
 
+#open-side-panel-right {
+  margin-left: auto;
+}
+
 .side-panel {
   height: 100%;
   width: 0;
@@ -266,6 +270,64 @@ a:hover, a:visited:hover {
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+#inputs div {
+  padding: 0 1rem;
+}
+
+input, label {
+  display: block;
+}
+
+input[type="range"] {
+  appearance: none;
+  cursor: pointer;
+  width: 10rem;
+  background: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 1.2rem;
+  background: #111;
+  border: 1px solid #facf70;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 1.2rem;
+  background: #111;
+  border: 1px solid #facf70;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  height: 1.2rem;
+  width: 1rem;
+  background-color: #facf70;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 1.2rem;
+  width: 1rem;
+  background-color: #facf70;
+  border: none;
+  border-radius: 0;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  outline-offset: .125rem;
+  border: 1px solid #ddd;
+  outline: 3px solid #ddd;
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  outline-offset: .125rem;
+  border: 1px solid #ddd;
+  outline: 3px solid #ddd;
 }
 
 /*# sourceMappingURL=index.4a508c1d.css.map */
