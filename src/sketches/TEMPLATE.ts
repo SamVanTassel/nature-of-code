@@ -1,7 +1,22 @@
 import P5 from "p5";
 import "../../styles.scss";
 import { getSize } from "../util";
-import { SketchHolder } from "../types";
+import { InputChangeHandler, SketchHolder } from "../types";
+
+const externals = {
+  val: {
+    current: 1,
+    max: 10,
+    min: 0,
+    step: 1,
+  },
+};
+
+const setVal: InputChangeHandler = (e) => {
+  if (e.target.valueAsNumber !== undefined) {
+    externals.val.current = e.target.valueAsNumber;
+  }
+};
 
 const sketch = (p5: P5) => {
   const WIDTH = 600;
@@ -33,5 +48,16 @@ export const TEMPLATE_Sketch: SketchHolder = {
     title: '',
     controls: '',
     about: '',
-  }
+  },
+  inputs: [
+    {
+      type: "slider",
+      name: "val",
+      initialValue: externals.val.current,
+      max: externals.val.max,
+      min: externals.val.min,
+      step: externals.val.step,
+      onChange: setVal,
+    },
+  ]
 }

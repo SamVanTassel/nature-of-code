@@ -34,9 +34,10 @@ export type SketchInput = {
   type: SketchInputType
   name: string
   onChange: InputChangeHandler
-  initialValue?: number
-  max?: number
-  min?: number
+  initialValue: number
+  max: number
+  min: number
+  step?: number
 }
 
 export interface InputChangeEvent extends Event {

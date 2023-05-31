@@ -76,16 +76,15 @@ export const loadRoute = () => {
     switch (decoded) {
       case 'about':
         state.about = true;
-        setCurrentSketch();
         state.currentCollection.title = 'About';
         state.currentCollection.sketches = undefined;
         setCurrentSketch();
         break;
       case 'misc':
         state.about = false;
-        setCurrentSketch();
         state.currentCollection.title = 'Misc';
         state.currentCollection.sketches = miscSketches;
+        setCurrentSketch();
         break;
       default: {
         state.about = false;
@@ -96,7 +95,6 @@ export const loadRoute = () => {
       }
     }
   } else if (hashGroups.length === 2) {
-    console.log(hashGroups);
     const [collectionParam, sketchParam] = hashGroups;
     state.about = false;
     const collection = getCollection(decodeParam(collectionParam))

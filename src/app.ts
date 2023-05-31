@@ -142,10 +142,10 @@ const renderInputs = (inputs: SketchInput[]) => {
         const slider = document.createElement('input');
         slider.type = 'range';
         slider.oninput = input.onChange;
-        if (input.min) slider.min = input.min.toString();
-        if (input.max) slider.max = input.max.toString();
-        slider.step = 'any';
-        if (input.initialValue) slider.value = input.initialValue.toString();
+        slider.min = input.min.toString();
+        slider.max = input.max.toString();
+        slider.step = input.step ? input.step.toString() : 'any';
+        slider.value = input.initialValue.toString();
         const label = document.createElement('label');
         label.innerText = input.name;
         sliderContainer.appendChild(label);
