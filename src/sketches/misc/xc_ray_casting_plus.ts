@@ -129,11 +129,7 @@ const sketch = (p5: P5) => {
     constructor(x1: number, y1: number, x2: number, y2: number, c?: P5.Color) {
       this.a = p5.createVector(x1, y1);
       this.b = p5.createVector(x2, y2);
-      const colorMax = 510;
-      const colorA = p5.random(255);
-      const colorB = p5.random(colorMax - colorA);
-      const colorC = p5.random(colorMax - colorA - colorB);
-      this.c = c ? c : p5.color(colorA, colorB, colorC);
+      this.c = c ? c : p5.color(`hsb(${p5.floor(p5.random(360))}, ${p5.floor(p5.random(30, 100))}%, 100%)`);
     }
 
     display() {

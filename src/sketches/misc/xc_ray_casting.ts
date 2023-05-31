@@ -1,7 +1,22 @@
 import P5 from "p5";
 import "../../styles.scss";
 import { getSize } from "../../util";
-import type { SketchHolder } from "../../types";
+import type { InputChangeHandler, SketchHolder } from "../../types";
+
+const externals = {
+  res: {
+    current: 1,
+    max: 4.1,
+    min: .1,
+    step: .5,
+  },
+};
+
+const setRes: InputChangeHandler = (e) => {
+  if (e.target.valueAsNumber !== undefined) {
+    externals.res.current = e.target.valueAsNumber;
+  }
+};
 
 const sketch = (p5: P5) => {
   const WIDTH = 600;
@@ -64,7 +79,8 @@ const sketch = (p5: P5) => {
       moveP2();
       p2.look(walls);
     }
-
+    particle.setRes();
+    p2.setRes();
   };
 
   p5.windowResized = () => {
@@ -170,14 +186,26 @@ const sketch = (p5: P5) => {
     p: P5.Vector;
     rays: Ray[];
     c: P5.Color;
+    res: number;
 
     constructor(x: number, y: number, c: P5.Color) {
       this.p = p5.createVector(x, y);
       this.rays = [];
-      for (let i = 0; i < 360; i+= 1) {
+      this.res = externals.res.current;
+      for (let i = 0; i < 360; i+= 1/this.res) {
         this.rays.push(new Ray(this.p, p5.radians(i)));
       }
       this.c = c;
+    }
+
+    setRes() {
+      if (this.res !== externals.res.current) {
+        this.res = externals.res.current;
+        this.rays = [];
+        for (let i = 0; i < 360; i+= 1/this.res) {
+          this.rays.push(new Ray(this.p, p5.radians(i)));
+        }
+      }
     }
 
     look(walls: Boundary[]) {
@@ -214,5 +242,16 @@ export const rayCastingSketch: SketchHolder = {
     title: "Ray Casting",
     controls: '- click and drag the mouse to add more walls <br/> - press space to change modes <br/> - the red star may be moved with the arrow keys',
     about: 'the stars project rays in all directions, between its location and whatever wall it encounters first. this creates a simulated "line of sight" of the star',
-  }
+  },
+  inputs: [
+    {
+      type: "slider",
+      name: "ray count",
+      initialValue: externals.res.current,
+      max: externals.res.max,
+      min: externals.res.min,
+      step: externals.res.step,
+      onChange: setRes,
+    },
+  ]
 };
