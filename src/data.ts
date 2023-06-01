@@ -29,6 +29,7 @@ import {
   triangleCollisionSketch,
   rayCastingSketch,
   rayCastingPlusSketch,
+  AStarPathfindingSketch,
 } from "./sketches/misc";
 import { Collection, SketchHolder } from "./types";
 
@@ -63,6 +64,7 @@ export const miscSketches: SketchHolder[] = [
   triangleCollisionSketch,
   rayCastingSketch,
   rayCastingPlusSketch,
+  AStarPathfindingSketch,
 ];
 
 export const data: Collection[] = [

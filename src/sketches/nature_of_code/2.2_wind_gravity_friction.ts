@@ -1,14 +1,43 @@
 import P5 from "p5";
 import "../../styles.scss";
 import { getSize } from "../../util";
-import type { SketchHolder } from "../../types";
+import type { InputChangeHandler, SketchHolder } from "../../types";
+
+const externals = {
+  wind: {
+    current: .01,
+    max: .1,
+    min: 0,
+  },
+  gravity: {
+    current: 0.2,
+    max: 1.0,
+    min: 0,
+  }
+};
+
+let gravity: P5.Vector;
+let wind: P5.Vector;
+
+const setWind: InputChangeHandler = (e) => {
+  if (e.target.valueAsNumber !== undefined) {
+    externals.wind.current = e.target.valueAsNumber;
+    wind = new P5.Vector(externals.wind.current, 0);
+  }
+};
+
+const setGravity: InputChangeHandler = (e) => {
+  if (e.target.valueAsNumber !== undefined) {
+    externals.gravity.current = e.target.valueAsNumber;
+    gravity = new P5.Vector(0, externals.gravity.current);
+  }
+};
+
 
 const sketch = (p5: P5) => {
   const WIDTH = 600;
   const HEIGHT = 340;
   const movers: Mover[] = [];
-  let gravity: P5.Vector;
-  let wind: P5.Vector;
   const c = .05;
   const normal_ = 1;
   const frictionMag = c * normal_;
@@ -32,8 +61,8 @@ const sketch = (p5: P5) => {
       mover.applyForce(specificGravity);
 
       const friction = mover.velocity.copy().normalize().mult(-1);
-      if (mover.location.y >= (p5.height - mover.radius)) {
-        friction.mult(.05);
+      if (mover.location.y >= (p5.height - mover.radius) || mover.location.x >= (p5.width - mover.radius)) {
+        friction.mult(gravity.y/2);
       } else {
         friction.mult(.01);
       }
@@ -109,5 +138,23 @@ export const windGravityFrictionSketch: SketchHolder = {
     title: "2.2 - Wind, Gravity & Friction",
     controls: 'click to add another ball',
     about: '',
-  }
+  },
+  inputs: [
+    {
+      type: "slider",
+      name: "wind",
+      initialValue: externals.wind.current,
+      max: externals.wind.max,
+      min: externals.wind.min,
+      onChange: setWind,
+    },
+    {
+      type: "slider",
+      name: "gravity",
+      initialValue: externals.gravity.current,
+      max: externals.gravity.max,
+      min: externals.gravity.min,
+      onChange: setGravity,
+    },
+  ],
 };

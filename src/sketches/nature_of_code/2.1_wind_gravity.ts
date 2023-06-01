@@ -1,15 +1,42 @@
 import P5 from "p5";
 import "../../styles.scss";
 import { getSize } from "../../util";
-import type { SketchHolder } from "../../types";
+import type { InputChangeHandler, SketchHolder } from "../../types";
+
+const externals = {
+  wind: {
+    current: .01,
+    max: .1,
+    min: 0,
+  },
+  gravity: {
+    current: 0.2,
+    max: 1.0,
+    min: 0,
+  }
+};
+
+let gravity: P5.Vector;
+let wind: P5.Vector;
+
+const setWind: InputChangeHandler = (e) => {
+  if (e.target.valueAsNumber !== undefined) {
+    externals.wind.current = e.target.valueAsNumber;
+    wind = new P5.Vector(externals.wind.current, 0);
+  }
+};
+
+const setGravity: InputChangeHandler = (e) => {
+  if (e.target.valueAsNumber !== undefined) {
+    externals.gravity.current = e.target.valueAsNumber;
+    gravity = new P5.Vector(0, externals.gravity.current);
+  }
+};
 
 const sketch = (p5: P5) => {
   const WIDTH = 600;
   const HEIGHT = 340;
   const movers: Mover[] = [];
-  let gravity: P5.Vector;
-  let wind: P5.Vector;
-
 
   p5.setup = () => {
     p5.createCanvas(640, 360);    p5.createCanvas(
@@ -19,8 +46,8 @@ const sketch = (p5: P5) => {
     for (let i = 0; i < 10; i++) {
       movers.push(new Mover());
     }
-    gravity = p5.createVector(0, .2);
-    wind = p5.createVector(.01, 0);
+    gravity = p5.createVector(0, externals.gravity.current);
+    wind = p5.createVector(externals.wind.current, 0);
   }
 
   p5.draw = () => {
@@ -96,5 +123,23 @@ export const windGravitySketch: SketchHolder = {
     title: "2.1 - Wind & Gravity",
     controls: 'click to add another ball',
     about: '',
-  }
+  },
+  inputs: [
+    {
+      type: "slider",
+      name: "wind",
+      initialValue: externals.wind.current,
+      max: externals.wind.max,
+      min: externals.wind.min,
+      onChange: setWind,
+    },
+    {
+      type: "slider",
+      name: "gravity",
+      initialValue: externals.gravity.current,
+      max: externals.gravity.max,
+      min: externals.gravity.min,
+      onChange: setGravity,
+    },
+  ],
 };

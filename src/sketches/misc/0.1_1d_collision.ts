@@ -11,14 +11,14 @@ const sketch = (p5: P5) => {
   const blocksSettings = [
     {
       mass: 100,
-      initialVelocity: 10,
-      position: 50,
+      initialVelocity: p5.random(-1, 15),
+      position: p5.random(WIDTH/3) + 50,
       color: 'dodgerBlue',
     },
     {
       mass: 50,
-      initialVelocity: -10,
-      position: 400,
+      initialVelocity: p5.random(-15, 1),
+      position: p5.random(WIDTH * 2/3, WIDTH) -50,
       color: 'orange'
     },
     // {
@@ -111,7 +111,6 @@ const sketch = (p5: P5) => {
         other.location + other.velocity,
         this.width, other.width)
       ) {
-        console.log(`${this.name} hit ${other.name}`);
         this.hits[other.name] = true;
         this.collide(other);
       } else {
@@ -125,7 +124,6 @@ const sketch = (p5: P5) => {
         this.collideWithWall();
       } else if (this.location + this.width/2 >= p5.width) {
         this.hits.wall = true;
-        console.log(`${this.name} hit the wall`);
         this.collideWithWall();
       } 
     }
