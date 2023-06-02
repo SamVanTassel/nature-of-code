@@ -1,7 +1,7 @@
 import P5 from "p5";
 import "../../styles.scss";
-import { getSize } from "../util";
-import { InputChangeHandler, SketchHolder } from "../types";
+import { getSize } from "../../util";
+import { InputChangeHandler, SketchHolder } from "../../types";
 
 const externals = {
   val: {

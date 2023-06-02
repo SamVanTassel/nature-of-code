@@ -6,13 +6,13 @@ import p5 from "p5";
 
 const externals = {
   resolution: {
-    current: 20,
+    current: 25,
     max: 70,
     min: 5,
     step: 1,
   },
   wallDensity: {
-    current: .2,
+    current: .3,
     max: .6,
     min: 0,
     step: .02,
@@ -43,6 +43,17 @@ const sketch = (p5: P5) => {
   let start: Spot;
   let end: Spot;
   let path: Spot[] = [];
+  const prevPaths = [];
+  let w: number;
+
+  const pathColor = '#eb0004';
+  const oldPathColor = '#db7f82';
+  const bgColor = '#e1e3e1';
+  const obstacleColor = '#23241f';
+  const startColor= '#5c82f7';
+  const endColor = '#41b56c';
+
+  const wallWidth = .5;
 
   p5.setup = () => {
     p5.createCanvas(
@@ -61,15 +72,26 @@ const sketch = (p5: P5) => {
       row.forEach(spot => spot.addNeighbors(grid));
     })
 
-    start = grid[0][0];
-    end = grid[grid.length - 1][grid[0].length - 1];
+    w = p5.width/numRows;
+    const startArea = externals.resolution.current * 1/8;
+    const startQuad = p5.floor(p5.random(4));
+    const getStartCoord = () => p5.floor(p5.random(startArea));
+    const sx = startQuad < 2 ? getStartCoord() : grid[0].length - 1 - getStartCoord();
+    const sy = startQuad % 2 === 1 ? getStartCoord() : grid.length - 1 - getStartCoord();
+    const ex = startQuad >= 2 ? getStartCoord() : grid[0].length - 1 - getStartCoord();
+    const ey = startQuad % 2 === 0 ? getStartCoord() : grid.length - 1 - getStartCoord();
+    start = grid[sx][sy];
+    end = grid[ex][ey];
     openSet.push(start);
     start.wall = false;
     end.wall = false;
   };
 
   p5.draw = () => {
-    p5.background(0);
+    p5.background(bgColor);
+    start.display(p5.color(startColor));
+    end.display(p5.color(endColor));
+
     if (openSet.length > 0) {
       openSet.sort((a, b) => {
         if (a.f < b.f) return -1;
@@ -82,7 +104,7 @@ const sketch = (p5: P5) => {
         p5.noLoop();
       }
 
-      showPath(current);
+      createPath(current);
       closedSet.push(current);
 
       current.neighbors.forEach(n => {
@@ -127,12 +149,19 @@ const sketch = (p5: P5) => {
       p5.noLoop();
     };
 
+    p5.strokeWeight(1);
     grid.forEach(row => {
       row.forEach(spot => spot.display());
-    })
-    openSet.forEach(spot => spot.display(p5.color('green')));
-    closedSet.forEach(spot => spot.display(p5.color('red')));
-    path.forEach(s => s.display(p5.color('blue')));
+    });
+
+    p5.strokeJoin('round');
+    p5.noFill();
+    p5.stroke(oldPathColor)
+    p5.strokeWeight(wallWidth * w * .8);
+    prevPaths.forEach(p => showPath(p));
+    p5.strokeWeight(wallWidth * w * 1.2);
+    p5.stroke(pathColor);
+    showPath(path);
   };
 
   p5.windowResized = () => {
@@ -147,7 +176,7 @@ const sketch = (p5: P5) => {
     // return p5.dist(a.x, b.x, a.y, b.y);
   }
   
-  const showPath = (current: Spot) => {
+  const createPath = (current: Spot) => {
     path = [];
     let temp = current;
     while (temp.prev) {
@@ -155,6 +184,15 @@ const sketch = (p5: P5) => {
       temp = temp.prev;
     }
     path.push(temp);
+    prevPaths.push(path);
+  }
+
+  const showPath = (path: Spot[]) => {
+    p5.beginShape();
+    path.forEach(s => {
+      p5.vertex(s.x * w + w/2, s.y * w + w/2);
+    });
+    p5.endShape();
   }
 
   class Spot {
@@ -179,11 +217,22 @@ const sketch = (p5: P5) => {
     }
 
     display(color?: p5.Color) {
-      p5.fill(color || p5.color(230));
-      if (this.wall) p5.fill(0);
-      p5.stroke(0);
-      const w = p5.width/numRows;
-      p5.rect(this.x * w, this.y * w, w);
+      p5.noStroke();
+      if (this.wall) {
+        p5.fill(obstacleColor);
+        p5.ellipse(this.x * w + w/2, this.y * w + w/2, w * wallWidth);
+        this.neighbors.forEach(n => {
+          p5.rectMode('center');
+          if (n.wall && n.x < this.x) p5.rect(this.x * w, this.y * w + w/2, w, w * wallWidth);
+          if (n.wall && n.x > this.x) p5.rect(this.x * w + w, this.y * w + w/2, w, w * wallWidth);
+          if (n.wall && n.y < this.y) p5.rect(this.x * w + w/2, this.y * w, w * wallWidth, w);
+          if (n.wall && n.y > this.y) p5.rect(this.x * w + w/2, this.y * w + w, w * wallWidth, w);
+        })
+        return;
+      }
+      if (!color) return;
+      p5.fill(color);
+      p5.ellipse(this.x * w + w/2, this.y * w + w/2, w);
     }
 
     addNeighbors(grid: Spot[][]) {
@@ -204,7 +253,7 @@ export const AStarPathfindingSketch: SketchHolder = {
   info: {
     title: 'A* Pathfinding',
     controls: '',
-    about: '',
+    about: '<a href="https://en.wikipedia.org/wiki/A*_search_algorithm" target="_blank">a*</a> is an algorithm to find quickly find the closest path between two points. it uses a heuristic (an educated guess) to determine likely distance to the end point, then adds that distance to the distance traveled so far to determine which path to attempt next. The walls are randomly placed, some may not be solvable',
   },
   inputs: [
     {
