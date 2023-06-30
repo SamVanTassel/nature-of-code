@@ -31,6 +31,7 @@ import {
   rayCastingPlusSketch,
   AStarPathfindingSketch,
   mazeGeneratorSketch,
+  AStarMazeSketch,
 } from "./sketches/misc";
 import { Collection, SketchHolder } from "./types";
 
@@ -67,6 +68,7 @@ export const miscSketches: SketchHolder[] = [
   rayCastingPlusSketch,
   AStarPathfindingSketch,
   mazeGeneratorSketch,
+  AStarMazeSketch,
 ];
 
 export const data: Collection[] = [
