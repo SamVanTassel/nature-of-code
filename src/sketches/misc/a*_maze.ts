@@ -11,7 +11,7 @@ const externals = {
     min: 4,
     step: 1,
   },
-  swiss: {
+  gaps: {
     current: 0,
     max: 100,
     min: 0,
@@ -19,9 +19,9 @@ const externals = {
   },
 };
 
-const setSwiss: InputChangeHandler = (e) => {
+const setGaps: InputChangeHandler = (e) => {
   if (e.target.valueAsNumber !== undefined) {
-    externals.swiss.current = e.target.valueAsNumber;
+    externals.gaps.current = e.target.valueAsNumber;
   }
 };
 
@@ -91,7 +91,7 @@ const sketch = (p5: P5) => {
       } else if (stack.length) {
         current = stack.pop();
       }
-      if (p5.random(100) < externals.swiss.current) {
+      if (p5.random(100) < externals.gaps.current) {
         const [dir, next] = current.checkNeighbors(true);
         current.removeBoundary(dir, next);
       };
@@ -155,11 +155,9 @@ const sketch = (p5: P5) => {
         }
         n.h = heuristic(n, end);
         n.f = n.g + 2 *n.h;
-        console.log(n.h, n.g, n.f);
         if (newPath) n.prev = current;
       });
     } else {
-      console.log('impossible');
       p5.noLoop();
     };
     drawPaths();
@@ -316,7 +314,7 @@ export const AStarMazeSketch: SketchHolder = {
     controls: '',
     about: `Combining maze generation and pathfinding algorithms.
     <br><br>
-    A* is not very effective when there is only one solution, but as the 'swiss' value (amount of holes in the walls & potential other solutions)
+    A* is not very effective when there is only one solution, but as the 'holiness' value (amount of gaps in the walls & potential other solutions)
     increases, A* functions better at finding the shortest route.`,
   },
   inputs: [
@@ -331,12 +329,12 @@ export const AStarMazeSketch: SketchHolder = {
     },
     {
       type: "slider",
-      name: "swiss",
-      initialValue: externals.swiss.current,
-      max: externals.swiss.max,
-      min: externals.swiss.min,
-      step: externals.swiss.step,
-      onChange: setSwiss,
+      name: "holiness",
+      initialValue: externals.gaps.current,
+      max: externals.gaps.max,
+      min: externals.gaps.min,
+      step: externals.gaps.step,
+      onChange: setGaps,
     },
   ]
 }
