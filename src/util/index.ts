@@ -5,3 +5,4 @@ export * from './get_colors';
 export * from './Mover';
 export * from './param_helpers';
 export * from './resize';
+export * from './quad_tree';

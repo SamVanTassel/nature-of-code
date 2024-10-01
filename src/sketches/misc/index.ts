@@ -5,3 +5,4 @@ export * from './xc_ray_casting_plus';
 export * from './a*_pathfinding';
 export * from './maze_generator';
 export * from './a*_maze';
+export * from './quad_tree_test';

@@ -1,21 +1,33 @@
 import P5 from "p5";
 import "../../styles.scss";
-import { getSize } from "../../util";
+import { getSize, QuadTree, Rectangle } from "../../util";
 import type { SketchHolder } from "../../types";
 
 const sketch = (p5: P5) => {
   const WIDTH = 600;
   const HEIGHT = 600;
 
+  let quadTree: QuadTree;
+
   let flock: Flock;
   const numBoids = 200;
+
+  let frameRates = [];
+  let showData = false;
 
   p5.setup = () => {
     p5.createCanvas(
       getSize(WIDTH, HEIGHT).w,
       getSize(WIDTH, HEIGHT).h
     );
-    flock = new Flock();
+    quadTree = new QuadTree(new Rectangle({
+      x: p5.width/2,
+      y: p5.height/2,
+      w: p5.width/2,
+      h: p5.height/2,
+    }), 10);
+
+    flock = new Flock(quadTree);
     for (let i = 0; i < numBoids; i++) {
       flock.addBoid({});
     }
@@ -28,7 +40,12 @@ const sketch = (p5: P5) => {
       flock.addBoid(new Boid({ p: p5.createVector(p5.mouseX, p5.mouseY)}))
     }
     flock.run();
+    showData && showFrameRateData();
   };
+
+  p5.keyPressed = () => {
+    if (p5.keyCode === 32) showData = !showData;
+  }
 
   p5.windowResized = () => {
     p5.resizeCanvas(
@@ -36,6 +53,19 @@ const sketch = (p5: P5) => {
       getSize(WIDTH, HEIGHT).h
     );
   };
+
+  const showFrameRateData = () => {
+    frameRates[p5.frameCount % 10] = p5.frameRate();
+    const averageFrameRate = frameRates.reduce((a, b) => a +b)/frameRates.length;
+    const frameRateHeight = p5.map(averageFrameRate, 0, 75, p5.height, 0);
+    p5.stroke(255, 0, 0);
+    p5.strokeWeight(3);
+    p5.line(0, frameRateHeight, 20, frameRateHeight);
+    p5.noStroke();
+    p5.fill(0);
+    p5.text(flock.boids.length, p5.width - 40, p5.height - 10);
+    p5.text(Math.round(p5.frameRate()), 2, frameRateHeight - 10);
+  }
 
   interface BoidConstrutor {
     p?: P5.Vector
@@ -212,14 +242,31 @@ const sketch = (p5: P5) => {
 
   class Flock {
     boids: Boid[];
+    quadTree: QuadTree;
 
-    constructor() {
+    constructor(quadTree: QuadTree) {
       this.boids = [];
+      this.quadTree = quadTree;
+    }
+
+    constructQuadTree() {
+      this.quadTree.clear();
+      this.boids.forEach(b => {
+        this.quadTree.insert({ object: b, x: b.p.x, y: b.p.y })
+      });
+      p5.noStroke();
+    }
+
+    getClosestBoids(b: Boid) {
+      const area = new Rectangle({ x: b.p.x, y: b.p.y, w: b.r * 20, h: b.r * 20 });
+      return this.quadTree.query(area, []);
     }
 
     run() {
+      this.constructQuadTree();
       this.boids.forEach(b => {
-        b.run(this.boids);
+        // b.run(this.boids);
+        b.run(this.getClosestBoids(b).map(p => p.object));
       })
     }
 
