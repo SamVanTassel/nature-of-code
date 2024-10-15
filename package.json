@@ -4,6 +4,7 @@
   "description": "practice with p5 and simulating nature",
   "scripts": {
     "start": "parcel index.html --open",
+    "new-sim": "node scripts/new_sim.js",
     "build": "parcel build index.html --public-url ./",
     "predeploy": "rm -rf dist && npm run build",
     "deploy": "gh-pages -d dist"

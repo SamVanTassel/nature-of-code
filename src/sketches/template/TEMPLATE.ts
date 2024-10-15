@@ -31,7 +31,7 @@ const sketch = (p5: P5) => {
   };
 
   p5.draw = () => {
-
+    p5.background(100);
   };
 
   p5.windowResized = () => {
@@ -42,7 +42,7 @@ const sketch = (p5: P5) => {
   };
 };
 
-export const TEMPLATE_Sketch: SketchHolder = {
+export const templateSketch: SketchHolder = {
   sketch,
   info: {
     title: '',
