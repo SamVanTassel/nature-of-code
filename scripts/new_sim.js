@@ -25,8 +25,8 @@ function createNewFile(fileName, targetDir) {
   const { camelCase, pascalCase, titleCase } = transformFileName(fileName);
 
   // 1. Copy and rename template file
-  const templateFilePath = 'src/sketches/template/TEMPLATE.ts'; // Replace with actual path
-  const newFilePath = `src/sketches/${targetDir}/${pascalCase}.ts`; // Or sketches/misc
+  const templateFilePath = 'src/sketches/template/TEMPLATE.ts';
+  const newFilePath = `src/sketches/${targetDir}/${pascalCase}.ts`;
   fs.copyFileSync(templateFilePath, newFilePath);
 
   // 2. Replace placeholders in the new file
