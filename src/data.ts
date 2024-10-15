@@ -33,6 +33,7 @@ import {
   mazeGeneratorSketch,
   AStarMazeSketch,
   quadTreeSketch,
+  reactionDiffusionSketch,
 } from "./sketches/misc";
 import { Collection, SketchHolder } from "./types";
 
@@ -71,6 +72,7 @@ export const miscSketches: SketchHolder[] = [
   mazeGeneratorSketch,
   AStarMazeSketch,
   quadTreeSketch,
+  reactionDiffusionSketch,
 ];
 
 export const data: Collection[] = [

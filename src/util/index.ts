@@ -6,3 +6,4 @@ export * from './Mover';
 export * from './param_helpers';
 export * from './resize';
 export * from './quad_tree';
+export * from './grid_helpers';
