@@ -8,3 +8,4 @@ export * from './a*_maze';
 export * from './quad_tree_test';
 export * from './falling_sand';
 export * from './reaction_diffusion';
+export * from './level_generator';

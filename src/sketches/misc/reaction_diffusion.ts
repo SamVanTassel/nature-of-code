@@ -32,8 +32,8 @@ const setKillRateB: InputChangeHandler = (e) => {
 };
 
 const sketch = (p5: P5) => {
-  const WIDTH = 400;
-  const HEIGHT = 400;
+  const WIDTH = 600;
+  const HEIGHT = 600;
 
   type Pixel = {
     a: number;
@@ -84,7 +84,7 @@ const sketch = (p5: P5) => {
   p5.setup = () => {
     p5.createCanvas(getSize(WIDTH, HEIGHT).w, getSize(WIDTH, HEIGHT).h);
 
-    p5.pixelDensity(0.5);
+    p5.pixelDensity(0.3);
     const d = p5.pixelDensity();
     gridWidth = Math.floor(p5.width * d);
     gridHeight = Math.floor(p5.height * d);

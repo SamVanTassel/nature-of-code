@@ -35,6 +35,7 @@ import {
   quadTreeSketch,
   fallingSandSketch,
   reactionDiffusionSketch,
+  levelGeneratorSketch,
 } from "./sketches/misc";
 import { Collection, SketchHolder } from "./types";
 
@@ -75,6 +76,7 @@ export const miscSketches: SketchHolder[] = [
   quadTreeSketch,
   fallingSandSketch,
   reactionDiffusionSketch,
+  levelGeneratorSketch,
 ];
 
 export const data: Collection[] = [
