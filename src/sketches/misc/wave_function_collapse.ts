@@ -12,7 +12,7 @@ const externals = {
     step: 5,
   },
   b: {
-    current: 15,
+    current: 40,
     max: 100,
     min: 0,
     step: 5,
@@ -125,8 +125,11 @@ const imgData: [string, number][] = [
 type ImageHolder = {
   prob: number
   img: P5.Image
+  original: P5.Image
 }
 const images: ImageHolder[] = [];
+
+let slowMode: boolean = false;
 
 const sketch = (p5: P5) => {
   const WIDTH = 800;
@@ -137,7 +140,8 @@ const sketch = (p5: P5) => {
       imgData.forEach(path => {
         const img: ImageHolder = {
           prob: path[1],
-          img: p5.loadImage(path[0])
+          img: p5.loadImage(path[0]),
+          original: p5.loadImage(path[0]),
         }
         images.push(img)
     });
@@ -191,6 +195,7 @@ const sketch = (p5: P5) => {
 
     if (!tiles.length) {
       images.forEach(holder => {
+        holder.img = holder.original.get();
         holder.img.resize(w, 0);
         const tile: Tile = {
           img: holder.img,
@@ -211,10 +216,14 @@ const sketch = (p5: P5) => {
     tiles[4].prob = p5.map(externals.b.current, 0, 100, tiles.length * 2, 1);
     tiles[16].prob = p5.map(externals.b.current, 0, 100, tiles.length * 2, 1);
     tiles[17].prob = p5.map(externals.b.current, 0, 100, tiles.length * 2, 1);
+    // same for other tiles with all 4 sides filled
+    for (let i = 85 - 47; i < 91 - 47; i++) {
+      tiles[i].prob = p5.map(externals.b.current, 0, 100, tiles.length, 1);
+    }
     // more circles when blank is high
-    tiles[13].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length * 4);
-    tiles[32].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length * 4);
-    tiles[33].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length * 2);
+    tiles[13].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length);
+    tiles[32].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length);
+    tiles[33].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length / 2);
     // set endcap probability
     for (let i = 9; i < 13; i++) {
       tiles[i].prob = p5.map(externals.b.current, 0, 100, 1, tiles.length);
@@ -229,10 +238,10 @@ const sketch = (p5: P5) => {
     tiles[19].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/6)
     tiles[20].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/2)
     // set straight tile probability
-    tiles[5].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
-    tiles[8].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
-    tiles[18].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
-    tiles[21].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
+    tiles[5].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, tiles.length/2);
+    tiles[8].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, tiles.length/2);
+    tiles[18].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, tiles.length/2);
+    tiles[21].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, tiles.length/2);
 
     // set all cells to all possibile states
     for (let i = 0; i < rows * cols; i++) {
@@ -265,29 +274,17 @@ const sketch = (p5: P5) => {
     randomCell.possibleStates.splice(0, 1);
     cellStack.push(randomCell);
 
-    p5.fill(255, 0, 0, 100);
+    p5.fill(100, 40, 40);
     p5.rect(0, 0, cols * w, rows * w);
-    
-    cells.forEach(cell => {
-      // draw all cells in all possible states
-      drawCell(cell);
-    });
   };
 
   p5.draw = () => {
+    if (slowMode && p5.frameCount % 10 !== 0) return;
     const next = cellStack.pop();
     
     if (!next) {
       console.log('no more cells');
       p5.noLoop();
-      return;
-    }
-    if (next.possibleStates.length === 0) {
-      p5.noLoop();
-      console.log('No possible states at ' + next.index);
-      console.log(next);
-      p5.noFill();
-      p5.rect((next.index % cols) * w, Math.floor(next.index / cols) * w, w);
       return;
     }
 
@@ -313,8 +310,13 @@ const sketch = (p5: P5) => {
     );
   };
 
+  p5.keyPressed = () => {
+    if (p5.key === 's') {
+      slowMode = !slowMode;
+    }
+  }
+
   const checkPixel = (img: P5.Image, dir: 'top'|'left'|'bottom'|'right'): number[] => {
-    let r: number, g: number, b: number, a: number;
     switch (dir) {
       case 'top':
         return img.get(Math.floor(img.width/2), 0);
@@ -343,6 +345,7 @@ const sketch = (p5: P5) => {
     constrainNeighborPossibilities(cell);
     for (let dir in cell.neighbors) {
       const neighbor = cell.neighbors[dir];
+      drawCell(neighbor);
       if (neighbor.possibleStates.length === 1) {
         propogateConsraints(neighbor, radius - 1);
         collapsed.add(neighbor);
@@ -384,8 +387,9 @@ const sketch = (p5: P5) => {
     p5.fill(255);
     p5.noStroke();
     p5.rect(cell.index % cols * w, Math.floor(cell.index / cols) * w, w, w);
-    p5.tint(255, p5.map(cell.possibleStates.length, 0, tiles.length, 255, 255/tiles.length));
+    const totalPossible = cell.possibleStates.reduce((a, b) => a + b.prob, 0);
     cell.possibleStates.forEach(state => {
+      p5.tint(255, p5.map(state.prob, 0, totalPossible, 0, 255));
       p5.image(state.img, cell.index % cols * w, Math.floor(cell.index / cols) * w);  
     });
   }
@@ -394,9 +398,9 @@ const sketch = (p5: P5) => {
 export const waveFunctionCollapseSketch: SketchHolder = {
   sketch,
   info: {
-    title: 'Wave Function Collapse',
-    controls: '',
-    about: '',
+    title: 'Wave Function Collapse (Tiled)',
+    controls: 'press s to enter slow mode',
+    about: 'TIled version of the wave function collapse algoritim. Every cell in the grid could be represented by any tile to begin with, then as one cell is assigned a tile, the possible tiles that its neighbors can be represented by are reduced, and so on until every cell in the grid is represented by a single tile, which fits seamlessly with its neighbors',
   },
   inputs: [
     {
