@@ -3,6 +3,7 @@ import "../../styles.scss";
 import { getSize } from "../../util";
 import { InputChangeHandler, SketchHolder } from "../../types";
 
+const sMax = 50;
 const externals = {
   w: {
     current: 50,
@@ -11,16 +12,16 @@ const externals = {
     step: 5,
   },
   b: {
-    current: 150,
-    max: 500,
-    min: 50,
-    step: 50,
+    current: 15,
+    max: 100,
+    min: 0,
+    step: 5,
   },
   s: {
     current: 30,
-    max: 150,
+    max: sMax,
     min: 10,
-    step: 10,
+    step: 2,
   },
 };
 
@@ -42,42 +43,119 @@ const setS: InputChangeHandler = (e) => {
   }
 };
 
+const imgData: [string, number][] = [
+  [new URL('../../../images/wfc/simple/blank.jpg', import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/bottom_left.jpg', import.meta.url).toString(), 100],
+  [new URL('../../../images/wfc/simple/bottom_right.jpg', import.meta.url).toString(), 100],
+  [new URL('../../../images/wfc/simple/cross_flip.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/hor.jpg',import.meta.url).toString(), 100],
+  [new URL('../../../images/wfc/simple/top_left.jpg',import.meta.url).toString(), 100],
+  [new URL('../../../images/wfc/simple/top_right.jpg',import.meta.url).toString(), 100],
+  [new URL('../../../images/wfc/simple/vert.jpg',import.meta.url).toString(), 100],
+  [new URL('../../../images/wfc/simple/end_cap_top.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/end_cap_bottom.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/end_cap_left.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/end_cap_right.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/circle.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/bottom_left_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/bottom_right_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_flip_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/hor_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/top_left_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/top_right_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/vert_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/end_cap_top_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/end_cap_bottom_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/end_cap_left_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/end_cap_right_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_flip_mix_1.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_flip_mix_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_flip_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_mix_1.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_mix_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/cross_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/circle_2.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/circle_3.jpg',import.meta.url).toString(), 10],
+  [new URL('../../../images/wfc/simple/connector_1.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/connector_2.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/connector_3.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/connector_4.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/two_turns_1.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/two_turns_2.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/two_turns_3.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/two_turns_4.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/two_turns_5.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/two_turns_6.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_1.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_1.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_2.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_2.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_3.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_3.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_4.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_4.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_5.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_5.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_6.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_6.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_7.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_7.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_8.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_8.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_9.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_9.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_10.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_10.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_11.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_11.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_12.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_12.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_13.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_13.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_14.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_14.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_15.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_15.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/cap_and_pipe_turn_16.jpg',import.meta.url).toString(), 1],
+  [new URL('../../../images/wfc/simple/end_cap_and_pipe_16.jpg',import.meta.url).toString(), 1],
+];
+
+type ImageHolder = {
+  prob: number
+  img: P5.Image
+}
+const images: ImageHolder[] = [];
+
 const sketch = (p5: P5) => {
-  const WIDTH = 600;
-  const HEIGHT = 340;
-  const images: P5.Image[] = [];
+  const WIDTH = 800;
+  const HEIGHT = 600;
 
   p5.preload = () => {
-    const imgPaths = [
-      new URL('../../../images/wfc/simple/blank.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/bottom_left.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/bottom_right.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/cross_flip.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/cross.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/hor.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/top_left.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/top_right.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/vert.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/end_cap_top.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/end_cap_bottom.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/end_cap_left.jpg', import.meta.url).toString(),
-      new URL('../../../images/wfc/simple/end_cap_right.jpg', import.meta.url).toString(),
-
-    ];
-    imgPaths.forEach(path => images.push(p5.loadImage(path)));
+    if (!images.length) {
+      imgData.forEach(path => {
+        const img: ImageHolder = {
+          prob: path[1],
+          img: p5.loadImage(path[0])
+        }
+        images.push(img)
+    });
+    }
   }
+
 
   let w: number;
   type Tile = {
     img: P5.Image;
-    probability: number;
-    top: 1|0;
-    bottom: 1|0;
-    right: 1|0;
-    left: 1|0;
+    prob: number;
+    top: number[]
+    bottom: number[];
+    right: number[];
+    left: number[];
   }
 
-  const tiles: Tile[] = [];
+  let tiles: Tile[] = [];
   let rows: number;
   let cols: number;
 
@@ -102,35 +180,59 @@ const sketch = (p5: P5) => {
       getSize(WIDTH, HEIGHT).w,
       getSize(WIDTH, HEIGHT).h
     );
+
     w = p5.map(externals.w.current, 20, 100, 100, 20);
     rows = Math.floor(p5.height/w);
     cols = Math.floor(p5.width/w);
 
-    images.forEach(img => {
-      img.resize(w, 0);
-      const tile: Tile = {
-        img,
-        probability: 10,
-        top: checkPixel(img, 'top'),
-        left: checkPixel(img, 'left'),
-        bottom: checkPixel(img, 'bottom'),
-        right: checkPixel(img, 'right'),
-      }
-      tiles.push(tile);
-    });
+    // draw loading indicator
+    p5.fill(255, 0, 0, 100);
+    p5.rect(0, 0, cols * w, rows * w);
+
+    if (!tiles.length) {
+      images.forEach(holder => {
+        holder.img.resize(w, 0);
+        const tile: Tile = {
+          img: holder.img,
+          prob: holder.prob,
+          top: checkPixel(holder.img, 'top'),
+          left: checkPixel(holder.img, 'left'),
+          bottom: checkPixel(holder.img, 'bottom'),
+          right: checkPixel(holder.img, 'right'),
+        }
+        tiles.push(tile);
+      });
+    }
 
     // set blank tile probability
-    tiles[0].probability = externals.b.current;
+    tiles[0].prob = p5.map(externals.b.current, 0, 100, 1, tiles.length * 300);
+    // less crosses when blank is high
+    tiles[3].prob = p5.map(externals.b.current, 0, 100, tiles.length * 2, 1);
+    tiles[4].prob = p5.map(externals.b.current, 0, 100, tiles.length * 2, 1);
+    tiles[16].prob = p5.map(externals.b.current, 0, 100, tiles.length * 2, 1);
+    tiles[17].prob = p5.map(externals.b.current, 0, 100, tiles.length * 2, 1);
+    // more circles when blank is high
+    tiles[13].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length * 4);
+    tiles[32].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length * 4);
+    tiles[33].prob = p5.map(externals.b.current, 0, 100, 10, tiles.length * 2);
     // set endcap probability
     for (let i = 9; i < 13; i++) {
-      tiles[i].probability = p5.map(externals.b.current, 50, 500, 0, 10);
+      tiles[i].prob = p5.map(externals.b.current, 0, 100, 1, tiles.length);
     }
     // set squiggly tile probability
-    tiles[1].probability = externals.s.current;
-    tiles[7].probability = externals.s.current;
+    tiles[1].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/2)
+    tiles[2].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/6)
+    tiles[6].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/6)
+    tiles[7].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/2)
+    tiles[14].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/2)
+    tiles[15].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/6)
+    tiles[19].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/6)
+    tiles[20].prob = p5.map(externals.s.current, 10, sMax, 1, sMax * tiles.length/2)
     // set straight tile probability
-    tiles[5].probability = p5.map(externals.s.current, 10, 150, 150, 10);
-    tiles[8].probability = p5.map(externals.s.current, 10, 150, 150, 10);
+    tiles[5].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
+    tiles[8].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
+    tiles[18].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
+    tiles[21].prob = p5.map(externals.s.current, 10, sMax, sMax * tiles.length/2, 1);
 
     // set all cells to all possibile states
     for (let i = 0; i < rows * cols; i++) {
@@ -159,8 +261,13 @@ const sketch = (p5: P5) => {
 
     // add a random cell to the stack
     const randomCell = cells[Math.floor(p5.random(cells.length))];
+    // ensure the seed cell is not blank
+    randomCell.possibleStates.splice(0, 1);
     cellStack.push(randomCell);
 
+    p5.fill(255, 0, 0, 100);
+    p5.rect(0, 0, cols * w, rows * w);
+    
     cells.forEach(cell => {
       // draw all cells in all possible states
       drawCell(cell);
@@ -206,31 +313,26 @@ const sketch = (p5: P5) => {
     );
   };
 
-  const checkPixel = (img: P5.Image, dir: 'top'|'left'|'bottom'|'right'): 0|1 => {
+  const checkPixel = (img: P5.Image, dir: 'top'|'left'|'bottom'|'right'): number[] => {
     let r: number, g: number, b: number, a: number;
     switch (dir) {
       case 'top':
-        [r,g,b,a] = img.get(Math.floor(img.width/2), 0);
-        break;
+        return img.get(Math.floor(img.width/2), 0);
       case 'left':
-        [r,g,b,a] = img.get(0, Math.floor(img.height/2));
-        break;
+        return img.get(0, Math.floor(img.height/2));
       case 'bottom':
-        [r,g,b,a] = img.get(Math.floor(img.width/2), img.height - 1);
-        break;
+        return img.get(Math.floor(img.width/2), img.height - 1);
       case 'right':
-        [r,g,b,a] = img.get(img.width - 1, Math.floor(img.height/2));
-        break;
+        return img.get(img.width - 1, Math.floor(img.height/2));
     }
-    return r < 10 ? 1 : 0;
   }
 
   const chooseState = (cell: Cell) => {
-    let totalProb = cell.possibleStates.reduce((a, b) => a + b.probability, 0);
+    let totalProb = cell.possibleStates.reduce((a, b) => a + b.prob, 0);
     const num = p5.random(totalProb);
     let i = 0;
     for (let state of cell.possibleStates) {
-      i += state.probability;
+      i += state.prob;
       if (i >= num) return [state]
     }
   }
@@ -255,16 +357,24 @@ const sketch = (p5: P5) => {
     for (let dir in cell.neighbors) {
       switch (dir) {
         case 'top':
-          cell.neighbors.top.possibleStates = cell.neighbors.top.possibleStates.filter(n => ps.top === n.bottom);
+          cell.neighbors.top.possibleStates = 
+            cell.neighbors.top.possibleStates
+              .filter(n => ps.top.toString() === n.bottom.toString());
           break;
         case 'bottom':
-          cell.neighbors.bottom.possibleStates = cell.neighbors.bottom.possibleStates.filter(n => ps.bottom === n.top);
+          cell.neighbors.bottom.possibleStates = 
+            cell.neighbors.bottom.possibleStates
+              .filter(n => ps.bottom.toString() === n.top.toString());
           break;
         case 'left':
-          cell.neighbors.left.possibleStates = cell.neighbors.left.possibleStates.filter(n => ps.left === n.right);
+          cell.neighbors.left.possibleStates = 
+            cell.neighbors.left.possibleStates
+              .filter(n => ps.left.toString() === n.right.toString());
           break;
         case 'right':
-          cell.neighbors.right.possibleStates = cell.neighbors.right.possibleStates.filter(n => ps.right === n.left);
+          cell.neighbors.right.possibleStates = 
+            cell.neighbors.right.possibleStates
+              .filter(n => ps.right.toString() === n.left.toString());
           break;
       }
     }
