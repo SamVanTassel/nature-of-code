@@ -13,7 +13,7 @@ import {
   particleSystemSketch,
   particleSystemCosmicSketch,
   smokeSketch,
-  seekingATargetSketch,
+  // seekingATargetSketch,
   wanderersSketch,
   flowFieldsSketch,
   linearPathFollowingSketch,
@@ -25,8 +25,8 @@ import {
   environmentSketch,
 } from "./sketches/nature_of_code";
 import { 
-  oneDimendionalCollisionSketch,
-  triangleCollisionSketch,
+  // oneDimendionalCollisionSketch,
+  // triangleCollisionSketch,
   rayCastingSketch,
   rayCastingPlusSketch,
   AStarPathfindingSketch,
@@ -55,7 +55,7 @@ export const natureOfCodeSketches: SketchHolder[] = [
   particleSystemSketch,
   particleSystemCosmicSketch,
   smokeSketch,
-  seekingATargetSketch,
+  // seekingATargetSketch,
   wanderersSketch,
   flowFieldsSketch,
   linearPathFollowingSketch,
@@ -67,8 +67,8 @@ export const natureOfCodeSketches: SketchHolder[] = [
   environmentSketch,
 ];
 export const miscSketches: SketchHolder[] = [
-  oneDimendionalCollisionSketch,
-  triangleCollisionSketch,
+  // oneDimendionalCollisionSketch,
+  // triangleCollisionSketch,
   rayCastingSketch,
   rayCastingPlusSketch,
   AStarPathfindingSketch,

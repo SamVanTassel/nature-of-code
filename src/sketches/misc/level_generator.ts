@@ -11,9 +11,9 @@ const externals = {
     step: .01,
   },
   w: {
-    current: 10,
-    max: 20,
-    min: 5,
+    current: 30,//10,
+    max: 40,//20,
+    min: 20,//5,
     step: 1,
   },
 };
@@ -37,11 +37,15 @@ const sketch = (p5: P5) => {
   let grid: Grid;
   let entitiesManager: EntitiesManager;
   let centerLocation: P5.Vector;
+  let player: Player;
+
+  let setupComplete = false;
 
   const floorColor = p5.color(239, 208, 147);
   const wallColor = p5.color(85, 42, 25);
   const backgroundColor = p5.color(100, 52, 30);
   const treasureColor = p5.color(255, 100, 0);
+  const playerColor = p5.color(0, 100, 200);
 
   p5.setup = () => {
     p5.createCanvas(
@@ -53,16 +57,29 @@ const sketch = (p5: P5) => {
 
     centerLocation = p5.createVector(Math.floor(grid.width/2), Math.floor(grid.height/2));
     entitiesManager.addWalker(grid, centerLocation.copy());
+
+    player = new Player(p5.createVector(p5.width/2, p5.height/2), externals.w.current/5);
   };
 
   p5.draw = () => {
     p5.background(backgroundColor);
-    if (grid.maxFloorTiles > 0) {
-      entitiesManager.update();
-    } else {
-      grid.addWalls();
+
+    if (!setupComplete) {
+      if (grid.maxFloorTiles > 0) {
+        entitiesManager.update();
+      } else {
+        grid.addWalls();
+        setupComplete = true;
+      }
+      grid.draw();
     }
-    grid.draw();
+  
+
+    if (setupComplete) {
+      grid.draw();
+      player.update();
+      player.draw();
+    }
   };
 
   p5.windowResized = () => {
@@ -99,9 +116,8 @@ const sketch = (p5: P5) => {
         case 'treasure':
           p5.fill(floorColor);
           p5.rect(this.p.x*w, this.p.y*w, w);
-          p5.ellipseMode(p5.CORNER);
           p5.fill(treasureColor);
-          p5.ellipse(this.p.x*w, this.p.y*w, w);
+          p5.ellipse(this.p.x*w + w/2, this.p.y*w + w/2, w);
           break;
       }
     }
@@ -268,6 +284,92 @@ const sketch = (p5: P5) => {
       this.manager.killWalker(this.i);
     }
   };
+
+  class Player {
+    p: P5.Vector;
+    s: number;
+    size: number;
+
+    constructor(position: P5.Vector, speed: number) {
+      this.p = position;
+      this.s = speed;
+      this.size = externals.w.current * .9;
+    }
+
+    update() {
+      this.move();
+      this.checkCollisions();
+    }
+
+    move() {
+      if (p5.keyIsDown(p5.LEFT_ARROW)) {
+        this.p.x -= this.s;
+      }
+      if (p5.keyIsDown(p5.RIGHT_ARROW)) {
+        this.p.x += this.s;
+      }
+      if (p5.keyIsDown(p5.UP_ARROW)) {
+        this.p.y -= this.s;
+      }
+      if (p5.keyIsDown(p5.DOWN_ARROW)) {
+        this.p.y += this.s;
+      }
+    }
+    
+    checkCollisions() {
+      const gridX = Math.floor((this.p.x + this.size/2) / grid.w);
+      const gridY = Math.floor((this.p.y + this.size/2) / grid.w);
+  
+      // Check for collisions with walls in adjacent cells
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          const cellX = gridX + i;
+          const cellY = gridY + j;
+          if (
+            cellX >= 0 && cellX < grid.width &&
+            cellY >= 0 && cellY < grid.height
+          ) {
+            if (grid.cells[cellY][cellX].material === "wall") {
+              p5.fill('white');
+              p5.text(`hit ${i} ${j}`, p5.width/2 + (30 * j), p5.height - 10 + 10*i);
+              this.handleCollision(i, j);
+            }
+          }
+        }
+      }
+    }
+
+    handleCollision(offsetX: number, offsetY: number) {
+      const playerCenterX = this.p.x + this.size / 2;
+      const playerCenterY = this.p.y + this.size / 2;
+    
+      const playerLeft = this.p.x;
+      const playerRight = this.p.x + this.size;
+      const playerTop = this.p.y;
+      const playerBottom = this.p.y + this.size;
+    
+      // Calculate the grid lines
+      const gridLineX = (Math.floor(playerCenterX / grid.w) + (offsetX + 1) / 2) * grid.w;
+      const gridLineY = (Math.floor(playerCenterY / grid.w) + (offsetY + 1) / 2) * grid.w;
+    
+      // Adjust player position based on collision direction
+      if (offsetX === 1 && playerRight > gridLineX) {
+        this.p.x = gridLineX - this.size;
+      } else if (offsetX === -1 && playerLeft < gridLineX) {
+        this.p.x = gridLineX;
+      }
+      if (offsetY === 1 && playerBottom > gridLineY) {
+        this.p.y = gridLineY - this.size;
+      } else if (offsetY === -1 && playerTop < gridLineY) {
+        this.p.y = gridLineY;
+      }
+    }
+
+    draw() {
+      p5.fill(playerColor);
+      p5.ellipse(this.p.x + this.size/2, this.p.y + this.size/2, this.size);
+    }
+  }
 };
 
 export const levelGeneratorSketch: SketchHolder = {
