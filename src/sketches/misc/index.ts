@@ -11,3 +11,5 @@ export * from './reaction_diffusion';
 export * from './level_generator';
 export * from './wave_function_collapse';
 export * from './color_stuff';
+export * from './shape_stuff';
+export * from './marching_squares';

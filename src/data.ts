@@ -38,6 +38,8 @@ import {
   levelGeneratorSketch,
   waveFunctionCollapseSketch,
   colorStuffSketch,
+  // shapeStuffSketch,
+  marchingSquaresSketch,
 } from "./sketches/misc";
 import { Collection, SketchHolder } from "./types";
 
@@ -81,6 +83,8 @@ export const miscSketches: SketchHolder[] = [
   levelGeneratorSketch,
   waveFunctionCollapseSketch,
   colorStuffSketch,
+  // shapeStuffSketch,
+  marchingSquaresSketch,
 ];
 
 export const data: Collection[] = [
