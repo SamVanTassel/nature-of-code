@@ -10,3 +10,4 @@ export * from './falling_sand';
 export * from './reaction_diffusion';
 export * from './level_generator';
 export * from './wave_function_collapse';
+export * from './color_stuff';
