@@ -15,7 +15,7 @@ const externals = {
   t: {
     current: .01,
     max: .05,
-    min: .001,
+    min: 0,
     step: .001,
   },
 };
@@ -43,7 +43,7 @@ const viewStyles = [
 ];
 const GRADIENT_DEPTH = 50;
 const MIN_RES = 4;
-const MAX_RES = 200;
+const MAX_RES = 60;
 
 // COLOR
 let present: number[];
@@ -131,15 +131,9 @@ const sketch = (p5: P5) => {
     p5Handler = p5;
 
     resetFieldParams();
-    field = new Array(rows).fill(0).map((el) => new Array(cols).fill(0));
-    off = p5.random(0, 100);
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        field[i][j] = p5.noise((i * res) / 100 + off, (j * res) / 100 + off);
-      }
-    }
-
     resetColorScheme();
+
+    off = p5.random(0, 100);
   };
 
   p5.draw = () => {
@@ -176,16 +170,27 @@ const sketch = (p5: P5) => {
       for (let j = 0; j < cols - 1; j++) {
         const x = j * res;
         const y = i * res;
-        // const aOffset = p5.lerp()
-        const a = p5.createVector(x + 0.5 * res, y);
-        const b = p5.createVector(x + res, y + 0.5 * res);
-        const c = p5.createVector(x + 0.5 * res, y + res);
-        const d = p5.createVector(x, y + 0.5 * res);
+        const I = field[i][j];
+        const II = field[i][j + 1];
+        const III = field[i + 1][j];
+        const IV = field[i + 1][j + 1];
+        const aOffset = p5.createVector(p5.map(I - II, -1, 1, x, x + res), y);
+        const bOffset = p5.createVector(x + res, p5.map(II - IV, -1, 1, y, y + res));
+        const cOffset = p5.createVector(p5.map(III - IV, -1, 1, x, x + res), y + res);
+        const dOffset = p5.createVector(x, p5.map(I - III, -1, 1, y, y + res));
+        // const a = p5.createVector(x + 0.5 * res, y);
+        // const b = p5.createVector(x + res, y + 0.5 * res);
+        // const c = p5.createVector(x + 0.5 * res, y + res);
+        // const d = p5.createVector(x, y + 0.5 * res);
+        const a = aOffset;
+        const b = bOffset;
+        const c = cOffset;
+        const d = dOffset;
         p5.strokeWeight(res * 0.1);
         p5.stroke(border);
         const n = conv(
-          field[i][j],     field[i][j + 1],
-          field[i + 1][j], field[i + 1][j + 1]
+          I,   II,
+          III, IV
         );
         switch (n) {
           case 0:
