@@ -3,12 +3,13 @@ import "../../styles.scss";
 import { getSize } from "../../util";
 import { InputChangeHandler, SketchHolder } from "../../types";
 import { Hsluv } from "../../../node_modules/hsluv/dist/hsluv.mjs";
+import { logMap } from "../../util/math";
 
 const externals = {
   res: {
-    current: 20,
-    max: 30,
-    min: 8,
+    current: 50,
+    max: 100,
+    min: 1,
     step: 1,
   },
   t: {
@@ -22,6 +23,7 @@ const externals = {
 const setRes: InputChangeHandler = (e) => {
   if (e.target.valueAsNumber !== undefined) {
     externals.res.current = e.target.valueAsNumber;
+    resetFieldParams();
   }
 };
 
@@ -31,84 +33,104 @@ const setT: InputChangeHandler = (e) => {
   }
 };
 
+let p5Handler: P5;
 const hsluv = new Hsluv();
 let viewIndex: number = 0;
 const viewStyles = [
   'RECT',
   'POINT',
   'NONE',
-]
+];
+const GRADIENT_DEPTH = 50;
+const MIN_RES = 4;
+const MAX_RES = 200;
+
+// COLOR
+let present: number[];
+let absent: number[];
+let border: P5.Color;
+let background: P5.Color;
+
+function resetColorScheme () {
+  [present, absent, border, background] = setColorScheme();
+  setGradient(GRADIENT_DEPTH);
+}
+
+function setColorScheme (): [number[], number[], P5.Color, P5.Color] {
+  if (!p5Handler) return;
+  const randomHue = Math.floor(Math.random() * 360);
+  const contrastingHue = (randomHue + 180) % 360;
+  // present
+  hsluv.hsluv_h = randomHue;
+  hsluv.hsluv_s = 90;
+  hsluv.hsluv_l = 50;
+  hsluv.hsluvToRgb();
+  const present =  [hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255];
+  // absent
+  hsluv.hsluv_h = randomHue;
+  hsluv.hsluv_s = 20;
+  hsluv.hsluv_l = 10;
+  hsluv.hsluvToRgb();
+  const absent =  [hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255];
+  // border
+  hsluv.hsluv_h = contrastingHue;
+  hsluv.hsluv_s = 100;
+  hsluv.hsluv_l = 90;
+  hsluv.hsluvToRgb();
+  const border =  p5Handler.color(hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255);
+  // background
+  hsluv.hsluv_h = contrastingHue;
+  hsluv.hsluv_s = 20;
+  hsluv.hsluv_l = 5;
+  hsluv.hsluvToRgb();
+  const background =  p5Handler.color(hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255);
+  return [present, absent, border, background];
+}
+// interpolated colors precalculated and stored here
+// to reduce calculations during draw
+let gradient: P5.Color[] = [];
+function setGradient (numValues: number) {
+  gradient.length = 0;
+  for (let i = 0; i < numValues; i++) {
+    gradient.push(p5Handler.color(
+      p5Handler.lerp(present[0], absent[0], i / numValues),
+      p5Handler.lerp(present[1], absent[1], i / numValues),
+      p5Handler.lerp(present[2], absent[2], i / numValues),
+    ));
+  }
+}
+
+function getColor (n: number) {
+  return gradient[Math.floor(gradient.length - n * gradient.length)]
+}
+
+// FIELD DIMENSIONS
+let res: number;
+let field: number[][];
+let rows: number, cols: number;
+function resetFieldParams () {
+  if (!p5Handler) return;
+  res = logMap(externals.res.current, 1, 100, MAX_RES, MIN_RES, .0000005);
+  rows = Math.floor(p5Handler.height / res) + 2;
+  cols = Math.floor(p5Handler.width / res) + 2;
+  field = new Array(rows).fill(0).map((el) => new Array(cols).fill(0));
+}
 
 const sketch = (p5: P5) => {
   const WIDTH = 800;
   const HEIGHT = 500;
-
-  let res = p5.map(externals.res.current, 8, 30, 30, 8);
-  let field: number[][];
-  let rows: number, cols: number;
 
   let off: number;
 
   p5.keyPressed = () => {
     if (p5.key === ' ') viewIndex = (viewIndex + 1) % viewStyles.length;
   }
-  let present: number[];
-  let absent: number[];
-  let border: P5.Color;
-  let background: P5.Color;
-
-  // interpolated colors precalculated and stored here
-  // to reduce calculations during draw
-  let gradient: P5.Color[] = [];
-  
-  function setColorScheme (): [number[], number[], P5.Color, P5.Color] {
-    const randomHue = Math.floor(Math.random() * 360);
-    const contrastingHue = (randomHue + 180) % 360;
-    // present
-    hsluv.hsluv_h = randomHue;
-    hsluv.hsluv_s = 90;
-    hsluv.hsluv_l = 50;
-    hsluv.hsluvToRgb();
-    const present =  [hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255];
-    // absent
-    hsluv.hsluv_h = randomHue;
-    hsluv.hsluv_s = 20;
-    hsluv.hsluv_l = 10;
-    hsluv.hsluvToRgb();
-    const absent =  [hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255];
-    // border
-    hsluv.hsluv_h = contrastingHue;
-    hsluv.hsluv_s = 100;
-    hsluv.hsluv_l = 90;
-    hsluv.hsluvToRgb();
-    const border =  p5.color(hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255);
-    // background
-    hsluv.hsluv_h = contrastingHue;
-    hsluv.hsluv_s = 20;
-    hsluv.hsluv_l = 5;
-    hsluv.hsluvToRgb();
-    const background =  p5.color(hsluv.rgb_r * 255, hsluv.rgb_g * 255, hsluv.rgb_b * 255);
-    return [present, absent, border, background];
-  }
-
-  function setGradient (numValues: number) {
-    for (let i = 0; i < numValues; i++) {
-      gradient.push(p5.color(
-        p5.lerp(present[0], absent[0], i / numValues),
-        p5.lerp(present[1], absent[1], i / numValues),
-        p5.lerp(present[2], absent[2], i / numValues),
-      ));
-    }
-  }
-
-  function getColor (n: number) {
-    return gradient[Math.floor(gradient.length - n * gradient.length)]
-  }
 
   p5.setup = () => {
     p5.createCanvas(getSize(WIDTH, HEIGHT).w, getSize(WIDTH, HEIGHT).h);
-    rows = Math.floor(p5.height / res) + 2;
-    cols = Math.floor(p5.width / res) + 2;
+    p5Handler = p5;
+
+    resetFieldParams();
     field = new Array(rows).fill(0).map((el) => new Array(cols).fill(0));
     off = p5.random(0, 100);
     for (let i = 0; i < rows; i++) {
@@ -116,8 +138,8 @@ const sketch = (p5: P5) => {
         field[i][j] = p5.noise((i * res) / 100 + off, (j * res) / 100 + off);
       }
     }
-    [present, absent, border, background] = setColorScheme();
-    setGradient(50);
+
+    resetColorScheme();
   };
 
   p5.draw = () => {
@@ -154,6 +176,7 @@ const sketch = (p5: P5) => {
       for (let j = 0; j < cols - 1; j++) {
         const x = j * res;
         const y = i * res;
+        // const aOffset = p5.lerp()
         const a = p5.createVector(x + 0.5 * res, y);
         const b = p5.createVector(x + res, y + 0.5 * res);
         const c = p5.createVector(x + 0.5 * res, y + res);
@@ -257,5 +280,10 @@ export const marchingSquaresSketch: SketchHolder = {
       step: externals.t.step,
       onChange: setT,
     },
+    {
+      type: 'button',
+      name: 'change colors',
+      onClick: resetColorScheme,
+    }
   ],
 };

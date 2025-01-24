@@ -28,9 +28,11 @@ export interface SketchHolder {
   inputs?: SketchInput[]
 }
 
-type SketchInputType = 'slider';
+type SketchInputType = 'slider'|'button';
 
-export type SketchInput = {
+export type SketchInput = SliderInput|ButtonInput;
+
+export type SliderInput = {
   type: SketchInputType
   name: string
   onChange: InputChangeHandler
@@ -40,10 +42,17 @@ export type SketchInput = {
   step?: number
 }
 
+export type ButtonInput = {
+  type: SketchInputType
+  name: string
+  onClick: ButtonClickHandler
+}
+
 export interface InputChangeEvent extends Event {
   target: HTMLInputElement
 }
 export type InputChangeHandler = (event: InputChangeEvent) => void;
+export type ButtonClickHandler = (this: GlobalEventHandlers, ev: MouseEvent) => any
 
 export type CollectionTitle = "Nature of Code" | "Misc" | "About";
 

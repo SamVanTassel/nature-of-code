@@ -3,7 +3,7 @@ import "./styles.scss";
 import { loadRoute, setRoute, state } from "./state";
 import {  about, data } from "./data";
 import { dragElement, removeAllChildNodes, titleOrPlaceholder } from "./util";
-import { SketchInput } from "./types";
+import type { ButtonInput, SketchInput, SliderInput } from "./types";
 
 const collectionTitles = data.map(el => el.title);
 
@@ -136,6 +136,7 @@ const renderInputs = (inputs: SketchInput[]) => {
   inputs.forEach(input => {
     switch (input.type) {
       case 'slider': {
+        input = input as SliderInput;
         const sliderContainer = document.createElement('div');
         sliderContainer.style.display = 'flex';
         sliderContainer.style.flexDirection = 'column';
@@ -151,6 +152,20 @@ const renderInputs = (inputs: SketchInput[]) => {
         sliderContainer.appendChild(label);
         label.appendChild(slider);
         inputsContainer.appendChild(sliderContainer);
+        break;
+      }
+      case 'button': {
+        input = input as ButtonInput;
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.flexDirection = 'column';
+        const button = document.createElement('button');
+        button.textContent = input.name;
+        button.onclick = input.onClick;
+        button.classList.add('button-secondary');
+        buttonContainer.appendChild(button);
+        inputsContainer.appendChild(buttonContainer);    
+        break;
       }
     }
   });
