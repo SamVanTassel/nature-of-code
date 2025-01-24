@@ -99,7 +99,7 @@ export const colorStuffSketch: SketchHolder = {
   sketch,
   info: {
     title: 'Color Stuff',
-    controls: '',
+    controls: 'use up and down arrow keys to change the number of swatches',
     about: '',
   },
   inputs: [
