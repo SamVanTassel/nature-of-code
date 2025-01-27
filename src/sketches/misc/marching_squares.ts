@@ -175,11 +175,12 @@ const sketch = (p5: P5) => {
         }
       }
     }
+    // draw outlines
     marchingSquares(p5, res, field, border);
+  };
 
-    p5.windowResized = () => {
-      p5.resizeCanvas(getSize(WIDTH, HEIGHT).w, getSize(WIDTH, HEIGHT).h);
-    };
+  p5.windowResized = () => {
+    p5.resizeCanvas(getSize(WIDTH, HEIGHT).w, getSize(WIDTH, HEIGHT).h);
   };
 };
 
@@ -209,7 +210,7 @@ export function marchingSquares(p5: P5, res: number, field: number[][], color: P
       const b = bOffset;
       const c = cOffset;
       const d = dOffset;
-      p5.strokeWeight(res * weight ? weight : 0.1);
+      p5.strokeWeight(res * (weight ? weight : 0.1));
       p5.stroke(color);
       const n = conv(I, II, III, IV);
       switch (n) {

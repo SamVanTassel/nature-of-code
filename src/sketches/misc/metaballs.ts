@@ -66,7 +66,7 @@ const sketch = (p5: P5) => {
         break;
       case 'MARCHING_SQUARES':
         setNumberField(field, RES);
-        marchingSquares(p5, RES, field, p5.color(255), 1);
+        marchingSquares(p5, RES, field, p5.color(255), .5);
         break;
     }
   };
