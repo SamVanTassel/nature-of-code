@@ -40,6 +40,7 @@ import {
   colorStuffSketch,
   // shapeStuffSketch,
   marchingSquaresSketch,
+  metaballsSketch,
 } from "./sketches/misc";
 import { Collection, SketchHolder } from "./types";
 
@@ -85,6 +86,7 @@ export const miscSketches: SketchHolder[] = [
   colorStuffSketch,
   // shapeStuffSketch,
   marchingSquaresSketch,
+  metaballsSketch,
 ];
 
 export const data: Collection[] = [

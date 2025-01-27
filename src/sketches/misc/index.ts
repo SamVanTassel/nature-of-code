@@ -13,3 +13,4 @@ export * from './wave_function_collapse';
 export * from './color_stuff';
 export * from './shape_stuff';
 export * from './marching_squares';
+export * from './metaballs';
