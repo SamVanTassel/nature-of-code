@@ -6,7 +6,7 @@
     "start": "parcel index.html",
     "new-sim": "node scripts/new_sim.js",
     "build": "parcel build index.html --public-url ./",
-    "predeploy": "rm -rf dist && npm run build",
+    "predeploy": "rm -rf dist && rm -rf .parcel-cache && npm run build",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [
@@ -21,9 +21,11 @@
     "p5": "^1.5.0"
   },
   "devDependencies": {
+    "@parcel/packager-raw-url": "^2.13.3",
     "@parcel/transformer-sass": "^2.8.2",
+    "@parcel/transformer-webmanifest": "^2.13.3",
     "@types/p5": "^1.6.2",
-    "parcel": "^2.8.3",
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^5.0.0",
+    "parcel": "^2.8.3"
   }
 }

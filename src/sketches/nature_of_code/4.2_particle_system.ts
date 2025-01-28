@@ -3,7 +3,7 @@ import "../../styles.scss";
 import { Draggable, getSize } from "../../util";
 import type { SketchHolder } from "../../types";
 
-const imgPath = new URL('../../../images/circle_10px.png', import.meta.url).toString();
+const imgPath = new URL('../../../static/circle_10px.png', import.meta.url).toString();
 
 type ParticleMode = 'ellipse'|'image'
 
